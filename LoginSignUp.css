@@ -1,0 +1,27 @@
+#main-colour {
+    background-color: #f9a32f;
+}
+
+#secondary-colour {
+    background-color: #11161c;
+}
+
+#button-1 {
+    border-color: black;
+    color: black;
+}
+
+#button-1:hover {
+    background-color: #11161c;
+    color: #f9a32f;
+}
+
+.form-control {
+    background-color: #11161c;
+    border-color: #11161c;
+}
+
+.form-control:focus {
+    background-color: #11161c;
+    color: #f9a32f;
+}
