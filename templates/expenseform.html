@@ -1,44 +1,31 @@
 <!DOCTYPE html>
+<html>
 <head>
-    <title>New Log</title>
-    <link rel="stylesheet" href="expense-income-form.css">
+    <title>New Expense Log</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense-income-form.css') }}">
 </head>
 <body>
 
 <div class="log-popup">
-    <h2>NEW LOG</h2>
-    <form id="ExpenseIncomeForm">
-        <div class="expense-income">
-            <label>
-                <input type="radio" name="type" value="expense" required>
-                Expense&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </label>
-            <label>
-                <input type="radio" name="type" value="income" required>
-                Income
-            </label>
-        </div>
+    <h2>NEW EXPENSE LOG</h2>
+    <form id="ExpenseForm" method="POST">
         <div class="inputboxes">
             <label for="date">Date</label>
             <input type="date" id="date" name="date" required>
         </div>
         <div class="inputboxes">
             <label for="amount">Amount</label>
-            <input type="number" id="amount" name="amount" step="0.1" required>
+            <input type="number" id="amount" name="amount" step="0.01" required>
         </div>
         <div class="inputboxes">
             <label for="category">Category</label>
             <select id="category" name="category" required>
-                <option value="">Select a category</option>
+                <option value="" disable selected>Select a category</option>
                 <option value="food">Food</option>
                 <option value="transport">Transport</option>
                 <option value="bills">Bills</option>
                 <option value="entertainment">Entertainment</option>
-                <option value="salary">Salary</option>
-                <option value="business">Business</option>
-                <option value="investments">Investments</option>
-                <option value="gifts">Gifts</option>
-                <option value="other incomes">Others</option>
+                <option value="other expenses">Others</option>
             </select>
         </div>
         <div class="inputboxes">

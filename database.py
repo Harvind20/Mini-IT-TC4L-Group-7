@@ -22,11 +22,37 @@ CREATE TABLE IF NOT EXISTS users (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS friends (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    friend_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (friend_id) REFERENCES users(id),
-    UNIQUE(user_id, friend_id)
+    user_username TEXT NOT NULL,
+    friend_username TEXT NOT NULL,
+    FOREIGN KEY (user_username) REFERENCES users(username),
+    FOREIGN KEY (friend_username) REFERENCES users(username),
+    UNIQUE(user_username, friend_username)
+)
+''')
+
+# Create the expenses table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS expenses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_username TEXT NOT NULL,
+    date TEXT NOT NULL,
+    amount REAL CHECK(amount >= 0.01) NOT NULL,
+    category TEXT CHECK(category IN ('food', 'transport', 'bills', 'entertainment', 'other expenses')) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (user_username) REFERENCES users(username)
+)
+''')
+
+# Create the income table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS income (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_username TEXT NOT NULL,
+    date TEXT NOT NULL,
+    amount REAL CHECK(amount >= 0.01) NOT NULL,
+    category TEXT CHECK(category IN ('salary', 'business', 'investments', 'gifts', 'other incomes')) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (user_username) REFERENCES users(username)
 )
 ''')
 
