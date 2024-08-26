@@ -47,18 +47,6 @@ h2 {
     border: 1px solid #f9a32f;
 }
 
-.expense-income {
-    display: flex;
-    justify-content:space-evenly;
-    margin-bottom: 15px;
-    font-size: 17px;
-    font-weight: normal;
-}
-
-.radio-group label {
-    margin-right: 100px;
-}
-
 .submitbutton {
     display: block;
     width: 40%;

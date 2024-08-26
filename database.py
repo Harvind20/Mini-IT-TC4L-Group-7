@@ -30,15 +30,27 @@ CREATE TABLE IF NOT EXISTS friends (
 )
 ''')
 
-# Create the expense_income_log table
+# Create the expenses table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS expense_income_log (
+CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_username TEXT NOT NULL,
-    type TEXT CHECK(type IN ('expense', 'income')) NOT NULL,
     date TEXT NOT NULL,
     amount REAL CHECK(amount >= 0.01) NOT NULL,
-    category TEXT CHECK(category IN ('food', 'transport', 'bills', 'entertainment', 'salary', 'business', 'investments', 'gifts', 'other incomes')) NOT NULL,
+    category TEXT CHECK(category IN ('food', 'transport', 'bills', 'entertainment', 'other expenses')) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (user_username) REFERENCES users(username)
+)
+''')
+
+# Create the income table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS income (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_username TEXT NOT NULL,
+    date TEXT NOT NULL,
+    amount REAL CHECK(amount >= 0.01) NOT NULL,
+    category TEXT CHECK(category IN ('salary', 'business', 'investments', 'gifts', 'other incomes')) NOT NULL,
     description TEXT,
     FOREIGN KEY (user_username) REFERENCES users(username)
 )
