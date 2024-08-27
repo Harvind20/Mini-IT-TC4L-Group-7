@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 
 app = Flask(__name__)
@@ -60,24 +60,26 @@ def income_form():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
 
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password)).fetchone()
+        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
         conn.close()
 
         if user:
             session['username'] = user['username']
-            return redirect(url_for('expense_form'))
+            return redirect(url_for('home'))
         else:
-            return 'Login failed. Check your email and password.'
+            flash('Invalid username or password. Please try again.')
+            return redirect(url_for('login'))
 
     return render_template('Login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
 
@@ -85,13 +87,19 @@ def signup():
         conn.execute('''
             INSERT INTO users (username, email, password)
             VALUES (?, ?, ?)
-        ''', (email.split('@')[0], email, password))
+        ''', (username, email, password))
         conn.commit()
         conn.close()
 
         return redirect(url_for('login'))
 
     return render_template('Signup.html')
+
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('home.html')
 
 @app.route('/logout')
 def logout():
