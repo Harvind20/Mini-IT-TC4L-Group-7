@@ -1,0 +1,216 @@
+#navbar-pills {
+    width: 200px;
+    height: 40px;
+    font-size: large;
+}
+
+#left-column {
+    background-color: #11161c;
+}
+
+.nav-link {
+    color: #f9a32f;
+}
+
+.nav-link:hover {
+    color: white;
+    background-color: #1b2329;
+}
+
+.nav-link:active, 
+.nav-link:focus {
+    color: white;
+    outline: none;
+    background-color: #11161c;
+}
+
+
+#buttoncolor:hover {
+    color: #1b2329;
+}
+
+#maincard {
+    width: 1200px;
+    height: 700px;
+    margin-left: 30px;
+    margin-top: 40px;
+    background-color: #f9a32f;
+}
+
+.col-md-10 {
+    background-color: #11161c;
+}
+
+#recentincome {
+    width: 500px;
+    height: 270px;
+    margin-top: 20px;
+    margin-left: 30px;
+    background-color: #11161c;
+    padding: 0px;
+}
+
+#recentexpenses {
+    width: 640px;
+    height: 270px;
+    margin-top: 20px;
+    margin-left: 20px;
+    background-color: #11161c;
+    padding: 0px;
+}
+
+#quickaccess {
+    width: 1160px;
+    height: 150px;
+    margin-top: 20px;
+    margin-left: 20px;
+    background-color: #11161c;
+}
+
+#graphs {
+    width: 1160px;
+    height: 200px;
+    margin-top: 20px;
+    margin-left: 20px;
+    background-color: #11161c;
+}
+
+#cardheader {
+    color: white;
+    font-weight: bold;
+    margin-top: 7px;
+    margin-left: 15px;
+    margin-bottom: 0px;
+    font-family: 'Inter', sans-serif;
+    font-size: small;
+}
+
+hr {
+    background-color: white;
+    margin-top: 4px;
+    border: none;
+    height: 1px;
+    width: 100%;
+    opacity: 1;
+} 
+
+#incomeshortcut {
+    padding: 0%;
+    margin: 0%;
+    margin-left: 100px;
+    width: 250px;
+    height: 90px;
+    background-color: #1b2329;
+}
+
+#expenseshortcut {
+    padding: 0%;
+    margin: 0%;
+    margin-left: 200px;
+    width: 250px;
+    height: 90px;
+    background-color: #1b2329;
+}
+
+#leaderboardshortcut {
+    padding: 0%;
+    margin: 0%;
+    margin-left: 300px;
+    width: 250px;
+    height: 90px;
+    background-color: #1b2329;
+}
+
+.card {
+    background-color: #1b2329;
+    border: none;
+    padding: 0px;
+}
+
+#quickaccess {
+    background-color: #11161c;
+    padding: 0px;
+}
+
+.quickaccess-item {
+    height: 90px;
+    width: 250px;
+    background-color: #1b2329;
+    margin: 0px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcuttext {
+    color: white;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    font-size: small;
+    margin-left: 15px;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.dot {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: #11161c;
+}
+
+#quickaccess1 {
+    margin-left: 70px;
+}
+
+#quickaccess2 {
+    margin-left: 150px;
+}
+
+#quickaccess3 {
+    margin-left: 150px;
+}
+
+#quickaccess1:hover #dot1,
+#quickaccess1:hover #sct1 {
+    color: #00FF00;
+}
+
+#quickaccess2:hover #dot2,
+#quickaccess2:hover #sct2 {
+    color: #FF0000;
+}
+
+#quickaccess3:hover #dot3,
+#quickaccess3:hover #sct3 {
+    color: #1e90ff;
+}
+
+img {
+    height: 80px;
+    width: 150px;
+    margin-top: 400px;
+    margin-left: 20px;
+}
+
+#imagelink {
+    display: inline-block;
+}
