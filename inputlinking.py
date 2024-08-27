@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 
 app = Flask(__name__)
@@ -69,9 +69,10 @@ def login():
 
         if user:
             session['username'] = user['username']
-            return redirect(url_for('expense_form'))
+            return redirect(url_for('home'))
         else:
-            return 'Login failed. Check your email and password.'
+            flash('Invalid username or password. Please try again.')
+            return redirect(url_for('login'))
 
     return render_template('Login.html')
 
@@ -93,6 +94,12 @@ def signup():
         return redirect(url_for('login'))
 
     return render_template('Signup.html')
+
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('home.html')
 
 @app.route('/logout')
 def logout():
