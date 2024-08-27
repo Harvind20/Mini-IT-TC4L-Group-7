@@ -60,11 +60,11 @@ def income_form():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
 
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, password)).fetchone()
+        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
         conn.close()
 
         if user:
@@ -78,6 +78,7 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
 
@@ -85,7 +86,7 @@ def signup():
         conn.execute('''
             INSERT INTO users (username, email, password)
             VALUES (?, ?, ?)
-        ''', (email.split('@')[0], email, password))
+        ''', (username, email, password))
         conn.commit()
         conn.close()
 
