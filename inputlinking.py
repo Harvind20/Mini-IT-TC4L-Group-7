@@ -5,9 +5,65 @@ app = Flask(__name__)
 app.secret_key = 'Amongus'
 
 def get_db_connection():
-    conn = sqlite3.connect('budgetbadger.db')
+    conn = sqlite3.connect('budgetbadger.db', timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
+
+def fetch_incomes_from_db(username):
+    conn = get_db_connection()
+    incomes = conn.execute('SELECT * FROM income WHERE user_username = ?', (username,)).fetchall()
+    conn.close()
+    return incomes
+
+def fetch_expenses_from_db(username):
+    conn = get_db_connection()
+    expenses = conn.execute('SELECT * FROM expenses WHERE user_username = ?', (username,)).fetchall()
+    conn.close()
+    return expenses
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        conn.execute('''
+            INSERT INTO users (username, email, password)
+            VALUES (?, ?, ?)
+        ''', (username, email, password))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('login'))
+
+    return render_template('SignUp.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
+        conn.close()
+
+        if user:
+            session['username'] = user['username']
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid username or password. Please try again.')
+            return redirect(url_for('login'))
+
+    return render_template('Login.html')
+
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('Home.html')
 
 @app.route('/expense-form', methods=['GET', 'POST'])
 def expense_form():
@@ -29,7 +85,7 @@ def expense_form():
         conn.commit()
         conn.close()
 
-        return redirect(url_for('expense_form'))
+        return redirect(url_for('transaction'))
 
     return render_template('expenseform.html')
 
@@ -53,53 +109,28 @@ def income_form():
         conn.commit()
         conn.close()
 
-        return redirect(url_for('income_form'))
+        return redirect(url_for('transaction'))
 
     return render_template('incomeform.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
-        conn.close()
-
-        if user:
-            session['username'] = user['username']
-            return redirect(url_for('home'))
-        else:
-            flash('Invalid username or password. Please try again.')
-            return redirect(url_for('login'))
-
-    return render_template('Login.html')
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-
-        conn = get_db_connection()
-        conn.execute('''
-            INSERT INTO users (username, email, password)
-            VALUES (?, ?, ?)
-        ''', (username, email, password))
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for('login'))
-
-    return render_template('Signup.html')
-
-@app.route('/home')
-def home():
+@app.route('/transaction', methods=['GET'])
+def transaction():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('home.html')
+    
+    filter_option = request.args.get('filter', 'all')  # Default to 'all' if no filter is selected
+    username = session['username']
+
+    # Fetch incomes and expenses from the database
+    incomes = fetch_incomes_from_db(username)
+    expenses = fetch_expenses_from_db(username)
+
+    if filter_option == 'incomes':
+        expenses = []  # Show only incomes
+    elif filter_option == 'expenses':
+        incomes = []  # Show only expenses
+
+    return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
 @app.route('/logout')
 def logout():

@@ -96,63 +96,48 @@ table {
     padding-bottom: 20px;
 }
 
-#incomebutton {
-    padding: 0%;
-    margin: 0%;
-    border-color: black;
-    background-color: black;
-    font-size: 0.75rem;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-top: 13px;
-    margin-left:298px;
-    margin-right: 0px;
-    border-radius: 0.2rem;
-}
-
-#expensebutton {
-    margin: 0%;
-    padding: 0%;    
-    border-color: black;
-    background-color: black;
-    font-size: 0.75rem;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-top: 13px;
-    margin-left: -13px;
-    border-radius: 0.2rem;
+h1 {
+    margin-top: 15px;
+    margin-left: 35px;
+    opacity: 1;
+    font-weight: bold;
 }
 
 #filterbutton {
-    margin: 0%;
-    padding: 0%;    
-    border-color: black;
-    background-color: black;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    border-radius: 0.2rem;
     font-size: 0.75rem;
     padding-left: 7px;
     padding-right: 7px;
     padding-top: 3px;
     padding-bottom: 3px;
-    border-radius: 0.2rem;
-    margin-top: 20px;
-    margin-left: 0px;
-    color: white;
-    
+    margin-right: 20px;
+}
+
+#filterbutton:hover {
+    background-color: #5a6268; 
+    border-color: #545b62;
 }
 
 #buttons {
     padding: 0px;
     margin: 0px;
     margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-h1 {
-    margin-top: 15px;
-    margin-left: 35px;
-    opacity: 1;
-    font-weight: bold;
+#incomebutton, #expensebutton {
+    margin-left: 10px;
+    border-color: black;
+    background-color: black;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 0.2rem;
 }
