@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+        <link rel="stylesheet" href="GlobalLeaderboard.css">
+    </head>
+    <body>
+        <div class="container-fluid vh-100">
+            <div class="row d-flex">
+                <div class="col-md-2 d-flex vh-100" id="left-column">
+                    <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                        <li class="nav-item mt-4">
+                            <a id="navbar-pills" class="nav-link" href="Home.html" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="Transaction.html" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="#" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="#" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="imagelink" href="Home.html">
+                                <img src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-10 d-flex vh-100">
+                    <div id="maincard" class="card d-flex">
+                        <div class="row">
+                            <div class="col-6">
+                                <h1>Global Leaderboard</h1>
+                            </div>
+                            <div id="buttons" class="col-6 d-flex">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item">
+                                        <a id="global" class="nav-link active" href="GlobalLeaderboard.html">Global</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="followed" class="nav-link" href="FollowedLeaderboard.html">Friends</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex">
+                            <hr>
+                        </div>
+                        <table class="custom-table">
+                            <thead class="custom-thead">
+                                <tr>
+                                    <th>Rank</th>
+                                    <th colspan="2">Name</th>
+                                    <th>Achievement Points</th>
+                                </tr>
+                            </thead>
+                            <tbody class="custom-body">
+                                <tr>
+                                    <td>1</td>
+                                    <td colspan="2">John Doe</td>
+                                    <td>5000</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td colspan="2">Jane Doe</td>
+                                    <td>4500</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td colspan="2">Michael Smith</td>
+                                    <td>4000</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td colspan="2">John Doe</td>
+                                    <td>5000</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td colspan="2">Jane Doe</td>
+                                    <td>4500</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td colspan="2">Michael Smith</td>
+                                    <td>4000</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td colspan="2">John Doe</td>
+                                    <td>5000</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td colspan="2">Jane Doe</td>
+                                    <td>4500</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td colspan="2">Michael Smith</td>
+                                    <td>4000</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td colspan="2">John Doe</td>
+                                    <td>5000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html> 
