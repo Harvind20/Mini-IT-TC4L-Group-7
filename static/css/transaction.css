@@ -113,7 +113,7 @@ h1 {
     padding-right: 7px;
     padding-top: 3px;
     padding-bottom: 3px;
-    margin-right: 20px;
+    margin-right: 50px;
 }
 
 #filterbutton:hover {
@@ -130,8 +130,32 @@ h1 {
     align-items: center;
 }
 
-#incomebutton, #expensebutton {
+/* #incomebutton, #expensebutton {
     margin-left: 10px;
+    border-color: black;
+    background-color: black;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 0.2rem;
+} */
+
+#incomebutton {
+    margin-left: 10px;
+    border-color: black;
+    background-color: black;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 0.2rem;
+}
+
+#expensebutton {
+    margin-left: -13px;
     border-color: black;
     background-color: black;
     font-size: 0.75rem;
