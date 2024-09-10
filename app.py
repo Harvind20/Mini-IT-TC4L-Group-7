@@ -132,6 +132,25 @@ def transaction():
 
     return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
+@app.route('/userprofile')
+def user_profile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    username = session['username']
+
+    conn = get_db_connection()
+    
+    follower_count = conn.execute('SELECT COUNT(*) FROM followers WHERE following = ?', (username,)).fetchone()[0]
+    following_count = conn.execute('SELECT COUNT(*) FROM followers WHERE follower = ?', (username,)).fetchone()[0]
+    
+    badges = conn.execute('SELECT badge_name FROM user_badges WHERE user_username = ?', (username,)).fetchall()
+    
+    conn.close()
+
+    return render_template('userprofilee.html', username=username, follower_count=follower_count, 
+                           following_count=following_count, badges=badges)
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
