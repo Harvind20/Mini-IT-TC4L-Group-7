@@ -1,5 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
 
 app = Flask(__name__)
 app.secret_key = 'Amongus'
@@ -20,6 +23,60 @@ def fetch_expenses_from_db(username):
     expenses = conn.execute('SELECT * FROM expenses WHERE user_username = ?', (username,)).fetchall()
     conn.close()
     return expenses
+
+def generate_pie_chart(data, title, labels, filename):
+    amounts = [item['amount'] for item in data]
+    categories = [item['category'] for item in data]
+    
+    plt.figure(figsize=(6, 6))
+    plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140)
+    plt.title(title)
+    
+    file_path = f'static/images/{filename}.png'
+    plt.savefig(file_path)
+    plt.close()
+    
+    return file_path
+
+def generate_frequency_polygon(data, title, filename):
+    df = pd.DataFrame(data, columns=['date', 'amount'])
+    df['date'] = pd.to_datetime(df['date'])
+    
+    daily_totals = df.groupby('date').sum().reset_index()
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(daily_totals['date'], daily_totals['amount'], marker='o', linestyle='-', color='b')
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel('Amount')
+    
+    file_path = f'static/images/{filename}.png'
+    plt.savefig(file_path)
+    plt.close()
+    
+    return file_path
+
+@app.route('/summary')
+def summary():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    username = session['username']
+    
+    expenses = fetch_expenses_from_db(username)
+    incomes = fetch_incomes_from_db(username)
+    
+    expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], 'expense_pie_chart')
+    expense_frequency_polygon = generate_frequency_polygon(expenses, 'Daily Expense Frequency', 'expense_frequency_polygon')
+    
+    income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], 'income_pie_chart')
+    income_frequency_polygon = generate_frequency_polygon(incomes, 'Daily Income Frequency', 'income_frequency_polygon')
+    
+    return render_template('summary.html', 
+                           expense_pie_chart=expense_pie_chart,
+                           expense_frequency_polygon=expense_frequency_polygon,
+                           income_pie_chart=income_pie_chart,
+                           income_frequency_polygon=income_frequency_polygon)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -118,17 +175,16 @@ def transaction():
     if 'username' not in session:
         return redirect(url_for('login'))
     
-    filter_option = request.args.get('filter', 'all')  # Default to 'all' if no filter is selected
+    filter_option = request.args.get('filter', 'all')
     username = session['username']
 
-    # Fetch incomes and expenses from the database
     incomes = fetch_incomes_from_db(username)
     expenses = fetch_expenses_from_db(username)
 
     if filter_option == 'incomes':
-        expenses = []  # Show only incomes
+        expenses = []
     elif filter_option == 'expenses':
-        incomes = []  # Show only expenses
+        incomes = []
 
     return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
