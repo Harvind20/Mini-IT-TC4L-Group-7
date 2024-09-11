@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/Summary.css') }}">
     </head>
     <body>
         <div class="container-fluid vh-100">
@@ -34,42 +34,36 @@
                 <div class="col-md-10 d-flex vh-100">
                     <div id="maincard" class="card">
                         <div class="row">
-                            <div id="recentincome" class="card">
-                                <p id="cardheader">Recent Incomes</p>
+                            <div id="firstsummary" class="card">
+                                <p id="cardheader">Current Month Expenses</p>
                                 <hr>
-                            </div>
-                            <div id="recentexpenses" class="card">
-                                <p id="cardheader">Recent Expenses</p>
-                                <hr>
-                            </div>
-                        </div>
-                        <div id="quickaccess" class="card">
-                            <p id="cardheader">Quick Access</p>
-                            <hr>
-                            <div class="row d-flex">
-                                <div id="quickaccess1" class="card quickaccess-item">
-                                    <a href="{{ url_for('income_form') }}">
-                                        <span id="dot1" class="dot"><i class="fas fa-money-bill-1"></i></span>
-                                        <p id="sct1" class="shortcuttext">+ New income</p>
-                                    </a>
-                                </div>
-                                <div id="quickaccess2" class="card quickaccess-item">
-                                    <a href="{{ url_for('expense_form') }}">
-                                        <span id="dot2" class="dot"><i class="fas fa-credit-card"></i></span>
-                                        <p id="sct2" class="shortcuttext">+ New expense</p>
-                                    </a>
-                                </div>
-                                <div id="quickaccess3" class="card quickaccess-item">
-                                    <a href="#">
-                                        <span id="dot3" class="dot"><i class="fas fa-user-plus"></i></span>
-                                        <p id="sct3" class="shortcuttext">+ Add friend</p>
-                                    </a>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Monthly Expenses by Category</h5>
+                                        <img src="{{ url_for('static', filename='images/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Daily Expense Frequency</h5>
+                                        <img src="{{ url_for('static', filename='images/expense_frequency_polygon.png') }}" alt="Expense Frequency Polygon" class="img-fluid">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="graphs" class="card">
-                            <p id="cardheader">Monthly Report</p>
-                            <hr>
+                        <div class="row mt-4">
+                            <div id="secondsummary" class="card">
+                                <p id="cardheader">Current Month Incomes</p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Monthly Incomes by Category</h5>
+                                        <img src="{{ url_for('static', filename='images/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Daily Income Frequency</h5>
+                                        <img src="{{ url_for('static', filename='images/income_frequency_polygon.png') }}" alt="Income Frequency Polygon" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,134 @@
+#navbar-pills {
+    width: 200px;
+    height: 40px;
+    font-size: large;
+}
+
+#left-column {
+    background-color: #11161c;
+}
+
+.nav-link {
+    color: #f9a32f;
+}
+
+.nav-link:hover {
+    color: white;
+    background-color: #1b2329;
+}
+
+.nav-link:active, 
+.nav-link:focus {
+    color: white;
+    outline: none;
+    background-color: #11161c;
+}
+
+#buttoncolor:hover {
+    color: #1b2329;
+}
+
+#maincard {
+    width: 1200px;
+    height: 700px;
+    margin-left: 30px;
+    margin-top: 40px;
+    background-color: #f9a32f;
+}
+
+.col-md-10 {
+    background-color: #11161c;
+}
+
+img {
+    height: 80px;
+    width: 150px;
+    margin-top: 400px;
+    margin-left: 20px;
+}
+
+#imagelink {
+    display: inline-block;
+}
+
+hr {
+    width: 1125px;
+    height: 2px;
+    background-color: black;
+    border: none;
+    opacity: 1;
+    margin-left: 35px;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+h1 {
+    margin-top: 15px;
+    margin-left: 35px;
+    opacity: 1;
+    font-weight: bold;
+}
+
+#global {
+    margin: 0%;
+    padding: 0%;    
+    border-color: black;
+    background-color: black;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 40px;
+    margin-left: 438px;
+    border-radius: 0.2rem;
+}
+
+#followed {
+    margin: 0%;
+    padding: 0%;    
+    border-color: black;
+    background-color: black;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 40px;
+    margin-left: 10px;
+    border-radius: 0.2rem;
+}
+
+table {
+    margin-bottom: 20px;
+}
+
+.custom-table {
+    width: 1125px;
+    margin-left: 35px;
+}
+
+.custom-thead {
+    text-transform: uppercase; 
+    text-align: left;
+}
+
+.custom-thead th {
+    padding: 0%;
+    margin: 0%;
+    padding-bottom: 16px;
+}
+
+.custom-body {
+    border: 1px solid black;
+}
+
+.custom-body tr {
+    border: 1px solid black;
+}
+
+.custom-body td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
