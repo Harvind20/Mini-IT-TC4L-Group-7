@@ -13,10 +13,10 @@
                 <div class="col-md-2 d-flex vh-100" id="left-column">
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
                         <li class="nav-item mt-4">
-                            <a id="navbar-pills" class="nav-link" href="Home.html" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
                         </li>
                         <li class="nav-item mt-2">
-                            <a id="navbar-pills" class="nav-link" href="Transaction.html" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('transaction') }}" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
                         </li>
                         <li class="nav-item mt-2">
                             <a id="navbar-pills" class="nav-link" href="#" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
@@ -25,7 +25,7 @@
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
                         </li>
                         <li class="nav-item">
-                            <a id="imagelink" href="Home.html">
+                            <a id="imagelink" href="{{ url_for('home') }}">
                                 <img src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
