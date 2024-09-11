@@ -122,7 +122,7 @@ def home():
         return redirect(url_for('login'))
     return render_template('Home.html')
 
-@app.route('/expense-form', methods=['GET', 'POST'])
+@app.route('/expense_form', methods=['GET', 'POST'])
 def expense_form():
     if 'username' not in session:
         return redirect(url_for('login'))
@@ -146,7 +146,7 @@ def expense_form():
 
     return render_template('expenseform.html')
 
-@app.route('/income-form', methods=['GET', 'POST'])
+@app.route('/income_form', methods=['GET', 'POST'])
 def income_form():
     if 'username' not in session:
         return redirect(url_for('login'))
