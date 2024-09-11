@@ -18,18 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
 )
 ''')
 
-# Create the friends table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS friends (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_username TEXT NOT NULL,
-    friend_username TEXT NOT NULL,
-    FOREIGN KEY (user_username) REFERENCES users(username),
-    FOREIGN KEY (friend_username) REFERENCES users(username),
-    UNIQUE(user_username, friend_username)
-)
-''')
-
 # Create the expenses table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS expenses (
@@ -52,6 +40,30 @@ CREATE TABLE IF NOT EXISTS income (
     amount REAL CHECK(amount >= 0.01) NOT NULL,
     category TEXT CHECK(category IN ('salary', 'business', 'investments', 'gifts', 'other incomes')) NOT NULL,
     description TEXT,
+    FOREIGN KEY (user_username) REFERENCES users(username)
+)
+''')
+
+# Create the follow_relationships table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS follow_relationships (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower TEXT NOT NULL,
+    following TEXT NOT NULL,
+    FOREIGN KEY (follower) REFERENCES users(username),
+    FOREIGN KEY (following) REFERENCES users(username),
+    UNIQUE(follower, following)
+)
+''')
+
+# Create the user_badges table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS user_badges (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_username TEXT NOT NULL,
+    badge_type TEXT NOT NULL,
+    badge_level INTEGER NOT NULL,
+    image_filename TEXT NOT NULL,
     FOREIGN KEY (user_username) REFERENCES users(username)
 )
 ''')
