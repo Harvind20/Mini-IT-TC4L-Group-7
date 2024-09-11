@@ -7,23 +7,27 @@ import os
 app = Flask(__name__)
 app.secret_key = 'Amongus'
 
+# Database connection function
 def get_db_connection():
     conn = sqlite3.connect('budgetbadger.db', timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
 
+# Fetch incomes from the database
 def fetch_incomes_from_db(username):
     conn = get_db_connection()
     incomes = conn.execute('SELECT * FROM income WHERE user_username = ?', (username,)).fetchall()
     conn.close()
     return incomes
 
+# Fetch expenses from the database
 def fetch_expenses_from_db(username):
     conn = get_db_connection()
     expenses = conn.execute('SELECT * FROM expenses WHERE user_username = ?', (username,)).fetchall()
     conn.close()
     return expenses
 
+# Generate pie chart for expenses/incomes
 def generate_pie_chart(data, title, labels, filename):
     amounts = [item['amount'] for item in data]
     categories = [item['category'] for item in data]
@@ -38,24 +42,37 @@ def generate_pie_chart(data, title, labels, filename):
     
     return file_path
 
+# Generate frequency polygon for expenses/incomes
 def generate_frequency_polygon(data, title, filename):
+    # Ensure data has only the necessary columns
     df = pd.DataFrame(data, columns=['date', 'amount'])
+    
+    # Check if 'date' and 'amount' columns exist
+    if 'date' not in df.columns or 'amount' not in df.columns:
+        raise ValueError("Data must contain 'date' and 'amount' columns")
+
+    # Convert 'date' column to datetime format
     df['date'] = pd.to_datetime(df['date'])
     
+    # Group by date and sum amounts
     daily_totals = df.groupby('date').sum().reset_index()
     
+    # Generate the frequency polygon
     plt.figure(figsize=(10, 6))
     plt.plot(daily_totals['date'], daily_totals['amount'], marker='o', linestyle='-', color='b')
     plt.title(title)
     plt.xlabel('Date')
     plt.ylabel('Amount')
     
+    # Save and close the plot
     file_path = f'static/images/{filename}.png'
     plt.savefig(file_path)
     plt.close()
     
     return file_path
 
+
+# Summary page route
 @app.route('/summary')
 def summary():
     if 'username' not in session:
@@ -65,12 +82,17 @@ def summary():
     
     expenses = fetch_expenses_from_db(username)
     incomes = fetch_incomes_from_db(username)
-    
+
+    # Format data for frequency polygons
+    formatted_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in expenses]
+    formatted_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in incomes]
+
+    # Generate charts
     expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], 'expense_pie_chart')
-    expense_frequency_polygon = generate_frequency_polygon(expenses, 'Daily Expense Frequency', 'expense_frequency_polygon')
+    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Daily Expense Frequency', 'expense_frequency_polygon')
     
     income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], 'income_pie_chart')
-    income_frequency_polygon = generate_frequency_polygon(incomes, 'Daily Income Frequency', 'income_frequency_polygon')
+    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Daily Income Frequency', 'income_frequency_polygon')
     
     return render_template('summary.html', 
                            expense_pie_chart=expense_pie_chart,
@@ -78,6 +100,8 @@ def summary():
                            income_pie_chart=income_pie_chart,
                            income_frequency_polygon=income_frequency_polygon)
 
+
+# Signup route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -97,6 +121,7 @@ def signup():
 
     return render_template('SignUp.html')
 
+# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -116,12 +141,14 @@ def login():
 
     return render_template('Login.html')
 
+# Home page route
 @app.route('/home')
 def home():
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('Home.html')
 
+# Expense form route
 @app.route('/expense-form', methods=['GET', 'POST'])
 def expense_form():
     if 'username' not in session:
@@ -146,6 +173,7 @@ def expense_form():
 
     return render_template('expenseform.html')
 
+# Income form route
 @app.route('/income-form', methods=['GET', 'POST'])
 def income_form():
     if 'username' not in session:
@@ -170,6 +198,7 @@ def income_form():
 
     return render_template('incomeform.html')
 
+# Transactions page route
 @app.route('/transaction', methods=['GET'])
 def transaction():
     if 'username' not in session:
@@ -188,6 +217,7 @@ def transaction():
 
     return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
+# User profile route
 @app.route('/userprofile')
 def user_profile():
     if 'username' not in session:
@@ -206,11 +236,13 @@ def user_profile():
     return render_template('userprofilee.html', username=username, follower_count=follower_count, 
                            following_count=following_count, badges=badges)
 
+# Logout route
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
+# Follow route
 @app.route('/follow', methods=['POST'])
 def follow():
     if 'username' not in session:
