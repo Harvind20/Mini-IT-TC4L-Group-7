@@ -211,5 +211,70 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
+@app.route('/follow', methods=['POST'])
+def follow():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    follower = session['username']
+    following = request.form['following']
+
+    conn = get_db_connection()
+    try:
+        conn.execute('''
+            INSERT INTO follow_relationships (follower, following)
+            VALUES (?, ?)
+        ''', (follower, following))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        flash('You are already following this user.')
+    finally:
+        conn.close()
+
+    return redirect(url_for('profile', username=following))
+
+def count_followers(username):
+    conn = get_db_connection()
+    followers_count = conn.execute('''
+        SELECT COUNT(*) FROM follow_relationships WHERE following = ?
+    ''', (username,)).fetchone()[0]
+    conn.close()
+    return followers_count
+
+def count_following(username):
+    conn = get_db_connection()
+    following_count = conn.execute('''
+        SELECT COUNT(*) FROM follow_relationships WHERE follower = ?
+    ''', (username,)).fetchone()[0]
+    conn.close()
+    return following_count
+
+def get_user_badges(username):
+    conn = get_db_connection()
+    badges = conn.execute('''
+        SELECT badge_type, badge_level, image_filename 
+        FROM user_badges 
+        WHERE user_username = ?
+    ''', (username,)).fetchall()
+    conn.close()
+    return badges
+
+@app.route('/profile/<username>')
+def profile(username):
+    # Check if the user is logged in
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    # Get the follower and following counts
+    followers_count = count_followers(username)
+    following_count = count_following(username)
+
+    # Get the user's badges
+    badges = get_user_badges(username)
+
+    # Render the profile page with the username, follower/following counts, and badges
+    return render_template('userprofilee.html', username=username, 
+                           followers_count=followers_count, following_count=following_count, badges=badges)
+
 if __name__ == '__main__':
     app.run(debug=True)
