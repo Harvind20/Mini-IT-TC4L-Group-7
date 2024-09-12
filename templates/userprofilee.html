@@ -1,8 +1,10 @@
-<!DOCTYPE html> 
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>User Profile</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/userprofilee.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/transaction.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     </head>
     <body>
@@ -21,18 +23,18 @@
                                     </button>
                                 </div>
                                 <div class="ms-3" style="margin-top: 130px;">
-                                    <h5>Jesse Pinkman</h5>
+                                    <h5>{{ username }}</h5>
                                     <p>Cyberjaya, Selangor</p>
                                 </div>
                             </div>
                             <div class="card-body p-4 text-black" style="background-color: #f9a32f;">
                                 <div class="d-flex justify-content-end text-center py-1 text-body">
                                     <div class="px-3">
-                                        <p class="mb-1 h5">1026</p>
+                                        <p class="mb-1 h5">{{ followers_count }}</p>
                                         <p class="small text-muted mb-0">Followers</p>
                                     </div>
                                     <div>
-                                        <p class="mb-1 h5">478</p>
+                                        <p class="mb-1 h5">{{ following_count }}</p>
                                         <p class="small text-muted mb-0">Following</p>
                                     </div>
                                 </div>
@@ -47,9 +49,13 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Badge 1</td>
-                                                <td>Badge 2</td>
-                                                <td>Badge 3</td>
+                                                {% for badge in badges %}
+                                                    <td>
+                                                        <img src="{{ url_for('static', filename=badge.image_filename) }}" 
+                                                             alt="Badge" style="width: 50px; height: 50px;">
+                                                        <p>{{ badge.badge_type }} (Level {{ badge.badge_level }})</p>
+                                                    </td>
+                                                {% endfor %}
                                             </tr>
                                         </tbody>
                                     </table>
