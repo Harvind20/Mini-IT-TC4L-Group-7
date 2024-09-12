@@ -9,24 +9,18 @@
 }
 
 .nav-link {
-    color: #f9a32f;
+    color: #c0e2df;
 }
 
 .nav-link:hover {
-    color: white;
-    background-color: #1b2329;
-}
+    color: #c0e2df;
+} 
 
-.nav-link:active, 
-.nav-link:focus {
-    color: white;
+.nav-link:active,
+.nav-link.custom-active {
+    color: #04c1af !important;
     outline: none;
-    background-color: #11161c;
-}
-
-
-#buttoncolor:hover {
-    color: #1b2329;
+    background-color: #28292b !important;
 }
 
 #maincard {
@@ -34,7 +28,7 @@
     height: 700px;
     margin-left: 30px;
     margin-top: 40px;
-    background-color: #f9a32f;
+    background-color: #0a0a0b;
 }
 
 .col-md-10 {
@@ -48,6 +42,7 @@
     margin-left: 30px;
     background-color: #11161c;
     padding: 0px;
+    border-radius: 0.7rem;
 }
 
 #recentexpenses {
@@ -57,6 +52,7 @@
     margin-left: 20px;
     background-color: #11161c;
     padding: 0px;
+    border-radius: 0.7rem;
 }
 
 #quickaccess {
@@ -65,6 +61,7 @@
     margin-top: 20px;
     margin-left: 20px;
     background-color: #11161c;
+    border-radius: 0.7rem;
 }
 
 #graphs {
@@ -73,6 +70,7 @@
     margin-top: 20px;
     margin-left: 20px;
     background-color: #11161c;
+    border-radius: 0.7rem;
 }
 
 #cardheader {
@@ -86,10 +84,10 @@
 }
 
 hr {
-    background-color: white;
+    background-color: #28292b;
     margin-top: 4px;
     border: none;
-    height: 1px;
+    height: 2px;
     width: 100%;
     opacity: 1;
 } 
@@ -135,7 +133,7 @@ hr {
 .quickaccess-item {
     height: 90px;
     width: 250px;
-    background-color: #1b2329;
+    background-color: #22272d;
     margin: 0px;
     text-align: center;
     border-radius: 8px;
@@ -174,7 +172,7 @@ a {
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    background-color: #11161c;
+    background-color: #1a1a1b;
 }
 
 #quickaccess1 {

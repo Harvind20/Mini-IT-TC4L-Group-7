@@ -147,6 +147,20 @@ def home():
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('Home.html')
+
+# Global Leaderboard page route
+@app.route('/global_leaderboard')
+def global_leaderboard():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('GlobalLeaderboard.html')
+
+# Followed Leaderboard page route
+@app.route('/followed_leaderboard')
+def followed_leaderboard():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('FollowedLeaderboard.html')
   
 # Expense form route
 @app.route('/expense_form', methods=['GET', 'POST'])

@@ -1,5 +1,5 @@
 #main-colour {
-    background-color: #f9a32f;
+    background-color: #c0e2df;
 }
 
 #secondary-colour {
@@ -13,33 +13,32 @@
 
 #button-1:hover {
     background-color: #11161c;
-    color: #f9a32f;
+    color: #c0e2df;
 }
 
 .form-control {
     background-color: #11161c;
     border-color: #11161c;
-    color: #f9a32f;
+    color: #c0e2df;
 }
 
 .form-control:focus {
     background-color: #11161c;
-    color: #f9a32f;
+    color:#c0e2df;
 }
 
-/* Custom Style for the alert */
 #alert {
-    background-color: #ffb9b9; /* Light yellow background */
-    color: #990000; /* Dark brown text */
-    border: 2px solid #ff7e7e; /* Border matching the background */
-    border-radius: 1rem; /* Slightly more rounded corners */
-    padding: 20px; /* More padding */
-    margin-bottom: 30px; /* Extra space below */
+    background-color: #ffb9b9; 
+    color: #990000; 
+    border: 2px solid #ff7e7e; 
+    border-radius: 1rem; 
+    padding: 20px; 
+    margin-bottom: 30px; 
   }
   
-  #alert p {
+#alert p {
     margin: 0;
-    font-weight: normal; /* Lighter font weight */
-    font-size: 1.1em; /* Slightly larger text */
-  }
+    font-weight: normal; 
+    font-size: 1.1em; 
+}
   
