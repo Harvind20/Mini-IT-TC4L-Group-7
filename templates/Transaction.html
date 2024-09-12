@@ -16,10 +16,10 @@
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
                         </li>
                         <li class="nav-item mt-2">
-                            <a id="navbar-pills" class="nav-link" href="{{ url_for('transaction') }}" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
+                            <a id="navbar-pills" class="nav-link active custom-active" href="{{ url_for('transaction') }}" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
                         </li>
                         <li class="nav-item mt-2">
-                            <a id="navbar-pills" class="nav-link" href="#" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('global_leaderboard') }}" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
                         </li>
                         <li class="nav-item mt-2">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
