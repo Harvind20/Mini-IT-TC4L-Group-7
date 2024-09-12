@@ -6,7 +6,8 @@
 </head>
 <body>
 <div class="log-popup">
-    <h2>LOG NEW EXPENSE</h2>
+    <a href="{{ url_for('transaction') }}" class="cancelbutton">X</a>
+    <h2>NEW EXPENSE LOG</h2>
     <form id="ExpenseForm" method="POST">
         <div class="inputboxes">
             <label for="date">Date</label>

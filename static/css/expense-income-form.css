@@ -65,3 +65,18 @@ h2 {
 .submitbutton:hover {
     background-color: #218838;
 }
+
+.cancelbutton {
+    display: inline-block;
+    padding: 5px 10px;
+    color: #fff;
+    background-color: #dc3545; 
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 0px;
+    font-weight: bold;
+    margin-left: 570px;
+}
+.cancelbutton:hover {
+    background-color: #c82333; 
+}
