@@ -7,7 +7,7 @@
 <body>
 <div class="log-popup">
     <a href="{{ url_for('transaction') }}" class="cancelbutton">X</a>
-    <h2>NEW INCOME LOG</h2>
+    <h2>New Income Log</h2>
     <form id="IncomeForm" method="POST">
         <div class="inputboxes">
             <label for="date">Date</label>
@@ -21,11 +21,14 @@
             <label for="category">Category</label>
             <select id="category" name="category" required>
                 <option value="" disable selected>Select a category</option>
-                <option value="salary">Salary</option>
-                <option value="business">Business</option>
-                <option value="investments">Investments</option>
-                <option value="gifts">Gifts</option>
-                <option value="other incomes">Others</option>
+                <option value="Salary">Salary</option>
+                <option value="Business">Business</option>
+                <option value="Investments">Investments</option>
+                <option value="Gifts">Gifts</option>
+                <option value="Extra Income">Extra Income</option>
+                <option value="Loan">Loan</option>
+                <option value="Insurance Payout">Insurance Payout</option>
+                <option value="Other Incomes">Other Incomes</option>
             </select>
         </div>
         <div class="inputboxes">

@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sqlite3
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Use the non-GUI backend
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import os
 
 app = Flask(__name__)
@@ -27,15 +30,19 @@ def fetch_expenses_from_db(username):
 def generate_pie_chart(data, title, labels, filename):
     amounts = [item['amount'] for item in data]
     categories = [item['category'] for item in data]
-    
-    plt.figure(figsize=(6, 6))
-    plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140)
-    plt.title(title)
-    
+
+    plt.figure(figsize=(8, 6))
+    label_font = {'fontsize': 20, 'fontfamily': 'serif', 'fontweight': 'bold', 'color': '#c0e2df'}
+    autopct_font = {'fontsize': 15, 'fontfamily': 'serif', 'fontweight': 'normal', 'color': '#c0e2df'}
+    plt.pie(amounts, labels=categories, autopct=lambda p: f'{p:.1f}%', startangle=140,
+            textprops=label_font)
+    plt.title(title, fontsize=25, fontfamily='serif', fontweight='bold', color='#c0e2df')
+
     file_path = f'static/images/{filename}.png'
-    plt.savefig(file_path)
-    plt.close()
     
+    plt.savefig(file_path, dpi=300, transparent=True)
+    plt.close()
+
     return file_path
 
 def generate_frequency_polygon(data, title, filename):
@@ -46,16 +53,38 @@ def generate_frequency_polygon(data, title, filename):
 
     df['date'] = pd.to_datetime(df['date'])
     
-    daily_totals = df.groupby('date').sum().reset_index()
+    df.set_index('date', inplace=True)
+    monthly_totals = df.resample('M').sum().reset_index()
+
+    all_months = pd.date_range(start='2024-01-01', end='2024-12-31', freq='M')
+    all_months_df = pd.DataFrame({'date': all_months})
+    all_months_df['month'] = all_months_df['date'].dt.strftime('%b')
+    all_months_df['amount'] = 0
+
+    monthly_totals['month'] = monthly_totals['date'].dt.strftime('%b')
+    merged_df = pd.merge(all_months_df, monthly_totals, on='month', suffixes=('_all', '_actual'), how='left')
+    merged_df['amount'] = merged_df['amount_actual'].fillna(0)
+
+    plt.figure(figsize=(21, 14))
+    plt.plot(merged_df['month'], merged_df['amount'], marker='o', linestyle='-', color='b')
+    plt.title(title, fontsize=50, fontfamily='serif', fontweight='bold', color='#c0e2df')
+    plt.xlabel('Month', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df') 
+    plt.ylabel('Amount', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df')
     
-    plt.figure(figsize=(10, 6))
-    plt.plot(daily_totals['date'], daily_totals['amount'], marker='o', linestyle='-', color='b')
-    plt.title(title)
-    plt.xlabel('Date')
-    plt.ylabel('Amount')
-    
+    plt.xticks(ticks=range(12), labels=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], rotation=45)
+
+    plt.tick_params(axis='x', labelsize=30, colors='#c0e2df')
+    plt.tick_params(axis='y', labelsize=30, colors='#c0e2df')
+
+    ax = plt.gca()
+    ax.spines['bottom'].set_color('#c0e2df')
+    ax.spines['top'].set_color('#c0e2df')
+    ax.spines['right'].set_color('#c0e2df')
+    ax.spines['left'].set_color('#c0e2df')
+
     file_path = f'static/images/{filename}.png'
-    plt.savefig(file_path)
+    
+    plt.savefig(file_path, dpi=300, transparent=True)
     plt.close()
     
     return file_path
@@ -74,11 +103,11 @@ def summary():
     formatted_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in incomes]
 
     expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], 'expense_pie_chart')
-    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Daily Expense Frequency', 'expense_frequency_polygon')
+    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Yearly Expense Frequency', 'expense_frequency_polygon')
     
     income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], 'income_pie_chart')
-    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Daily Income Frequency', 'income_frequency_polygon')
-    
+    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Yearly Income Frequency', 'income_frequency_polygon')
+
     return render_template('summary.html', 
                            expense_pie_chart=expense_pie_chart,
                            expense_frequency_polygon=expense_frequency_polygon,
