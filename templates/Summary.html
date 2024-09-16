@@ -34,7 +34,7 @@
                     </li>
                     <li class="nav-item">
                         <a id="imagelink" href="{{ url_for('home') }}">
-                            <img src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                            <img src="{{ url_for('static', filename='images/budgetbadgernobg.png') }}" class="img-fluid mb-5" alt="Logo">
                         </a>
                     </li>
                 </ul>
@@ -42,30 +42,26 @@
             <div class="col-md-10 d-flex vh-100">
                 <div id="maincard" class="card w-100">
                     <div id="firstsummary" class="card mb-4">
-                        <p id="cardheader">Current Month Expenses</p>
+                        <p id="cardheader">Expenses</p>
                         <hr>
                         <div class="row">
-                            <div class="col-md-6">
-                                <h5>Monthly Expenses by Category</h5>
-                                <img src="{{ url_for('static', filename='images/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid">
+                            <div class="col-md-6 img-center">
+                                <img src="{{ url_for('static', filename='images/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid expense-pie-chart">
                             </div>
-                            <div class="col-md-6">
-                                <h5>Daily Expense Frequency</h5>
-                                <img src="{{ url_for('static', filename='images/expense_frequency_polygon.png') }}" alt="Expense Frequency Polygon" class="img-fluid">
+                            <div class="col-md-6 img-center">
+                                <img src="{{ url_for('static', filename='images/expense_frequency_polygon.png') }}" alt="Expense Frequency Polygon" class="img-fluid expense-frequency-polygon">
                             </div>
                         </div>
                     </div>
                     <div id="secondsummary" class="card">
-                        <p id="cardheader">Current Month Incomes</p>
+                        <p id="cardheader">Incomes</p>
                         <hr>
                         <div class="row">
-                            <div class="col-md-6">
-                                <h5>Monthly Incomes by Category</h5>
-                                <img src="{{ url_for('static', filename='images/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid">
+                            <div class="col-md-6 img-center">
+                                <img src="{{ url_for('static', filename='images/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid income-pie-chart">
                             </div>
-                            <div class="col-md-6">
-                                <h5>Daily Income Frequency</h5>
-                                <img src="{{ url_for('static', filename='images/income_frequency_polygon.png') }}" alt="Income Frequency Polygon" class="img-fluid">
+                            <div class="col-md-6 img-center">
+                                <img src="{{ url_for('static', filename='images/income_frequency_polygon.png') }}" alt="Income Frequency Polygon" class="img-fluid income-frequency-polygon">
                             </div>
                         </div>
                     </div>

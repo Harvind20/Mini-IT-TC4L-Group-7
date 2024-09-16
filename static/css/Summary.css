@@ -62,7 +62,7 @@ body {
 }
 
 #secondsummary {
-    margin-top: 10px;
+    margin-top: 1px;
     padding: 1rem;
     width: 100%;
 }
@@ -72,7 +72,7 @@ body {
     font-weight: bold;
     margin: 0;
     font-family: 'Inter', sans-serif;
-    font-size: small;
+    font-size: 9;
 }
 
 hr {
@@ -83,8 +83,54 @@ hr {
     width: 100%;
 }
 
+.expense-pie-chart {
+    width: 68%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* border: 2px solid #ffffff;
+    border-radius: 8px; */
+}
+
+.expense-frequency-polygon {
+    width: 72%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* border: 2px solid #ff0000;
+    border-radius: 8px; */
+}
+
+.income-pie-chart {
+    width: 68%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* border: 2px solid #0055ff;
+    border-radius: 8px; */
+}
+
+.income-frequency-polygon {
+    width: 72%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* border: 2px solid #00ff5e;
+    border-radius: 8px; */
+}
+
+.img-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 img.img-fluid {
-    max-width: 45%;
+    max-width: 100%;
     height: auto;
 }
 
@@ -96,3 +142,8 @@ img.img-fluid {
 .col-md-10 {
     background-color: #11161c;
 }
+
+/* remove these once ur done, just used this to make it visible so i could edit image size 
+(all 4 image classes; expense n income)
+border: 2px solid #00ff5e;
+border-radius: 8px; */

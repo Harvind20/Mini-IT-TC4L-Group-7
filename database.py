@@ -20,19 +20,13 @@ CREATE TABLE IF NOT EXISTS expenses (
     user_username TEXT NOT NULL,
     date TEXT NOT NULL,
     amount REAL CHECK(amount >= 0.01) NOT NULL,
-    category TEXT CHECK(category IN ('food', 'transport', 'bills', 'entertainment', 'other expenses')) NOT NULL,
-    description TEXT,
-    FOREIGN KEY (user_username) REFERENCES users(username)
-)
-''')
-
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS expenses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_username TEXT NOT NULL,
-    date TEXT NOT NULL,
-    amount REAL CHECK(amount >= 0.01) NOT NULL,
-    category TEXT CHECK(category IN ('food', 'transport', 'bills', 'entertainment', 'other expenses')) NOT NULL,
+    category TEXT CHECK(category IN (
+        'Food & Drinks', 'Shopping', 'Transport', 'Home', 
+        'Bills & Fees', 'Entertainment', 'Car', 'Travel', 
+        'Family & Personal', 'Healthcare', 'Education', 
+        'Groceries', 'Gifts', 'Sports & Hobbies', 'Beauty', 
+        'Work', 'Other Expenses'
+    )) NOT NULL,
     description TEXT,
     FOREIGN KEY (user_username) REFERENCES users(username)
 )
@@ -44,9 +38,23 @@ CREATE TABLE IF NOT EXISTS income (
     user_username TEXT NOT NULL,
     date TEXT NOT NULL,
     amount REAL CHECK(amount >= 0.01) NOT NULL,
-    category TEXT CHECK(category IN ('salary', 'business', 'investments', 'gifts', 'other incomes')) NOT NULL,
+    category TEXT CHECK(category IN (
+        'Salary', 'Business', 'Gifts', 'Extra Income', 
+        'Loan', 'Insurance Payout', 'Other Incomes'
+    )) NOT NULL,
     description TEXT,
     FOREIGN KEY (user_username) REFERENCES users(username)
+)
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS follow_relationships (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower TEXT NOT NULL,
+    following TEXT NOT NULL,
+    FOREIGN KEY (follower) REFERENCES users(username),
+    FOREIGN KEY (following) REFERENCES users(username),
+    UNIQUE(follower, following)
 )
 ''')
 
