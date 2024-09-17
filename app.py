@@ -230,7 +230,7 @@ def generate_frequency_polygon(data, title, filename):
     return file_path
 
 def assign_badges(username):
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute('SELECT SUM(ap) FROM user_achievements WHERE username = ?', (username,))
@@ -280,7 +280,7 @@ def determine_expense_badge_id(expense):
     return 1
 
 def update_follower_following_counts(username):
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
     
     cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
@@ -295,7 +295,7 @@ def update_follower_following_counts(username):
     conn.close()
 
 def follow_user(follower, following):
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
     
     try:
@@ -310,7 +310,7 @@ def follow_user(follower, following):
     update_follower_following_counts(following)
 
 def unfollow_user(follower, following):
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
     
     cur.execute('DELETE FROM follow_relationships WHERE follower = ? AND following = ?', (follower, following))
@@ -351,7 +351,7 @@ def user_profile(username):
     if username is None:
         username = session['username']
 
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute('SELECT * FROM users WHERE username = ?', (username,))
@@ -396,7 +396,7 @@ def my_profile():
 
     username = session['username']
 
-    conn = get_db()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute('SELECT * FROM users WHERE username = ?', (username,))
