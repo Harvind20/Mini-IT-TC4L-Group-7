@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import sqlite3
 import pandas as pd
 import matplotlib
-matplotlib.use('Agg')  # Use the non-GUI backend
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import os
@@ -132,27 +132,39 @@ def calculate_daily_streak(username):
 
     return daily_streak_points
 
-def update_user_points(username):
-    income_points = calculate_income_points(username)
-    expense_points = calculate_expense_points(username)
-    balanced_activity_bonus = calculate_balanced_activity_bonus(username)
-    daily_streak_points = calculate_daily_streak(username)
-
-    total_points = income_points + expense_points + balanced_activity_bonus + daily_streak_points
-
-    conn = get_db_connection()
-    conn.execute('UPDATE users SET total_points = ? WHERE username = ?', (total_points, username))
-    conn.commit()
-    conn.close()
-
 def update_all_users_points():
     conn = get_db_connection()
-    users = conn.execute('SELECT username FROM users').fetchall()
+    cursor = conn.cursor()
+    users = cursor.execute('SELECT username FROM users').fetchall()
     conn.close()
     
     for user in users:
         username = user['username']
-        update_user_points(username)
+        update_totals(username)
+
+def update_totals(username):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    total_income = sum(income['amount'] for income in fetch_incomes_from_db(username))
+    total_expense = sum(expense['amount'] for expense in fetch_expenses_from_db(username))
+    total_ap = (calculate_income_points(username) + 
+                calculate_expense_points(username) + 
+                calculate_balanced_activity_bonus(username) + 
+                calculate_daily_streak(username))
+
+    cursor.execute('''
+    INSERT INTO user_totals (username, total_ap, total_income, total_expense)
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(username) 
+    DO UPDATE SET 
+        total_ap = excluded.total_ap,
+        total_income = excluded.total_income,
+        total_expense = excluded.total_expense
+    ''', (username, total_ap, total_income, total_expense))
+
+    conn.commit()
+    conn.close()
 
 def generate_pie_chart(data, title, labels, filename):
     amounts = [item['amount'] for item in data]
@@ -215,6 +227,162 @@ def generate_frequency_polygon(data, title, filename):
     plt.close()
     
     return file_path
+
+def assign_badges(username):
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute('SELECT SUM(ap) FROM user_achievements WHERE username = ?', (username,))
+    total_ap = cur.fetchone()[0] or 0
+
+    cur.execute('SELECT SUM(income) FROM user_incomes WHERE username = ?', (username,))
+    total_income = cur.fetchone()[0] or 0
+
+    cur.execute('SELECT SUM(expense) FROM user_expenses WHERE username = ?', (username,))
+    total_expense = cur.fetchone()[0] or 0
+
+    ap_badge_id = determine_ap_badge_id(total_ap)
+    income_badge_id = determine_income_badge_id(total_income)
+    expense_badge_id = determine_expense_badge_id(total_expense)
+
+    cur.execute('''UPDATE user_badges 
+                   SET apbadgeid = ?, incomebadgeid = ?, expensebadgeid = ? 
+                   WHERE username = ?''', 
+                (ap_badge_id, income_badge_id, expense_badge_id, username))
+    conn.commit()
+    conn.close()
+
+def determine_ap_badge_id(ap):
+    if ap >= 20000: return 7
+    if ap >= 10000: return 6
+    if ap >= 5000: return 5
+    if ap >= 2000: return 4
+    if ap >= 1000: return 3
+    if ap >= 0: return 2
+
+def determine_income_badge_id(income):
+    if income >= 20000: return 7
+    if income >= 10000: return 6
+    if income >= 5000: return 5
+    if income >= 2000: return 4
+    if income >= 1000: return 3
+    if income >= 500: return 2
+    return 1
+
+def determine_expense_badge_id(expense):
+    if expense >= 20000: return 7
+    if expense >= 10000: return 6
+    if expense >= 5000: return 5
+    if expense >= 2000: return 4
+    if expense >= 1000: return 3
+    if expense >= 500: return 2
+    return 1
+
+def update_follower_following_counts(username):
+    conn = get_db()
+    cur = conn.cursor()
+    
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
+    follower_count = cur.fetchone()[0]
+    cur.execute('UPDATE users SET follower_count = ? WHERE username = ?', (follower_count, username))
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ?', (username,))
+    following_count = cur.fetchone()[0]
+    cur.execute('UPDATE users SET following_count = ? WHERE username = ?', (following_count, username))
+
+    conn.commit()
+    conn.close()
+
+def follow_user(follower, following):
+    conn = get_db()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute('INSERT INTO follow_relationships (follower, following) VALUES (?, ?)', (follower, following))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        pass
+    finally:
+        conn.close()
+
+    update_follower_following_counts(follower)
+    update_follower_following_counts(following)
+
+def unfollow_user(follower, following):
+    conn = get_db()
+    cur = conn.cursor()
+    
+    cur.execute('DELETE FROM follow_relationships WHERE follower = ? AND following = ?', (follower, following))
+    conn.commit()
+    conn.close()
+
+    update_follower_following_counts(follower)
+    update_follower_following_counts(following)
+
+@app.route('/follow/<username>', methods=['POST'])
+def follow(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    follower = session['username']
+    following = username
+
+    follow_user(follower, following)
+    return redirect(url_for('user_profile', username=username))
+
+@app.route('/unfollow/<username>', methods=['POST'])
+def unfollow(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    follower = session['username']
+    following = username
+
+    unfollow_user(follower, following)
+    return redirect(url_for('user_profile', username=username))
+
+@app.route('/user/<username>')
+def user_profile(username):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM users WHERE username = ?', (username,))
+    user = cur.fetchone()
+
+    if user is None:
+        conn.close()
+        return "User not found", 404
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
+    follower_count = cur.fetchone()[0]
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ?', (username,))
+    following_count = cur.fetchone()[0]
+
+    logged_in_user = session['username']
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ? AND following = ?', (logged_in_user, username))
+    is_following = cur.fetchone()[0] > 0
+
+    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
+                   FROM user_badges 
+                   WHERE username = ?''', (username,))
+    badge_ids = cur.fetchone()
+
+    conn.close()
+
+    return render_template(
+        'user_profile.html', 
+        user=user, 
+        follower_count=follower_count, 
+        following_count=following_count, 
+        is_following=is_following,
+        ap_badge_id=badge_ids[0], 
+        income_badge_id=badge_ids[1], 
+        expense_badge_id=badge_ids[2]
+    )
 
 @app.route('/summary')
 def summary():
@@ -365,93 +533,10 @@ def transaction():
 
     return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
-@app.route('/userprofile')
-def user_profile():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    
-    username = session['username']
-
-    conn = get_db_connection()
-    
-    follower_count = conn.execute('SELECT COUNT(*) FROM followers WHERE following = ?', (username,)).fetchone()[0]
-    following_count = conn.execute('SELECT COUNT(*) FROM followers WHERE follower = ?', (username,)).fetchone()[0]
-    badges = conn.execute('SELECT badge_name FROM user_badges WHERE user_username = ?', (username,)).fetchall()
-    
-    conn.close()
-
-    return render_template('userprofilee.html', username=username, follower_count=follower_count, 
-                           following_count=following_count, badges=badges)
-
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
-
-@app.route('/follow', methods=['POST'])
-def follow():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    follower = session['username']
-    following = request.form['following']
-
-    conn = get_db_connection()
-    try:
-        conn.execute('''
-            INSERT INTO follow_relationships (follower, following)
-            VALUES (?, ?)
-        ''', (follower, following))
-        conn.commit()
-    except sqlite3.IntegrityError:
-        flash('You are already following this user.')
-    finally:
-        conn.close()
-
-    return redirect(url_for('profile', username=following))
-
-def count_followers(username):
-    conn = get_db_connection()
-    followers_count = conn.execute('''
-        SELECT COUNT(*) FROM follow_relationships WHERE following = ?
-    ''', (username,)).fetchone()[0]
-    conn.close()
-    return followers_count
-
-def count_following(username):
-    conn = get_db_connection()
-    following_count = conn.execute('''
-        SELECT COUNT(*) FROM follow_relationships WHERE follower = ?
-    ''', (username,)).fetchone()[0]
-    conn.close()
-    return following_count
-
-def get_user_badges(username):
-    conn = get_db_connection()
-    badges = conn.execute('''
-        SELECT badge_type, badge_level, image_filename 
-        FROM user_badges 
-        WHERE user_username = ?
-    ''', (username,)).fetchall()
-    conn.close()
-    return badges
-
-@app.route('/profile/<username>')
-def profile(username):
-    # Check if the user is logged in
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    # Get the follower and following counts
-    followers_count = count_followers(username)
-    following_count = count_following(username)
-
-    # Get the user's badges
-    badges = get_user_badges(username)
-
-    # Render the profile page with the username, follower/following counts, and badges
-    return render_template('userprofilee.html', username=username, 
-                           followers_count=followers_count, following_count=following_count, badges=badges)
 
 if __name__ == '__main__':
     app.run(debug=True)
