@@ -342,10 +342,14 @@ def unfollow(username):
     unfollow_user(follower, following)
     return redirect(url_for('user_profile', username=username))
 
+@app.route('/user/', defaults={'username': None})
 @app.route('/user/<username>')
 def user_profile(username):
     if 'username' not in session:
         return redirect(url_for('login'))
+
+    if username is None:
+        username = session['username']
 
     conn = get_db()
     cur = conn.cursor()
@@ -380,9 +384,9 @@ def user_profile(username):
         follower_count=follower_count, 
         following_count=following_count, 
         is_following=is_following,
-        ap_badge_id=badge_ids[0], 
-        income_badge_id=badge_ids[1], 
-        expense_badge_id=badge_ids[2]
+        ap_badge_id=badge_ids[0] if badge_ids else None, 
+        income_badge_id=badge_ids[1] if badge_ids else None, 
+        expense_badge_id=badge_ids[2] if badge_ids else None
     )
 
 @app.route('/my_profile')
