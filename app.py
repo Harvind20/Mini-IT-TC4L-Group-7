@@ -206,7 +206,7 @@ def generate_frequency_polygon(data, title, filename):
     merged_df['amount'] = merged_df['amount_actual'].fillna(0)
 
     plt.figure(figsize=(21, 14))
-    plt.plot(merged_df['month'], merged_df['amount'], marker='o', linestyle='-', color='b')
+    plt.plot(merged_df['month'], merged_df['amount'], marker='o', linestyle='-', color='#39FF14')
     plt.title(title, fontsize=50, fontfamily='serif', fontweight='bold', color='#c0e2df')
     plt.xlabel('Month', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df') 
     plt.ylabel('Amount', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df')
