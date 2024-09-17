@@ -27,6 +27,133 @@ def fetch_expenses_from_db(username):
     conn.close()
     return expenses
 
+def fetch_entries(username):
+    conn = get_db_connection()
+    query = '''
+        SELECT date FROM income WHERE user_username = ?
+        UNION ALL
+        SELECT date FROM expenses WHERE user_username = ?
+    '''
+    entries = conn.execute(query, (username, username)).fetchall()
+    conn.close()
+    return [entry['date'] for entry in entries]
+
+def calculate_income_points(username):
+    incomes = fetch_incomes_from_db(username)
+    income_points = 0
+    for income in incomes:
+        amount = income['amount']
+        category = income['category']
+
+        if category == 'Salary':
+            income_points += (amount // 100) * 10
+        elif category == 'Business':
+            income_points += (amount // 100) * 15
+        elif category == 'Gifts':
+            income_points += (amount // 100) * 5
+        elif category == 'Extra Income':
+            income_points += (amount // 100) * 7
+        elif category == 'Loan':
+            income_points += (amount // 100) * 3
+        elif category == 'Insurance Payout':
+            income_points += (amount // 100) * 8
+        elif category == 'Other Incomes':
+            income_points += (amount // 100) * 6
+
+    return income_points
+
+def calculate_expense_points(username):
+    expenses = fetch_expenses_from_db(username)
+    essential_expenses_categories = {'Groceries', 'Healthcare', 'Education', 'Food & Drinks', 'Transport'}
+    expense_points = 0
+    non_essential_points = 0
+    total_non_essential_spending = 0
+
+    for expense in expenses:
+        amount = expense['amount']
+        category = expense['category']
+
+        if category in essential_expenses_categories:
+            expense_points += (amount // 100) * 5
+        else:
+            non_essential_points += (amount // 100) * 2
+            total_non_essential_spending += amount
+
+    if total_non_essential_spending > 1000:
+        excess_amount = total_non_essential_spending - 1000
+        penalty_points = (excess_amount // 100) * 5
+        non_essential_points -= penalty_points
+
+    return expense_points + non_essential_points
+
+def calculate_balanced_activity_bonus(username):
+    incomes = fetch_incomes_from_db(username)
+    expenses = fetch_expenses_from_db(username)
+
+    total_income = sum(income['amount'] for income in incomes)
+    total_expense = sum(expense['amount'] for expense in expenses)
+
+    balance_bonus = 0
+    if total_income > 0:
+        income_expense_ratio = total_income / total_expense
+        if income_expense_ratio > 1:
+            percentage_extra_income = (total_income / total_expense - 1) * 100
+            balance_bonus = (percentage_extra_income // 10) * 50
+
+    monthly_entries = fetch_monthly_entries(username)
+    income_entries = monthly_entries['income']
+    expense_entries = monthly_entries['expense']
+
+    consistency_bonus = 30 if income_entries >= 5 and expense_entries >= 5 else 0
+
+    return balance_bonus + consistency_bonus
+
+def has_seven_day_streak(dates):
+    date_format = "%Y-%m-%d"
+    dates = [datetime.strptime(date, date_format) for date in dates]
+    dates = sorted(set(dates))
+    
+    if len(dates) < 7:
+        return False
+
+    for i in range(len(dates) - 6):
+        streak_dates = dates[i:i+7]
+        if streak_dates[-1] - streak_dates[0] == timedelta(days=6):
+            return True
+    
+    return False
+
+def calculate_daily_streak(username):
+    entries = fetch_entries(username)
+    daily_streak_points = 0
+
+    if has_seven_day_streak(entries):
+        daily_streak_points += 10
+
+    return daily_streak_points
+
+def update_user_points(username):
+    income_points = calculate_income_points(username)
+    expense_points = calculate_expense_points(username)
+    balanced_activity_bonus = calculate_balanced_activity_bonus(username)
+    daily_streak_points = calculate_daily_streak(username)
+
+    total_points = income_points + expense_points + balanced_activity_bonus + daily_streak_points
+
+    conn = get_db_connection()
+    conn.execute('UPDATE users SET total_points = ? WHERE username = ?', (total_points, username))
+    conn.commit()
+    conn.close()
+
+def update_all_users_points():
+    conn = get_db_connection()
+    users = conn.execute('SELECT username FROM users').fetchall()
+    conn.close()
+    
+    for user in users:
+        username = user['username']
+        update_user_points(username)
+
 def generate_pie_chart(data, title, labels, filename):
     amounts = [item['amount'] for item in data]
     categories = [item['category'] for item in data]
