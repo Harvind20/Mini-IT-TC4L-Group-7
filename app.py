@@ -385,6 +385,47 @@ def user_profile(username):
         expense_badge_id=badge_ids[2]
     )
 
+@app.route('/my_profile')
+def my_profile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    username = session['username']
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM users WHERE username = ?', (username,))
+    user = cur.fetchone()
+
+    if user is None:
+        conn.close()
+        return "User not found", 404
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
+    follower_count = cur.fetchone()[0]
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ?', (username,))
+    following_count = cur.fetchone()[0]
+
+    logged_in_user = session['username']
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ? AND following = ?', (logged_in_user, username))
+    is_following = cur.fetchone()[0] > 0
+
+    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
+                   FROM user_badges 
+                   WHERE username = ?''', (username,))
+    badge_ids = cur.fetchone()
+
+    conn.close()
+
+    return render_template('UserProfile.html', 
+                           user=user, 
+                           follower_count=follower_count, 
+                           following_count=following_count,
+                           is_following=is_following,
+                           badge_ids=badge_ids)
+
 @app.route('/summary')
 def summary():
     if 'username' not in session:
