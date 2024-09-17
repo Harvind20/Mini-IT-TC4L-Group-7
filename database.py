@@ -59,13 +59,22 @@ CREATE TABLE IF NOT EXISTS follow_relationships (
 ''')
 
 cursor.execute('''
+CREATE TABLE IF NOT EXISTS user_totals (
+    username TEXT PRIMARY KEY,
+    total_ap INTEGER DEFAULT 0,
+    total_income REAL DEFAULT 0,
+    total_expense REAL DEFAULT 0,
+    FOREIGN KEY (username) REFERENCES users(username)
+)
+''')
+
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS user_badges (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_username TEXT NOT NULL,
-    badge_type TEXT NOT NULL,
-    badge_level INTEGER NOT NULL,
-    image_filename TEXT NOT NULL,
-    FOREIGN KEY (user_username) REFERENCES users(username)
+    username TEXT PRIMARY KEY,
+    apbadgeid INTEGER DEFAULT 1,
+    incomebadgeid INTEGER DEFAULT 1,
+    expensebadgeid INTEGER DEFAULT 1,
+    FOREIGN KEY (username) REFERENCES users(username)
 )
 ''')
 
