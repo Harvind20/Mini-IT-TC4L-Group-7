@@ -1,3 +1,4 @@
+import bcrypt
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sqlite3
 import pandas as pd
@@ -416,11 +417,13 @@ def signup():
         email = request.form['email']
         password = request.form['password']
 
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
         conn = get_db_connection()
         conn.execute('''
             INSERT INTO users (username, email, password)
             VALUES (?, ?, ?)
-        ''', (username, email, password))
+        ''', (username, email, hashed_password))
         conn.commit()
         conn.close()
 
@@ -435,15 +438,20 @@ def login():
         password = request.form['password']
 
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
+
+        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
 
         if user:
-            session['username'] = user['username']
-            return redirect(url_for('home'))
+            if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+                session['username'] = user['username']
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid username or password. Please try again.')
         else:
             flash('Invalid username or password. Please try again.')
-            return redirect(url_for('login'))
+            
+        return redirect(url_for('login'))
 
     return render_template('Login.html')
 
