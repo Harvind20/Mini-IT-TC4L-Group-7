@@ -1,0 +1,134 @@
+#navbar-pills {
+    width: 200px;
+    height: 40px;
+    font-size: large;
+}
+
+#left-column {
+    background-color: #11161c;
+}
+
+.nav-link {
+    color: #c0e2df;
+}
+
+.nav-link:hover {
+    color: #c0e2df;
+} 
+
+.nav-link:active,
+.nav-link.custom-active {
+    color: #04c1af !important;
+    outline: none;
+    background-color: #28292b !important;
+}
+
+#maincard {
+    width: 1200px;
+    height: 700px;
+    margin-left: 30px;
+    margin-top: 40px;
+    background-color: #0a0a0b;
+}
+
+.col-md-10 {
+    background-color: #11161c;
+}
+
+#profilecard {
+    width: 1160px;
+    height: 250px;
+    margin-top: 20px;
+    margin-left: 30px;
+    background-color: #11161c;
+    padding: 0px;
+    border-radius: 0.7rem;
+}
+
+#badges {
+    width: 1160px;
+    height: 390px;
+    margin-top: 20px;
+    margin-left: 20px;
+    background-color: #11161c;
+    border-radius: 0.7rem;
+}
+
+#cardheader {
+    color: white;
+    font-weight: bold;
+    margin-top: 7px;
+    margin-left: 15px;
+    margin-bottom: 0px;
+    font-family: 'Inter', sans-serif;
+    font-size: small;
+}
+
+hr {
+    background-color: #28292b;
+    margin-top: 4px;
+    border: none;
+    height: 2px;
+    width: 100%;
+    opacity: 1;
+} 
+
+.card {
+    background-color: #1b2329;
+    border: none;
+    padding: 0px;
+}
+
+#logo {
+    height: 80px;
+    width: 150px;
+    margin-top: 400px;
+    margin-left: 20px;
+}
+
+#imagelink {
+    display: inline-block;
+}
+
+#rightside {
+    background-color: #24f000;
+}
+
+.card-text {
+    width: 500px;
+    padding: 0%;
+    margin: 0%;
+    margin-left: 650px;
+    margin-top: -50px;
+}
+
+#image {
+    height: 200px;
+    width: 200px;
+}
+
+.custom-table {
+    background-color: white;
+    height: 325px;
+    width: 1140px;
+    margin-left: 10px;
+}
+
+.custom-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+img {
+    height: 100px;
+    width: 100px;
+}
+
+h5 {
+    margin-top: 45px;
+}
+
+#profilepicture {
+    margin-left: 50px;
+    margin-top: 55px;
+}
