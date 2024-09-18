@@ -68,26 +68,18 @@
                             <thead class="custom-thead">
                                 <tr>
                                     <th>Rank</th>
-                                    <th colspan="2">Name</th>
+                                    <th>Username</th>
                                     <th>Achievement Points</th>
                                 </tr>
                             </thead>
                             <tbody class="custom-body">
+                                {% for user in leaderboard %}
                                 <tr>
-                                    <td>1</td>
-                                    <td colspan="2">Harvind</td>
-                                    <td>6969</td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ user['username'] }}</td>
+                                    <td>{{ user['achievement_points'] }}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td colspan="2">Thassveen</td>
-                                    <td>3450</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td colspan="2">Michael</td>
-                                    <td>2000</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
