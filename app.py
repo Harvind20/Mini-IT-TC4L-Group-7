@@ -272,13 +272,9 @@ def assign_badges(username):
     cur.execute('SELECT SUM(expense) FROM user_expenses WHERE username = ?', (username,))
     total_expense = cur.fetchone()[0] or 0
 
-    print(f"Total AP: {total_ap}, Total Income: {total_income}, Total Expense: {total_expense}")
-
     ap_badge_id = determine_ap_badge_id(total_ap)
     income_badge_id = determine_income_badge_id(total_income)
     expense_badge_id = determine_expense_badge_id(total_expense)
-
-    print(f"AP Badge ID: {ap_badge_id}, Income Badge ID: {income_badge_id}, Expense Badge ID: {expense_badge_id}")
 
     cur.execute('''UPDATE user_badges 
                    SET apbadgeid = ?, incomebadgeid = ?, expensebadgeid = ? 
@@ -469,7 +465,7 @@ def search_user():
         return redirect(url_for('global_leaderboard'))
     
     username = query.strip()
-
+    
     return redirect(url_for('user_profile', username=username))
 
 @app.route('/user/', defaults={'username': None})
@@ -598,10 +594,8 @@ def signup():
         email = request.form['email']
         password = request.form['password']
 
-        # Hash the password using Werkzeug's generate_password_hash
         hashed_password = generate_password_hash(password)
 
-        # Insert the new user into the database
         conn = get_db_connection()
         conn.execute('''
             INSERT INTO users (username, email, password)
@@ -626,7 +620,6 @@ def login():
         conn.close()
 
         if user:
-            # Use Werkzeug's check_password_hash to verify the password
             if check_password_hash(user['password'], password):
                 session['username'] = user['username']
                 return redirect(url_for('home'))
