@@ -39,6 +39,35 @@ def fetch_entries(username):
     conn.close()
     return [entry['date'] for entry in entries]
 
+def fetch_monthly_entries(username):
+    conn = get_db_connection()
+    
+    income_entries_query = '''
+        SELECT strftime('%Y-%m', date) AS month, COUNT(*) AS count
+        FROM income
+        WHERE user_username = ?
+        GROUP BY month
+    '''
+    income_entries = conn.execute(income_entries_query, (username,)).fetchall()
+    
+    expense_entries_query = '''
+        SELECT strftime('%Y-%m', date) AS month, COUNT(*) AS count
+        FROM expenses
+        WHERE user_username = ?
+        GROUP BY month
+    '''
+    expense_entries = conn.execute(expense_entries_query, (username,)).fetchall()
+    
+    conn.close()
+
+    monthly_income_entries = {entry['month']: entry['count'] for entry in income_entries}
+    monthly_expense_entries = {entry['month']: entry['count'] for entry in expense_entries}
+
+    return {
+        'income': sum(monthly_income_entries.values()),
+        'expense': sum(monthly_expense_entries.values())
+    }
+
 def calculate_income_points(username):
     incomes = fetch_incomes_from_db(username)
     income_points = 0
