@@ -1,6 +1,7 @@
 #navbar-pills {
-    width: 200px;
+    width: 230px;
     height: 40px;
+    margin-left: 10px;
     font-size: large;
 }
 
@@ -202,13 +203,39 @@ a {
     color: #1e90ff;
 }
 
-img {
+#logo {
     height: 80px;
     width: 150px;
-    margin-top: 400px;
-    margin-left: 20px;
+    margin-top: 650px;
+    margin-left: -190px;
 }
 
 #imagelink {
     display: inline-block;
+}
+
+#profilecircle {
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 35px;
+    margin-left: 20px;
+    background-color: white;
+}
+
+#profilepic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+#profileusername {
+    color: white;
+    margin-left: 0px;
+    margin-top: 10px;
 }

@@ -1,6 +1,7 @@
 #navbar-pills {
-    width: 200px;
+    width: 230px;
     height: 40px;
+    margin-left: 10px;
     font-size: large;
 }
 
@@ -35,11 +36,11 @@
     background-color: #11161c;
 }
 
-img {
+#logo {
     height: 80px;
     width: 150px;
-    margin-top: 400px;
-    margin-left: 20px;
+    margin-top: 650px;
+    margin-left: -190px;
 }
 
 #imagelink {
@@ -98,6 +99,38 @@ h1 {
     border-radius: 0.2rem;
 }
 
+#global {
+    margin: 0%;
+    padding: 0%;    
+    border-color: black;
+    background-color: #00dbc7;
+    color: #0a0a0b;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 40px;
+    margin-left: 438px;
+    border-radius: 0.2rem;
+}
+
+#global {
+    margin: 0%;
+    padding: 0%;    
+    border-color: black;
+    background-color: #00dbc7;
+    color: #0a0a0b;
+    font-size: 0.75rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 40px;
+    margin-left: 438px;
+    border-radius: 0.2rem;
+}
+
 table {
     margin-bottom: 20px;
 }
@@ -132,4 +165,34 @@ table {
     padding-bottom: 15px;
     color: #bebebe;
     background-color: #28292b;
+}
+
+#profilecircle {
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 35px;
+    margin-left: 78px;
+    background-color: white;
+}
+
+#profilepic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+#profileusername {
+    color: white;
+    margin-left: 79px;
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
 }
