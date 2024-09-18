@@ -12,6 +12,12 @@
             <div class="row d-flex">
                 <div class="col-md-2 d-flex vh-100" id="left-column">
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                        <a href="#">
+                            <span id="profilecircle" class="dot"><img id="profilepic" src="../static/default.jpg"></span>
+                        </a>
+                        <a href="#">
+                            <p id="profileusername">USERNAME</p>
+                        </a>
                         <li class="nav-item mt-4">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
                         </li>
@@ -24,9 +30,12 @@
                         <li class="nav-item mt-2">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
                         </li>
+                        <li class="nav-item mt-2"></li>
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;"><i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
+                        </li>
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
-                                <img src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                                <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
                     </ul>
@@ -59,34 +68,36 @@
                         <div class="col-12 d-flex">
                             <hr>
                         </div>
-                        <table class="custom-table">
-                            <thead class="custom-thead">
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody class="custom-body">
-                                {% for income in incomes %}
+                        <div class="custom-table-container">
+                            <table class="custom-table">
+                                <thead class="custom-thead">
                                     <tr>
-                                        <td>{{ income['category'] }}</td>
-                                        <td>{{ income['description'] }}</td>
-                                        <td>{{ income['amount'] }}</td>
-                                        <td>{{ income['date'] }}</td>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
                                     </tr>
-                                {% endfor %}
-                                {% for expense in expenses %}
-                                    <tr>
-                                        <td>{{ expense['category'] }}</td>
-                                        <td>{{ expense['description'] }}</td>
-                                        <td>{{ expense['amount'] }}</td>
-                                        <td>{{ expense['date'] }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table> 
+                                </thead>
+                                <tbody class="custom-body">
+                                    {% for income in incomes %}
+                                        <tr>
+                                            <td>{{ income['category'] }}</td>
+                                            <td>{{ income['description'] }}</td>
+                                            <td>{{ income['amount'] }}</td>
+                                            <td>{{ income['date'] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    {% for expense in expenses %}
+                                        <tr>
+                                            <td>{{ expense['category'] }}</td>
+                                            <td>{{ expense['description'] }}</td>
+                                            <td>{{ expense['amount'] }}</td>
+                                            <td>{{ expense['date'] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table> 
+                        </div>
                     </div>
                 </div>
             </div>
