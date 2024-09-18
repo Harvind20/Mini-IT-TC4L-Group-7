@@ -37,8 +37,8 @@
 }
 
 #recentincome {
-    width: 500px;
-    height: 270px;
+    width: 570px;
+    height: 180px;
     margin-top: 20px;
     margin-left: 30px;
     background-color: #11161c;
@@ -47,8 +47,8 @@
 }
 
 #recentexpenses {
-    width: 640px;
-    height: 270px;
+    width: 570px;
+    height: 180px;
     margin-top: 20px;
     margin-left: 20px;
     background-color: #11161c;
@@ -67,7 +67,7 @@
 
 #graphs {
     width: 1160px;
-    height: 200px;
+    height: 290px;
     margin-top: 20px;
     margin-left: 20px;
     background-color: #11161c;
@@ -238,4 +238,18 @@ a {
     color: white;
     margin-left: 0px;
     margin-top: 10px;
+}
+
+#incometable {
+    color: white;
+    font-size: 0.9rem;
+    border: 1px solid white;
+    margin-top: -5px;
+}
+
+#expensetable {
+    color: white;
+    font-size: 0.9rem;
+    border: 1px solid white;
+    margin-top: -5px;
 }

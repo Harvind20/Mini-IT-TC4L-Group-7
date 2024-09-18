@@ -46,10 +46,50 @@
                             <div id="recentincome" class="card">
                                 <p id="cardheader">Recent Incomes</p>
                                 <hr>
+                                <table id="incometable" class="custom-table">
+                                    <thead class="custom-thead">
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="custom-body">
+                                        {% for income in incomes %}
+                                            <tr>
+                                                <td>{{ income['category'] }}</td>
+                                                <td>{{ income['description'] }}</td>
+                                                <td>{{ income['amount'] }}</td>
+                                                <td>{{ income['date'] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table> 
                             </div>
                             <div id="recentexpenses" class="card">
                                 <p id="cardheader">Recent Expenses</p>
                                 <hr>
+                                <table id="expensetable" class="custom-table">
+                                    <thead class="custom-thead">
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="custom-body">
+                                        {% for expense in expenses %}
+                                            <tr>
+                                                <td>{{ income['category'] }}</td>
+                                                <td>{{ income['description'] }}</td>
+                                                <td>{{ income['amount'] }}</td>
+                                                <td>{{ income['date'] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div id="quickaccess" class="card">
@@ -69,9 +109,9 @@
                                     </a>
                                 </div>
                                 <div id="quickaccess3" class="card quickaccess-item">
-                                    <a href="#">
+                                    <a href="{{ url_for('global_leaderboard') }}">
                                         <span id="dot3" class="dot"><i class="fas fa-user-plus"></i></span>
-                                        <p id="sct3" class="shortcuttext">+ Add friend</p>
+                                        <p id="sct3" class="shortcuttext">+ Follow friend</p>
                                     </a>
                                 </div>
                             </div>
