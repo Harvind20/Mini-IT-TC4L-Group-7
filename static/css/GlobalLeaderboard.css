@@ -79,7 +79,7 @@ h1 {
     padding-top: 3px;
     padding-bottom: 3px;
     margin-top: 40px;
-    margin-left: 438px;
+    margin-left: 10px;
     border-radius: 0.2rem;
 }
 
@@ -99,7 +99,7 @@ h1 {
     border-radius: 0.2rem;
 }
 
-#global {
+#searchinput {
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -110,12 +110,15 @@ h1 {
     padding-right: 7px;
     padding-top: 3px;
     padding-bottom: 3px;
-    margin-top: 40px;
-    margin-left: 438px;
+    margin-top: 39px;
+    margin-left: 248px;
+    margin-right: 10px;
     border-radius: 0.2rem;
+    height: 26px;
+    width: 120px;
 }
 
-#global {
+#searchbutton {
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -126,9 +129,11 @@ h1 {
     padding-right: 7px;
     padding-top: 3px;
     padding-bottom: 3px;
-    margin-top: 40px;
-    margin-left: 438px;
+    margin-top: 39px;
+    margin-left: 0px;
+    margin-right: -1px;
     border-radius: 0.2rem;
+    height: 26px;
 }
 
 table {
