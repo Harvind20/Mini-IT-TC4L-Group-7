@@ -1,70 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>User Profile</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/transaction.css') }}">
+        <title>Home</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+        <link rel="stylesheet" href="userprofile.css">
     </head>
     <body>
-        <section class="vh-100 gradient-custom-2">
-            <div class="container-fluid py-5 vh-100">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-12">
-                        <div class="card vh-100">
-                            <div class="rounded-top text-white d-flex flex-row" style="background-color: #11161c; height:200px;">
-                                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                                        alt="Profile picture" class="img-fluid img-thumbnail mt-4 mb-2"
-                                        style="width: 150px; z-index: 1">
-                                    <button type="button" class="btn btn-outline-dark text-body mb-2" style="z-index: 1;">
-                                        Follow
-                                    </button>
-                                </div>
-                                <div class="ms-3" style="margin-top: 130px;">
-                                    <h5>{{ username }}</h5>
-                                    <p>Cyberjaya, Selangor</p>
-                                </div>
-                            </div>
-                            <div class="card-body p-4 text-black" style="background-color: #f9a32f;">
-                                <div class="d-flex justify-content-end text-center py-1 text-body">
-                                    <div class="px-3">
-                                        <p class="mb-1 h5">{{ followers_count }}</p>
-                                        <p class="small text-muted mb-0">Followers</p>
-                                    </div>
+        <div class="container-fluid vh-100">
+            <div class="row d-flex">
+                <div class="col-md-2 d-flex vh-100" id="left-column">
+                    <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                        <li class="nav-item mt-4">
+                            <a id="navbar-pills" class="nav-link active custom-active" href="{{ url_for('home') }}" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('transaction') }}" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('global_leaderboard') }}" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="imagelink" href="{{ url_for('home') }}">
+                                <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-10 d-flex vh-100">
+                    <div id="maincard" class="card">
+                        <div class="row">
+                            <div id="profilecard" class="card">
+                                <div class="text-white d-flex flex-row" style="background-color: #11161c; height:200px;">
                                     <div>
-                                        <p class="mb-1 h5">{{ following_count }}</p>
-                                        <p class="small text-muted mb-0">Following</p>
+                                        <img src="default.jpg" id="profilepicture" alt="Profile picture" class="img-fluid img-thumbnail" style="width: 150px; z-index: 1">
+                                    </div>
+                                    <div class="ms-3" style="margin-top: 130px;">
+                                        <h5>{{ username }}</h5>
                                     </div>
                                 </div>
-                                <div>
-                                    <p style="font-weight: bold;">Badges</p>
+                                <div id="rightside" class="card-text p-3 text-white">
+                                    <div class="d-flex justify-content-end text-center py-1 text-body">
+                                        <div class="px-3">
+                                            <p class="mb-1 h5">{{ followers_count }}</p>
+                                            <p class="small text-muted mb-0">Followers</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-1 h5">{{ following_count }}</p>
+                                            <p class="small text-muted mb-0">Following</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                {% for badge in badges %}
-                                                    <td>
-                                                        <img src="{{ url_for('static', filename=badge.image_filename) }}" 
-                                                             alt="Badge" style="width: 50px; height: 50px;">
-                                                        <p>{{ badge.badge_type }} (Level {{ badge.badge_level }})</p>
-                                                    </td>
-                                                {% endfor %}
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>                            
                             </div>
+                        </div>
+                        <div id="badges" class="card">
+                            <p id="cardheader">Badges</p>
+                            <hr>
+                            <table class="custom-table">
+                                <thead class="custom-thead">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="custom-body">
+                                    <tr>
+                                        <td><img src="{{ url_for('static', filename='badges/AP' + ap_badge_id) }}" alt="AP Badge"></td>
+                                        <td><img src="{{ url_for('static', filename='badges/Income' + income_badge_id) }}" alt="Income Badge"></td>
+                                        <td><img src="{{ url_for('static', filename='badges/Expense' + expense_badge_id) }}" alt="Expense Badge"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </body>
 </html>
