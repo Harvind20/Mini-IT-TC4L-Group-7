@@ -1,4 +1,4 @@
-import bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sqlite3
 import pandas as pd
@@ -260,6 +260,7 @@ def determine_ap_badge_id(ap):
     if ap >= 2000: return 4
     if ap >= 1000: return 3
     if ap >= 0: return 2
+    return 1
 
 def determine_income_badge_id(income):
     if income >= 20000: return 7
@@ -421,14 +422,20 @@ def my_profile():
                    WHERE username = ?''', (username,))
     badge_ids = cur.fetchone()
 
+    ap_badge_id = badge_ids[0] if badge_ids and badge_ids[0] is not None else ''
+    income_badge_id = badge_ids[1] if badge_ids and badge_ids[1] is not None else ''
+    expense_badge_id = badge_ids[2] if badge_ids and badge_ids[2] is not None else ''
+
     conn.close()
 
-    return render_template('UserProfile.html', 
+    return render_template('user_profile.html', 
                            user=user, 
                            follower_count=follower_count, 
                            following_count=following_count,
                            is_following=is_following,
-                           badge_ids=badge_ids)
+                           ap_badge_id=ap_badge_id, 
+                           income_badge_id=income_badge_id, 
+                           expense_badge_id=expense_badge_id)
 
 @app.route('/summary')
 def summary():
@@ -462,8 +469,10 @@ def signup():
         email = request.form['email']
         password = request.form['password']
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        # Hash the password using Werkzeug's generate_password_hash
+        hashed_password = generate_password_hash(password)
 
+        # Insert the new user into the database
         conn = get_db_connection()
         conn.execute('''
             INSERT INTO users (username, email, password)
@@ -488,7 +497,8 @@ def login():
         conn.close()
 
         if user:
-            if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            # Use Werkzeug's check_password_hash to verify the password
+            if check_password_hash(user['password'], password):
                 session['username'] = user['username']
                 return redirect(url_for('home'))
             else:
