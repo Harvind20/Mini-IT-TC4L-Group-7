@@ -243,13 +243,13 @@ a {
 #incometable {
     color: white;
     font-size: 0.9rem;
-    border: 1px solid white;
     margin-top: -5px;
+    margin-left: 5px;
 }
 
 #expensetable {
     color: white;
     font-size: 0.9rem;
-    border: 1px solid white;
     margin-top: -5px;
+    margin-left: 5px;
 }
