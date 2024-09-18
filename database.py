@@ -78,5 +78,15 @@ CREATE TABLE IF NOT EXISTS user_badges (
 )
 ''')
 
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS leaderboard (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    achievement_points INTEGER NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username),
+    UNIQUE(username)
+)
+''')
+
 conn.commit()
 conn.close()

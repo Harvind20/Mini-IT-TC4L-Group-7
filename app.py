@@ -7,12 +7,13 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import os
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = 'Amongus'
 
 def get_db_connection():
-    conn = sqlite3.connect('budgetbadger.db', timeout=10)
+    conn = sqlite3.connect('budgetbadger.db', timeout=30)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -354,6 +355,91 @@ def unfollow_user(follower, following):
     update_follower_following_counts(follower)
     update_follower_following_counts(following)
 
+def fetch_global_leaderboard():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT username, achievement_points 
+        FROM leaderboard 
+        ORDER BY achievement_points DESC 
+        LIMIT 10
+    ''')
+    top_users = cursor.fetchall()
+    conn.close()
+    return top_users
+
+
+def fetch_followed_leaderboard(current_user):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT l.username, l.achievement_points
+        FROM leaderboard l
+        JOIN follow_relationships f ON l.username = f.following
+        WHERE f.follower = ?
+        ORDER BY l.achievement_points DESC
+        LIMIT 10
+    ''', (current_user,))
+    followed_users = cursor.fetchall()
+    conn.close()
+    return followed_users
+
+def update_leaderboard():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    
+    users = conn.execute('SELECT username FROM users').fetchall()
+
+    for user in users:
+        username = user['username']
+        
+        
+        total_ap = calculate_income_points(username) + \
+                   calculate_expense_points(username) + \
+                   calculate_balanced_activity_bonus(username) + \
+                   calculate_daily_streak(username)
+
+        
+        cursor.execute('''
+        INSERT INTO leaderboard (username, achievement_points)
+        VALUES (?, ?)
+        ON CONFLICT(username)
+        DO UPDATE SET
+            achievement_points = excluded.achievement_points
+        ''', (username, total_ap))
+
+    conn.commit()
+    conn.close()
+
+@app.route('/global_leaderboard')
+def global_leaderboard():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    
+    update_leaderboard()
+    
+    
+    global_leaderboard_data = fetch_global_leaderboard()
+    
+    return render_template('GlobalLeaderboard.html', leaderboard=global_leaderboard_data)
+
+@app.route('/followed_leaderboard')
+def followed_leaderboard():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    current_user = session['username']
+    
+    
+    update_leaderboard()
+    
+    
+    followed_leaderboard_data = fetch_followed_leaderboard(current_user)
+    
+    return render_template('FollowedLeaderboard.html', leaderboard=followed_leaderboard_data)
+
 @app.route('/follow/<username>', methods=['POST'])
 def follow(username):
     if 'username' not in session:
@@ -558,20 +644,6 @@ def home():
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('Home.html')
-
-# Global Leaderboard page route
-@app.route('/global_leaderboard')
-def global_leaderboard():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    return render_template('GlobalLeaderboard.html')
-
-# Followed Leaderboard page route
-@app.route('/followed_leaderboard')
-def followed_leaderboard():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    return render_template('FollowedLeaderboard.html')
   
 @app.route('/expense_form', methods=['GET', 'POST'])
 def expense_form():
