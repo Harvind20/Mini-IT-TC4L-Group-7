@@ -242,9 +242,13 @@ def assign_badges(username):
     cur.execute('SELECT SUM(expense) FROM user_expenses WHERE username = ?', (username,))
     total_expense = cur.fetchone()[0] or 0
 
+    print(f"Total AP: {total_ap}, Total Income: {total_income}, Total Expense: {total_expense}")
+
     ap_badge_id = determine_ap_badge_id(total_ap)
     income_badge_id = determine_income_badge_id(total_income)
     expense_badge_id = determine_expense_badge_id(total_expense)
+
+    print(f"AP Badge ID: {ap_badge_id}, Income Badge ID: {income_badge_id}, Expense Badge ID: {expense_badge_id}")
 
     cur.execute('''UPDATE user_badges 
                    SET apbadgeid = ?, incomebadgeid = ?, expensebadgeid = ? 
@@ -341,6 +345,16 @@ def unfollow(username):
     following = username
 
     unfollow_user(follower, following)
+    return redirect(url_for('user_profile', username=username))
+
+@app.route('/search', methods=['GET'])
+def search_user():
+    query = request.args.get('search_query')
+    if not query:
+        return redirect(url_for('global_leaderboard'))
+    
+    username = query.strip()
+
     return redirect(url_for('user_profile', username=username))
 
 @app.route('/user/', defaults={'username': None})
@@ -562,17 +576,31 @@ def income_form():
     if request.method == 'POST':
         user_username = session['username']
         date = request.form['date']
-        amount = request.form['amount']
+        amount = float(request.form['amount'])
         category = request.form['category']
         description = request.form['description']
 
+        if amount < 0.01:
+            return "Amount must be at least 0.01", 400
+        
+        valid_categories = [
+            'Salary', 'Business', 'Investments', 'Gifts', 
+            'Extra Income', 'Loan', 'Insurance Payout', 'Other Incomes'
+        ]
+        if category not in valid_categories:
+            return "Invalid category", 400
+
         conn = get_db_connection()
-        conn.execute('''
-            INSERT INTO income (user_username, date, amount, category, description)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (user_username, date, amount, category, description))
-        conn.commit()
-        conn.close()
+        try:
+            conn.execute('''
+                INSERT INTO income (user_username, date, amount, category, description)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (user_username, date, amount, category, description))
+            conn.commit()
+        except sqlite3.IntegrityError as e:
+            return f"IntegrityError: {e}", 400
+        finally:
+            conn.close()
 
         return redirect(url_for('transaction'))
 

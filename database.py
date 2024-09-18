@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS income (
     amount REAL CHECK(amount >= 0.01) NOT NULL,
     category TEXT CHECK(category IN (
         'Salary', 'Business', 'Gifts', 'Extra Income', 
-        'Loan', 'Insurance Payout', 'Other Incomes'
+        'Loan', 'Investments', 'Insurance Payout', 'Other Incomes'
     )) NOT NULL,
     description TEXT,
     FOREIGN KEY (user_username) REFERENCES users(username)
