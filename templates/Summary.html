@@ -12,6 +12,12 @@
         <div class="row d-flex">
             <div class="col-md-2 d-flex vh-100" id="left-column">
                 <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                    <a href="#">
+                        <span id="profilecircle" class="dot"><img id="profilepic" src="../static/default.jpg"></span>
+                    </a>
+                    <a href="#">
+                        <p id="profileusername">USERNAME</p>
+                    </a>
                     <li class="nav-item mt-4">
                         <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;">
                             <i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home
@@ -32,9 +38,12 @@
                             <i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary
                         </a>
                     </li>
+                    <li class="nav-item mt-2"></li>
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;"><i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
+                        </li>
                     <li class="nav-item">
                         <a id="imagelink" href="{{ url_for('home') }}">
-                            <img src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="img-fluid mb-5" alt="Logo">
+                            <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="img-fluid mb-5" alt="Logo">
                         </a>
                     </li>
                 </ul>
