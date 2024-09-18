@@ -47,7 +47,7 @@
                                 <h1>Global Leaderboard</h1>
                             </div>
                             <div id="buttons" class="col-6 d-flex">
-                                <form action="#" method="GET" class="d-flex">
+                                <form action="{{ url_for('search_user') }}" method="GET" class="d-flex">
                                     <input id="searchinput" type="text" name="search_query" class="form-control" placeholder="Search users..." required>
                                     <button id="searchbutton" type="submit" class="btn btn-outline-primary">Search</button>
                                 </form>

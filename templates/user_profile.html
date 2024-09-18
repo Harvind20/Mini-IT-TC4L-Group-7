@@ -71,14 +71,14 @@
                                 <tbody class="custom-body">
                                     <tr>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/AP' + (ap_badge_id if ap_badge_id else 'default.png')) }}" alt="AP Badge">
+                                            <img src="{{ url_for('static', filename='badges/AP' + (ap_badge_id or '1') + '.png') }}" alt="AP Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Income' + (income_badge_id if income_badge_id else 'default.png')) }}" alt="Income Badge">
+                                            <img src="{{ url_for('static', filename='badges/Income' + (income_badge_id or '1') + '.png') }}" alt="Income Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Expense' + (expense_badge_id if expense_badge_id else 'default.png')) }}" alt="Expense Badge">
-                                        </td>                                        
+                                            <img src="{{ url_for('static', filename='badges/Expense' + (expense_badge_id or '1') + '.png') }}" alt="Expense Badge">
+                                        </td>                                                                               
                                     </tr>
                                 </tbody>
                             </table>
