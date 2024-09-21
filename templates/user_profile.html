@@ -12,7 +12,7 @@
             <div class="row d-flex">
                 <div class="col-md-2 d-flex vh-100" id="left-column">
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
-                        <a href="{{ url_for('my_profile') }}"></a>
+                        <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
                                 <img id="profilepic" src="../static/default.jpg">
                             </span>
@@ -46,25 +46,35 @@
                     <div id="maincard" class="card">
                         <div class="row">
                             <div id="profilecard" class="card">
-                                <div class="text-white d-flex flex-row" style="background-color: #11161c; height:200px;">
-                                    <div>
-                                        <img src="../static/default.jpg" id="profilepicture" alt="Profile picture" class="img-fluid img-thumbnail" style="width: 150px; z-index: 1">
-                                    </div>
-                                    <div class="ms-3" style="margin-top: 130px;">
-                                        <h5>{{ username }}</h5>
+                                <div class="row d-flex justify-content-between align-items-center"> 
+                                    <div class="d-flex align-items-center">
+                                        <span class="box">
+                                        <img src="../static/default.jpg" id="profilepicture" class="img-fluid img-thumbnail" alt="Profile Picture">
+                                        </span>
+                                        <div id="username" class="text-center">
+                                            <p>Username</p>
+                                        </div>
+                                        <div id="following" class="text-center">
+                                            <p class="mb-0">200</p>
+                                            <p class="mb-0">Following</p>
+                                        </div>
+                                        <div id="followers" class="text-center">
+                                            <p class="mb-0">200</p>
+                                            <p class="mb-0">Followers</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="rightside" class="card-text p-3 text-white">
-                                    <div class="d-flex justify-content-end text-center py-1 text-body">
-                                        <div class="px-3">
-                                            <p class="mb-1 h5">{{ followers_count }}</p>
-                                            <p class="small text-muted mb-0">Followers</p>
-                                        </div>
-                                        <div>
-                                            <p class="mb-1 h5">{{ following_count }}</p>
-                                            <p class="small text-muted mb-0">Following</p>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <form action="/follow" method="post">
+                                        <input type="hidden" name="user_id" value="#">
+                                        <button id="followbutton" type="submit" class="custom-button {% if followed %} unfollow {% else %} follow {% endif %}">
+                                            {% if followed %}
+                                                Unfollow
+                                            {% else %}
+                                                Follow
+                                            {% endif %}
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
