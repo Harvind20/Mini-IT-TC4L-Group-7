@@ -126,7 +126,7 @@ hr {
     padding: 0%;
     margin: 0%;
     margin-left: 650px;
-    margin-top: -50px;
+    margin-top: -100px;
 }
 
 .custom-table {
@@ -151,10 +151,59 @@ h5 {
 }
 
 #profilepicture {
+    height: 150px;
+    width: 150px;
     margin-left: 50px;
     margin-top: 55px;
+    display: inline-block;
 }
 
 a {
     text-decoration: none;
+}
+
+#following {
+    margin-left: 700px;
+    margin-top: 155px;
+}
+
+#followers {
+    margin-left: 10px;
+    margin-top: 155px;
+}
+
+#username {
+    margin-left: 20px;
+    margin-top: 150px;
+}
+
+P {
+    color: white;
+}
+
+#followbutton {
+    height: 30px;
+    width: 150px;
+    border-radius: 0.3rem;
+    margin-left: 50px;
+    margin-top: 5px;
+    background-color: #c0e2df;
+}
+
+.follow.custom-button {
+    background-color: #4CAF50; 
+    color: white;
+}
+
+.follow.custom-button:hover {
+    background-color: #45a049; 
+}
+
+.unfollow.custom-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.unfollow.custom-button:hover {
+    background-color: #e53935; 
 }
