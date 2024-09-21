@@ -646,31 +646,17 @@ def expense_form():
     if request.method == 'POST':
         user_username = session['username']
         date = request.form['date']
-        amount = float(request.form['amount'])
+        amount = request.form['amount']
         category = request.form['category']
         description = request.form['description']
 
-        if amount < 0.01:
-            return "Amount must be at least 0.01", 400
-
-        valid_categories = [
-            'Food', 'Transport', 'Bills', 'Entertainment', 
-            'Health', 'Education', 'Shopping', 'Other Expenses'
-        ]
-        if category not in valid_categories:
-            return "Invalid category", 400
-
         conn = get_db_connection()
-        try:
-            conn.execute('''
-                INSERT INTO expenses (user_username, date, amount, category, description)
-                VALUES (?, ?, ?, ?, ?)
-            ''', (user_username, date, amount, category, description))
-            conn.commit()
-        except sqlite3.IntegrityError as e:
-            return f"IntegrityError: {e}", 400
-        finally:
-            conn.close()
+        conn.execute('''
+            INSERT INTO expenses (user_username, date, amount, category, description)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user_username, date, amount, category, description))
+        conn.commit()
+        conn.close()
 
         return redirect(url_for('transaction'))
 
