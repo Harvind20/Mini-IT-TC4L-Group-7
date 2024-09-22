@@ -18,7 +18,7 @@
                             </span>
                         </a>
                         <a href="{{ url_for('my_profile') }}">
-                            <p id="profileusername">USERNAME</p>
+                            <p id="profileusername">{{ session['username'] }}</p>
                         </a>
                         <li class="nav-item mt-4">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;"><i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home</a>
@@ -33,7 +33,7 @@
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
                         </li>
                         <li class="nav-item mt-2"></li>
-                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;"><i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
+                        <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;"><i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
                         </li>
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
@@ -49,26 +49,26 @@
                                 <div class="row d-flex justify-content-between align-items-center"> 
                                     <div class="d-flex align-items-center">
                                         <span class="box">
-                                        <img src="../static/default.jpg" id="profilepicture" class="img-fluid img-thumbnail" alt="Profile Picture">
+                                            <img src="../static/default.jpg" id="profilepicture" class="img-fluid img-thumbnail" alt="Profile Picture">
                                         </span>
                                         <div id="username" class="text-center">
-                                            <p>Username</p>
+                                            <p>{{ user['username'] }}</p>
                                         </div>
                                         <div id="following" class="text-center">
-                                            <p class="mb-0">200</p>
+                                            <p class="mb-0">{{ following_count }}</p>
                                             <p class="mb-0">Following</p>
                                         </div>
                                         <div id="followers" class="text-center">
-                                            <p class="mb-0">200</p>
+                                            <p class="mb-0">{{ follower_count }}</p>
                                             <p class="mb-0">Followers</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <form action="/follow" method="post">
-                                        <input type="hidden" name="user_id" value="#">
-                                        <button id="followbutton" type="submit" class="custom-button {% if followed %} unfollow {% else %} follow {% endif %}">
-                                            {% if followed %}
+                                        <input type="hidden" name="user_id" value="{{ user['username'] }}">
+                                        <button id="followbutton" type="submit" class="custom-button {% if is_following %} unfollow {% else %} follow {% endif %}">
+                                            {% if is_following %}
                                                 Unfollow
                                             {% else %}
                                                 Follow
@@ -92,13 +92,13 @@
                                 <tbody class="custom-body">
                                     <tr>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/AP' + (ap_badge_id or '1') + '.png') }}" alt="AP Badge">
+                                            <img src="{{ url_for('static', filename='badges/AP' + (badge_ids[0] or '1') + '.png') }}" alt="AP Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Income' + (income_badge_id or '1') + '.png') }}" alt="Income Badge">
+                                            <img src="{{ url_for('static', filename='badges/Income' + (badge_ids[1] or '1') + '.png') }}" alt="Income Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Expense' + (expense_badge_id or '1') + '.png') }}" alt="Expense Badge">
+                                            <img src="{{ url_for('static', filename='badges/Expense' + (badge_ids[2] or '1') + '.png') }}" alt="Expense Badge">
                                         </td>                                                                               
                                     </tr>
                                 </tbody>

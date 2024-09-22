@@ -163,26 +163,17 @@ def calculate_daily_streak(username):
 
     return daily_streak_points
 
-def update_all_users_points():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    users = cursor.execute('SELECT username FROM users').fetchall()
-    conn.close()
-    
-    for user in users:
-        username = user['username']
-        update_totals(username)
-
 def update_totals(username):
     conn = get_db_connection()
     cursor = conn.cursor()
 
     total_income = sum(income['amount'] for income in fetch_incomes_from_db(username))
     total_expense = sum(expense['amount'] for expense in fetch_expenses_from_db(username))
+
     total_ap = (calculate_income_points(username) + 
-                calculate_expense_points(username) + 
-                calculate_balanced_activity_bonus(username) + 
-                calculate_daily_streak(username))
+                 calculate_expense_points(username) + 
+                 calculate_balanced_activity_bonus(username) + 
+                 calculate_daily_streak(username))
 
     cursor.execute('''
     INSERT INTO user_totals (username, total_ap, total_income, total_expense)
@@ -196,6 +187,16 @@ def update_totals(username):
 
     conn.commit()
     conn.close()
+
+def update_all_users_points():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    users = cursor.execute('SELECT username FROM users').fetchall()
+    conn.close()
+    
+    for user in users:
+        username = user['username']
+        update_totals(username)
 
 def generate_pie_chart(data, title, labels, filename):
     amounts = [item['amount'] for item in data]
@@ -261,25 +262,30 @@ def generate_frequency_polygon(data, title, filename):
 
 def assign_badges(username):
     conn = get_db_connection()
-    cur = conn.cursor()
+    cursor = conn.cursor()
 
-    cur.execute('SELECT SUM(ap) FROM user_achievements WHERE username = ?', (username,))
-    total_ap = cur.fetchone()[0] or 0
+    cursor.execute('SELECT total_ap, total_income, total_expense FROM user_totals WHERE username = ?', (username,))
+    totals = cursor.fetchone()
 
-    cur.execute('SELECT SUM(income) FROM user_incomes WHERE username = ?', (username,))
-    total_income = cur.fetchone()[0] or 0
+    if totals is None:
+        return
 
-    cur.execute('SELECT SUM(expense) FROM user_expenses WHERE username = ?', (username,))
-    total_expense = cur.fetchone()[0] or 0
+    total_ap, total_income, total_expense = totals
 
     ap_badge_id = determine_ap_badge_id(total_ap)
     income_badge_id = determine_income_badge_id(total_income)
     expense_badge_id = determine_expense_badge_id(total_expense)
 
-    cur.execute('''UPDATE user_badges 
-                   SET apbadgeid = ?, incomebadgeid = ?, expensebadgeid = ? 
-                   WHERE username = ?''', 
-                (ap_badge_id, income_badge_id, expense_badge_id, username))
+    cursor.execute('''
+    INSERT INTO user_badges (username, apbadgeid, incomebadgeid, expensebadgeid) 
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(username) 
+    DO UPDATE SET 
+        apbadgeid = excluded.apbadgeid,
+        incomebadgeid = excluded.incomebadgeid,
+        expensebadgeid = excluded.expensebadgeid
+    ''', (username, ap_badge_id, income_badge_id, expense_badge_id))
+
     conn.commit()
     conn.close()
 
@@ -436,28 +442,6 @@ def followed_leaderboard():
     
     return render_template('FollowedLeaderboard.html', leaderboard=followed_leaderboard_data)
 
-@app.route('/follow/<username>', methods=['POST'])
-def follow(username):
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    follower = session['username']
-    following = username
-
-    follow_user(follower, following)
-    return redirect(url_for('user_profile', username=username))
-
-@app.route('/unfollow/<username>', methods=['POST'])
-def unfollow(username):
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    follower = session['username']
-    following = username
-
-    unfollow_user(follower, following)
-    return redirect(url_for('user_profile', username=username))
-
 @app.route('/search', methods=['GET'])
 def search_user():
     query = request.args.get('search_query')
@@ -500,20 +484,36 @@ def user_profile(username):
     cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
                    FROM user_badges 
                    WHERE username = ?''', (username,))
-    badge_ids = cur.fetchone()
+    badge_ids = cur.fetchone() or (None, None, None)
 
     conn.close()
 
-    return render_template(
-        'user_profile.html', 
-        user=user, 
-        follower_count=follower_count, 
-        following_count=following_count, 
-        is_following=is_following,
-        ap_badge_id=badge_ids[0] if badge_ids else None, 
-        income_badge_id=badge_ids[1] if badge_ids else None, 
-        expense_badge_id=badge_ids[2] if badge_ids else None
-    )
+    return render_template('user_profile.html', user=user, follower_count=follower_count, following_count=following_count,
+                           is_following=is_following, badge_ids=badge_ids)
+
+@app.route('/follow', methods=['POST'])
+def follow():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    logged_in_user = session['username']
+    user_to_follow = request.form['user_id']
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ? AND following = ?', (logged_in_user, user_to_follow))
+    followed = cur.fetchone()[0] > 0
+
+    if followed:
+        cur.execute('DELETE FROM follow_relationships WHERE follower = ? AND following = ?', (logged_in_user, user_to_follow))
+    else:
+        cur.execute('INSERT INTO follow_relationships (follower, following) VALUES (?, ?)', (logged_in_user, user_to_follow))
+
+    conn.commit()
+    conn.close()
+    
+    return redirect(url_for('user_profile', username=user_to_follow))
 
 @app.route('/my_profile')
 def my_profile():
@@ -547,9 +547,14 @@ def my_profile():
                    WHERE username = ?''', (username,))
     badge_ids = cur.fetchone()
 
-    ap_badge_id = badge_ids[0] if badge_ids and badge_ids[0] is not None else ''
-    income_badge_id = badge_ids[1] if badge_ids and badge_ids[1] is not None else ''
-    expense_badge_id = badge_ids[2] if badge_ids and badge_ids[2] is not None else ''
+    if badge_ids is None:
+        ap_badge_id = '1'
+        income_badge_id = '1'
+        expense_badge_id = '1'
+    else:
+        ap_badge_id = badge_ids[0] if badge_ids[0] else '1'
+        income_badge_id = badge_ids[1] if badge_ids[1] else '1'
+        expense_badge_id = badge_ids[2] if badge_ids[2] else '1'
 
     conn.close()
 
@@ -596,13 +601,7 @@ def signup():
 
         hashed_password = generate_password_hash(password)
 
-        conn = get_db_connection()
-        conn.execute('''
-            INSERT INTO users (username, email, password)
-            VALUES (?, ?, ?)
-        ''', (username, email, hashed_password))
-        conn.commit()
-        conn.close()
+        create_user(username)
 
         return redirect(url_for('login'))
 
