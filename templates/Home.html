@@ -84,10 +84,10 @@
                                     <tbody class="custom-body">
                                         {% for expense in expenses %}
                                             <tr>
-                                                <td>{{ income['category'] }}</td>
-                                                <td>{{ income['description'] }}</td>
-                                                <td>{{ income['amount'] }}</td>
-                                                <td>{{ income['date'] }}</td>
+                                                <td>{{ expense['category'] }}</td>
+                                                <td>{{ expense['description'] }}</td>
+                                                <td>{{ expense['amount'] }}</td>
+                                                <td>{{ expense['date'] }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -111,10 +111,10 @@
                                     </a>
                                 </div>
                                 <div id="quickaccess3" class="card quickaccess-item">
-                                    <a href="{{ url_for('global_leaderboard') }}">
-                                        <span id="dot3" class="dot"><i class="fas fa-user-plus"></i></span>
-                                        <p id="sct3" class="shortcuttext">+ Follow friend</p>
-                                    </a>
+                                    <form action="{{ url_for('search_user') }}" method="GET" class="d-flex">
+                                        <input id="searchinput" type="text" name="search_query" class="form-control" placeholder="&nbsp;Search users..." required>
+                                        <button id="searchbutton" type="submit" class="btn btn-outline-primary">Search</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

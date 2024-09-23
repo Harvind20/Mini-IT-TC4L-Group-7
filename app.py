@@ -29,6 +29,20 @@ def fetch_expenses_from_db(username):
     conn.close()
     return expenses
 
+def fetch_recent_incomes_from_db(username, limit=4):
+    conn = get_db_connection()
+    query = 'SELECT * FROM income WHERE username = ? ORDER BY date DESC LIMIT ?'
+    incomes = conn.execute(query, (username, limit)).fetchall()
+    conn.close()
+    return incomes
+
+def fetch_recent_expenses_from_db(username, limit=5):
+    conn = get_db_connection()
+    query = 'SELECT * FROM expenses WHERE username = ? ORDER BY date DESC LIMIT ?'
+    expenses = conn.execute(query, (username, limit)).fetchall()
+    conn.close()
+    return expenses
+
 def fetch_entries(username):
     conn = get_db_connection()
     query = '''
@@ -642,7 +656,14 @@ def login():
 def home():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('Home.html')
+    
+    username = session['username']
+
+    recent_incomes = fetch_recent_incomes_from_db(username, limit=4)
+
+    recent_expenses = fetch_recent_expenses_from_db(username, limit=4)
+
+    return render_template('Home.html', incomes=recent_incomes, expenses=recent_expenses)
   
 @app.route('/expense_form', methods=['GET', 'POST'])
 def expense_form():
