@@ -239,31 +239,31 @@ def generate_frequency_polygon(data, title, filename):
     return file_path
 
 def determine_ap_badge_id(ap):
+    if ap is None or ap <= 0: return 1
     if ap >= 20000: return 7
     if ap >= 10000: return 6
     if ap >= 5000: return 5
     if ap >= 2000: return 4
     if ap >= 1000: return 3
-    if ap >= 0: return 2
-    return 1
+    return 2
 
 def determine_income_badge_id(income):
+    if income is None or income <= 0: return 1
     if income >= 20000: return 7
     if income >= 10000: return 6
     if income >= 5000: return 5
     if income >= 2000: return 4
     if income >= 1000: return 3
-    if income >= 500: return 2
-    return 1
+    return 2
 
 def determine_expense_badge_id(expense):
+    if expense is None or expense <= 0: return 1
     if expense >= 20000: return 7
     if expense >= 10000: return 6
     if expense >= 5000: return 5
     if expense >= 2000: return 4
     if expense >= 1000: return 3
-    if expense >= 500: return 2
-    return 1
+    return 2
 
 def assign_badges(username):
     conn = get_db_connection()
