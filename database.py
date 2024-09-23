@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_username TEXT NOT NULL,
+    username TEXT NOT NULL,
     date TEXT NOT NULL,
     amount REAL CHECK(amount >= 0.01) NOT NULL,
     category TEXT CHECK(category IN (
@@ -28,14 +28,14 @@ CREATE TABLE IF NOT EXISTS expenses (
         'Work', 'Other Expenses'
     )) NOT NULL,
     description TEXT,
-    FOREIGN KEY (user_username) REFERENCES users(username)
+    FOREIGN KEY (username) REFERENCES users(username)
 )
 ''')
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS income (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_username TEXT NOT NULL,
+    username TEXT NOT NULL,
     date TEXT NOT NULL,
     amount REAL CHECK(amount >= 0.01) NOT NULL,
     category TEXT CHECK(category IN (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS income (
         'Loan', 'Investments', 'Insurance Payout', 'Other Incomes'
     )) NOT NULL,
     description TEXT,
-    FOREIGN KEY (user_username) REFERENCES users(username)
+    FOREIGN KEY (username) REFERENCES users(username)
 )
 ''')
 
@@ -55,16 +55,6 @@ CREATE TABLE IF NOT EXISTS follow_relationships (
     FOREIGN KEY (follower) REFERENCES users(username),
     FOREIGN KEY (following) REFERENCES users(username),
     UNIQUE(follower, following)
-)
-''')
-
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS user_totals (
-    username TEXT PRIMARY KEY,
-    total_ap INTEGER DEFAULT 0,
-    total_income REAL DEFAULT 0,
-    total_expense REAL DEFAULT 0,
-    FOREIGN KEY (username) REFERENCES users(username)
 )
 ''')
 
@@ -83,6 +73,8 @@ CREATE TABLE IF NOT EXISTS leaderboard (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     achievement_points INTEGER NOT NULL,
+    total_income REAL DEFAULT 0,
+    total_expense REAL DEFAULT 0,
     FOREIGN KEY (username) REFERENCES users(username),
     UNIQUE(username)
 )
