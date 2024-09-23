@@ -14,7 +14,7 @@ body {
 .log-popup {
     font-family: "Roboto", sans-serif;
     font-size: 15px;
-    background-color: #f9a32f;
+    background-color: #c0e2df;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 2px 15px rgba(255, 255, 255, 0.7);
@@ -43,8 +43,8 @@ h2 {
     padding: 10px;
     border-radius: 15px;
     background-color: #11161c;
-    color: #f9a32f;
-    border: 1px solid #f9a32f;
+    color:#c0e2df;
+    border: 1px solid #c0e2df;
 }
 
 .submitbutton {

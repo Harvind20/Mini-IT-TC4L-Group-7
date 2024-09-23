@@ -113,8 +113,11 @@ hr {
 
 #profileusername {
     color: white;
-    margin-left: 84px;
+    margin-left: 0px;
     margin-top: 10px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
 }
 
 #rightside {
