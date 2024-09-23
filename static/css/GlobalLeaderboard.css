@@ -79,7 +79,7 @@ h1 {
     padding-top: 3px;
     padding-bottom: 3px;
     margin-top: 40px;
-    margin-left: 10px;
+    margin-left: 438px;
     border-radius: 0.2rem;
 }
 
@@ -97,43 +97,6 @@ h1 {
     margin-top: 40px;
     margin-left: 10px;
     border-radius: 0.2rem;
-}
-
-#searchinput {
-    margin: 0%;
-    padding: 0%;    
-    border-color: black;
-    background-color: #00dbc7;
-    color: #0a0a0b;
-    font-size: 0.75rem;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-top: 39px;
-    margin-left: 248px;
-    margin-right: 10px;
-    border-radius: 0.2rem;
-    height: 26px;
-    width: 120px;
-}
-
-#searchbutton {
-    margin: 0%;
-    padding: 0%;    
-    border-color: black;
-    background-color: #00dbc7;
-    color: #0a0a0b;
-    font-size: 0.75rem;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-top: 39px;
-    margin-left: 0px;
-    margin-right: -1px;
-    border-radius: 0.2rem;
-    height: 26px;
 }
 
 table {
@@ -194,7 +157,7 @@ table {
 
 #profileusername {
     color: white;
-    margin-left: 79px;
+    margin-left: 84px;
     margin-top: 10px;
 }
 
