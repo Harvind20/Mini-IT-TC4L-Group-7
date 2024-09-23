@@ -187,12 +187,14 @@ P {
     border-radius: 0.3rem;
     margin-left: 50px;
     margin-top: 5px;
-    background-color: #c0e2df;
+}
+
+.custom-button {
+    color: white;
 }
 
 .follow.custom-button {
     background-color: #4CAF50; 
-    color: white;
 }
 
 .follow.custom-button:hover {
@@ -201,7 +203,6 @@ P {
 
 .unfollow.custom-button {
     background-color: #f44336;
-    color: white;
 }
 
 .unfollow.custom-button:hover {
