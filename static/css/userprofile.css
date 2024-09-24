@@ -133,7 +133,7 @@ hr {
 }
 
 .custom-table {
-    background-color: white;
+    background-color: #11161c;
     height: 325px;
     width: 1140px;
     margin-left: 10px;
@@ -142,6 +142,13 @@ hr {
 .custom-table td {
     text-align: center;
     vertical-align: middle;
+}
+
+.custom-table th {
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    font-size: 17px;
 }
 
 img {
@@ -210,4 +217,9 @@ P {
 
 .unfollow.custom-button:hover {
     background-color: #e53935; 
+}
+
+#badge {
+    height: 300px;
+    width: 300px;
 }

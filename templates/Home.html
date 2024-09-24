@@ -14,7 +14,7 @@
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
                         <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
-                                <img id="profilepic" src="../static/default.jpg">
+                                <img id="profilepic" src="../static/default1.png">
                             </span>
                         </a>
                         <a href="{{ url_for('my_profile') }}">
@@ -121,6 +121,14 @@
                         <div id="graphs" class="card">
                             <p id="cardheader">Monthly Report</p>
                             <hr>
+                            <div class="row">
+                                <div class="col-md-6 img-center">
+                                    <img src="{{ url_for('static', filename='images/' + username + '/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid income-pie-chart">
+                                </div>
+                                <div class="col-md-6 img-center">
+                                    <img src="{{ url_for('static', filename='images/' + username + '/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid expense-pie-chart">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

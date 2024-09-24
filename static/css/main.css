@@ -291,3 +291,23 @@ form {
     align-items: flex-start;
     width: 100%; 
 }
+
+.income-pie-chart {
+    width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.expense-pie-chart {
+    width: 300px;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
