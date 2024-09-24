@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import os
 from datetime import datetime, timedelta
+import database
+
+database.init_db()
 
 app = Flask(__name__)
 app.secret_key = 'Amongus'
