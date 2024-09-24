@@ -675,7 +675,13 @@ def home():
 
     recent_expenses = fetch_recent_expenses_from_db(username, limit=4)
 
-    return render_template('Home.html', incomes=recent_incomes, expenses=recent_expenses)
+    income_pie_chart_filename = f'income_pie_chart'
+    expense_pie_chart_filename = f'expense_pie_chart'
+
+    income_pie_chart = generate_pie_chart(recent_incomes, 'Monthly Incomes by Category', [inc['category'] for inc in recent_incomes], income_pie_chart_filename, username)
+    expense_pie_chart = generate_pie_chart(recent_expenses, 'Monthly Expenses by Category', [exp['category'] for exp in recent_expenses], expense_pie_chart_filename, username)
+
+    return render_template('Home.html', incomes=recent_incomes, expenses=recent_expenses, username=username)
   
 @app.route('/expense_form', methods=['GET', 'POST'])
 def expense_form():

@@ -14,7 +14,7 @@
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
                         <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
-                                <img id="profilepic" src="{{ url_for('static', filename='default.jpg') }}">
+                                <img id="profilepic" src="{{ url_for('static', filename='default1.png') }}">
                             </span>
                         </a>
                         <a href="{{ url_for('my_profile') }}">
@@ -58,7 +58,7 @@
                                 <div class="row d-flex justify-content-between align-items-center"> 
                                     <div class="d-flex align-items-center">
                                         <span class="box">
-                                            <img src="{{ url_for('static', filename='default.jpg') }}" id="profilepicture" class="img-fluid img-thumbnail" alt="Profile Picture">
+                                            <img src="{{ url_for('static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
                                         </span>
                                         <div id="username" class="text-center">
                                             <p>{{ user['username'] }}</p>
@@ -93,21 +93,21 @@
                             <table class="custom-table">
                                 <thead class="custom-thead">
                                     <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Achievement Points</th>
+                                        <th>Income Points</th>
+                                        <th>Expense Points</th>
                                     </tr>
                                 </thead>
                                 <tbody class="custom-body">
                                     <tr>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
+                                            <img id="badge" src="{{ url_for('static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
+                                            <img id="badge" src="{{ url_for('static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
                                         </td>
                                         <td>
-                                            <img src="{{ url_for('static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
+                                            <img id="badge" src="{{ url_for('static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
                                         </td>
                                     </tr>
                                 </tbody>
