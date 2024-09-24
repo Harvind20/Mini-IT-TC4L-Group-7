@@ -146,7 +146,7 @@ def calculate_balanced_activity_bonus(username):
     income_expense_ratio = total_income / total_expense
     if income_expense_ratio > 1:
         percentage_extra_income = (income_expense_ratio - 1) * 100
-        balance_bonus = (percentage_extra_income // 10) * 50
+        balance_bonus = (percentage_extra_income // 10) * 20
 
     monthly_entries = fetch_monthly_entries(username)
     income_entries = monthly_entries['income']
@@ -190,25 +190,31 @@ def update_all_users_points():
         username = user['username']
         update_totals(username)
 
-def generate_pie_chart(data, title, labels, filename):
+def generate_pie_chart(data, title, labels, filename, username):
+    user_folder = f'static/images/{username}/'
+    os.makedirs(user_folder, exist_ok=True)
+
     amounts = [item['amount'] for item in data]
     categories = [item['category'] for item in data]
 
     plt.figure(figsize=(8, 6))
-    label_font = {'fontsize': 20, 'fontfamily': 'serif', 'fontweight': 'bold', 'color': '#c0e2df'}
+    label_font = {'fontsize': 17, 'fontfamily': 'serif', 'fontweight': 'bold', 'color': '#c0e2df'}
     autopct_font = {'fontsize': 15, 'fontfamily': 'serif', 'fontweight': 'normal', 'color': '#c0e2df'}
     plt.pie(amounts, labels=categories, autopct=lambda p: f'{p:.1f}%', startangle=140,
             textprops=label_font)
     plt.title(title, fontsize=25, fontfamily='serif', fontweight='bold', color='#c0e2df')
 
-    file_path = f'static/images/{filename}.png'
+    file_path = f'{user_folder}/{filename}.png'
     
     plt.savefig(file_path, dpi=300, transparent=True)
     plt.close()
 
     return file_path
 
-def generate_frequency_polygon(data, title, filename):
+def generate_frequency_polygon(data, title, filename, username):
+    user_folder = f'static/images/{username}/'
+    os.makedirs(user_folder, exist_ok=True)
+
     df = pd.DataFrame(data, columns=['date', 'amount'])
     
     if 'date' not in df.columns or 'amount' not in df.columns:
@@ -245,7 +251,7 @@ def generate_frequency_polygon(data, title, filename):
     ax.spines['right'].set_color('#c0e2df')
     ax.spines['left'].set_color('#c0e2df')
 
-    file_path = f'static/images/{filename}.png'
+    file_path = f'{user_folder}/{filename}.png'
     
     plt.savefig(file_path, dpi=300, transparent=True)
     plt.close()
@@ -254,11 +260,11 @@ def generate_frequency_polygon(data, title, filename):
 
 def determine_ap_badge_id(ap):
     if ap is None or ap <= 0: return 1
-    if ap >= 20000: return 7
-    if ap >= 10000: return 6
-    if ap >= 5000: return 5
-    if ap >= 2000: return 4
-    if ap >= 1000: return 3
+    if ap >= 50000: return 7
+    if ap >= 25000: return 6
+    if ap >= 10000: return 5
+    if ap >= 5000: return 4
+    if ap >= 2500: return 3
     return 2
 
 def determine_income_badge_id(income):
@@ -267,7 +273,7 @@ def determine_income_badge_id(income):
     if income >= 10000: return 6
     if income >= 5000: return 5
     if income >= 2000: return 4
-    if income >= 1000: return 3
+    if income >= 100: return 3
     return 2
 
 def determine_expense_badge_id(expense):
@@ -595,17 +601,23 @@ def summary():
     formatted_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in expenses]
     formatted_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in incomes]
 
-    expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], 'expense_pie_chart')
-    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Yearly Expense Frequency', 'expense_frequency_polygon')
+    expense_pie_chart_filename = f'expense_pie_chart'
+    expense_frequency_polygon_filename = f'expense_frequency_polygon'
+    income_pie_chart_filename = f'income_pie_chart'
+    income_frequency_polygon_filename = f'income_frequency_polygon'
+
+    expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], expense_pie_chart_filename, username)
+    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Yearly Expense Frequency', expense_frequency_polygon_filename, username)
     
-    income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], 'income_pie_chart')
-    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Yearly Income Frequency', 'income_frequency_polygon')
+    income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], income_pie_chart_filename, username)
+    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Yearly Income Frequency', income_frequency_polygon_filename, username)
 
     return render_template('summary.html', 
                            expense_pie_chart=expense_pie_chart,
                            expense_frequency_polygon=expense_frequency_polygon,
                            income_pie_chart=income_pie_chart,
-                           income_frequency_polygon=income_frequency_polygon)
+                           income_frequency_polygon=income_frequency_polygon,
+                           username=username)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
