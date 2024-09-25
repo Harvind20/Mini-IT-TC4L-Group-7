@@ -568,6 +568,10 @@ def update_leaderboard_for_user(username):
     conn.commit()
     conn.close()
 
+@app.route('/')  # Set '/' to point to signup
+def home():
+    return signup() 
+
 @app.route('/global_leaderboard')
 def global_leaderboard():
     # Check if the user is logged in
