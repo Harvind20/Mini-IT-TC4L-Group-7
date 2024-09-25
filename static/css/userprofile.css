@@ -99,6 +99,10 @@ hr {
     margin-left: -190px;
 }
 
+#imagelink {
+    display: inline-block;
+}
+
 /* Profile picture circle container */
 #profilecircle {
     height: 90px;
@@ -161,6 +165,8 @@ hr {
 
 /* Custom table headers styling */
 .custom-table th {
+    text-align: center;
+    vertical-align: middle;
     color: white;
     font-size: 17px;
 }
