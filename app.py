@@ -89,6 +89,40 @@ def fetch_current_month_incomes(username):
     conn.close()  # Remember to close the connection
     return incomes
 
+def fetch_current_year_expenses(username):
+    # Get the current year
+    current_year = datetime.now().year
+
+    # SQL query to fetch only expenses for the current year
+    query = """
+        SELECT * FROM expenses 
+        WHERE username = ? AND strftime('%Y', date) = ?
+    """
+    year_str = str(current_year)
+
+    # Execute the query and return the result
+    conn = get_db_connection()
+    expenses = conn.execute(query, (username, year_str)).fetchall()
+    conn.close()
+    return expenses
+
+def fetch_current_year_incomes(username):
+    # Get the current year
+    current_year = datetime.now().year
+
+    # SQL query to fetch only incomes for the current year
+    query = """
+        SELECT * FROM income
+        WHERE username = ? AND strftime('%Y', date) = ?
+    """
+    year_str = str(current_year)
+
+    # Execute the query and return the result
+    conn = get_db_connection()
+    incomes = conn.execute(query, (username, year_str)).fetchall()
+    conn.close()
+    return incomes
+
 def fetch_entries(username):
     # Establish a database connection
     conn = get_db_connection()
@@ -329,7 +363,7 @@ def generate_frequency_polygon(data, title, filename, username):
     plt.ylabel('Amount', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df')
     
     plt.xticks(ticks=range(12), labels=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], rotation=45)
-
+    
     # Customize ticks and spine colors
     plt.tick_params(axis='x', labelsize=30, colors='#c0e2df')
     plt.tick_params(axis='y', labelsize=30, colors='#c0e2df')
@@ -340,11 +374,15 @@ def generate_frequency_polygon(data, title, filename, username):
     ax.spines['right'].set_color('#c0e2df')
     ax.spines['left'].set_color('#c0e2df')
 
-    # Save the frequency polygon as an image
-    file_path = f'{user_folder}/{filename}.png'
+    # Add grid and adjust layout
+    plt.grid(color='gray', linestyle='--', linewidth=0.7)
+    plt.tight_layout()  # Adjust layout to prevent clipping of tick-labels
+
+    # Save the plot
+    file_path = os.path.join(user_folder, f'{filename}_{username}.png')
     plt.savefig(file_path, dpi=300, transparent=True)
     plt.close()
-    
+
     return file_path
 
 def determine_ap_badge_id(ap):
@@ -723,33 +761,69 @@ def summary():
     
     username = session['username']
     
-    # Fetch expenses and incomes for the current month from the database.
-    expenses = fetch_current_month_expenses(username)
-    incomes = fetch_current_month_incomes(username)
+    # Fetch monthly expenses and incomes for the pie charts
+    monthly_expenses = fetch_current_month_expenses(username)
+    monthly_incomes = fetch_current_month_incomes(username)
 
-    # Format expenses and incomes for chart generation.
-    formatted_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in expenses]
-    formatted_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in incomes]
+    # Fetch yearly expenses and incomes for the frequency polygons
+    yearly_expenses = fetch_current_year_expenses(username)
+    yearly_incomes = fetch_current_year_incomes(username)
 
-    # Generate pie charts and frequency polygons for expenses and incomes.
+    # Format monthly expenses and incomes for chart generation
+    formatted_monthly_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in monthly_expenses]
+    formatted_monthly_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in monthly_incomes]
+
+    # Format yearly expenses and incomes for frequency polygon generation
+    formatted_yearly_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in yearly_expenses]
+    formatted_yearly_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in yearly_incomes]
+
+    # Generate pie charts for the current month
     expense_pie_chart_filename = f'expense_pie_chart'
-    expense_frequency_polygon_filename = f'expense_frequency_polygon'
     income_pie_chart_filename = f'income_pie_chart'
-    income_frequency_polygon_filename = f'income_frequency_polygon'
-
-    expense_pie_chart = generate_pie_chart(expenses, 'Monthly Expenses by Category', [exp['category'] for exp in expenses], expense_pie_chart_filename, username)
-    expense_frequency_polygon = generate_frequency_polygon(formatted_expenses, 'Yearly Expense Frequency', expense_frequency_polygon_filename, username)
     
-    income_pie_chart = generate_pie_chart(incomes, 'Monthly Incomes by Category', [inc['category'] for inc in incomes], income_pie_chart_filename, username)
-    income_frequency_polygon = generate_frequency_polygon(formatted_incomes, 'Yearly Income Frequency', income_frequency_polygon_filename, username)
+    expense_pie_chart = generate_pie_chart(
+        monthly_expenses,
+        'Monthly Expenses by Category',
+        [exp['category'] for exp in monthly_expenses],
+        expense_pie_chart_filename,
+        username
+    )
+    
+    income_pie_chart = generate_pie_chart(
+        monthly_incomes,
+        'Monthly Incomes by Category',
+        [inc['category'] for inc in monthly_incomes],
+        income_pie_chart_filename,
+        username
+    )
+
+    # Generate frequency polygons for the entire year
+    expense_frequency_polygon_filename = f'expense_frequency_polygon'
+    income_frequency_polygon_filename = f'income_frequency_polygon'
+    
+    expense_frequency_polygon = generate_frequency_polygon(
+        formatted_yearly_expenses,
+        'Yearly Expense Frequency',
+        expense_frequency_polygon_filename,
+        username
+    )
+    
+    income_frequency_polygon = generate_frequency_polygon(
+        formatted_yearly_incomes,
+        'Yearly Income Frequency',
+        income_frequency_polygon_filename,
+        username
+    )
 
     # Render the summary page with the generated charts.
-    return render_template('summary.html', 
-                           expense_pie_chart=expense_pie_chart,
-                           expense_frequency_polygon=expense_frequency_polygon,
-                           income_pie_chart=income_pie_chart,
-                           income_frequency_polygon=income_frequency_polygon,
-                           username=username)
+    return render_template(
+        'summary.html', 
+        expense_pie_chart=expense_pie_chart,
+        income_pie_chart=income_pie_chart,
+        expense_frequency_polygon=expense_frequency_polygon,
+        income_frequency_polygon=income_frequency_polygon,
+        username=username
+    )
 
 # Route for the sign up page.
 @app.route('/signup', methods=['GET', 'POST'])
