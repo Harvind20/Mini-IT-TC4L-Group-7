@@ -484,43 +484,55 @@ def search_user():
 @app.route('/user/', defaults={'username': None})
 @app.route('/user/<username>')
 def user_profile(username):
+    # Check if the user is logged in; if not, redirect to the login page
     if 'username' not in session:
         return redirect(url_for('login'))
 
+    # If no username is provided, use the logged-in user's username
     if username is None:
         username = session['username']
 
+    # Connect to the database
     conn = get_db_connection()
     cur = conn.cursor()
+    
+    # Retrieve user details from the database
     cur.execute('SELECT * FROM users WHERE username = ?', (username,))
     user = cur.fetchone()
 
+    # If the user is not found, return a 404 error
     if user is None:
         conn.close()
         return "User not found", 404
 
+    # Update the leaderboard and assign badges for the user
     update_leaderboard_for_user(username)
     assign_badges(username)
 
+    # Get the count of followers for the user
     cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
     follower_count = cur.fetchone()[0]
 
+    # Get the count of users the user is following
     cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ?', (username,))
     following_count = cur.fetchone()[0]
 
+    # Check if the logged-in user is following this user
     logged_in_user = session['username']
     cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE follower = ? AND following = ?', (logged_in_user, username))
     is_following = cur.fetchone()[0] > 0
 
+    # Retrieve the badge IDs for the user
     cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
                    FROM user_badges 
                    WHERE username = ?''', (username,))
-    badge_ids = cur.fetchone() or (1, 1, 1)
+    badge_ids = cur.fetchone() or (1, 1, 1)  # Default badge IDs if none found
 
-    badge_ids = [str(badge_id) for badge_id in badge_ids]
+    badge_ids = [str(badge_id) for badge_id in badge_ids]  # Convert badge IDs to strings
 
-    conn.close()
+    conn.close()  # Close the database connection
 
+    # Render the user profile template with the retrieved data
     return render_template('user_profile.html', user=user, follower_count=follower_count, following_count=following_count,
                            is_following=is_following, badge_ids=badge_ids)
 
