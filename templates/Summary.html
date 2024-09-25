@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
@@ -11,14 +10,20 @@
 <body>
     <div class="container-fluid vh-100">
         <div class="row d-flex">
+            <!-- Left navbar column -->
             <div class="col-md-2 d-flex vh-100" id="left-column">
                 <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                    <!-- Profile link with profile picture -->
                     <a href="{{ url_for('my_profile') }}">
-                        <span id="profilecircle" class="dot"><img id="profilepic" src="../static/default1.png"></span>
+                        <span id="profilecircle" class="dot">
+                            <img id="profilepic" src="../static/default1.png">
+                        </span>
                     </a>
+                    <!-- Displaying the username -->
                     <a href="{{ url_for('my_profile') }}">
                         <p id="profileusername">{{ session['username'] }}</p>
                     </a>
+                    <!-- Navigation items -->
                     <li class="nav-item mt-4">
                         <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;">
                             <i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home
@@ -39,9 +44,13 @@
                             <i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary
                         </a>
                     </li>
-                    <li class="nav-item mt-2"></li>
-                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;"><i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
-                        </li>
+                    <!-- Log out link -->
+                    <li class="nav-item mt-2">
+                        <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
+                            <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
+                        </a>
+                    </li>
+                    <!--  BudgetBadger logo link -->
                     <li class="nav-item">
                         <a id="imagelink" href="{{ url_for('home') }}">
                             <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="img-fluid mb-5" alt="Logo">
@@ -49,8 +58,10 @@
                     </li>
                 </ul>
             </div>
+            <!-- Main content area -->
             <div class="col-md-10 d-flex vh-100">
                 <div id="maincard" class="card w-100">
+                    <!-- Expenses summary card -->
                     <div id="firstsummary" class="card mb-4">
                         <p id="cardheader">Expenses</p>
                         <hr>
@@ -63,6 +74,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Incomes summary card -->
                     <div id="secondsummary" class="card">
                         <p id="cardheader">Incomes</p>
                         <hr>

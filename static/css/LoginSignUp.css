@@ -1,44 +1,43 @@
-#main-colour {
+#main-colour { /* Main background color */
     background-color: #c0e2df;
 }
 
-#secondary-colour {
+#secondary-colour { /* Secondary background color */
     background-color: #11161c;
 }
 
-#button-1 {
+#button-1 { /* Button 1 styles */
     border-color: black;
     color: black;
 }
 
-#button-1:hover {
+#button-1:hover { /* Hover effect for button 1 */
     background-color: #11161c;
     color: #c0e2df;
 }
 
-.form-control {
+.form-control { /* Form control styles */
     background-color: #11161c;
     border-color: #11161c;
     color: #c0e2df;
 }
 
-.form-control:focus {
+.form-control:focus { /* Focus effect for form control */
     background-color: #11161c;
-    color:#c0e2df;
+    color: #c0e2df;
 }
 
-#alert {
+#alert { /* Alert box styles */
     background-color: #ffb9b9; 
     color: #990000; 
     border: 2px solid #ff7e7e; 
     border-radius: 1rem; 
     padding: 20px; 
     margin-bottom: 30px; 
-  }
-  
-#alert p {
+}
+
+#alert p { /* Paragraph styles within alert box */
     margin: 0;
     font-weight: normal; 
     font-size: 1.1em; 
 }
-  

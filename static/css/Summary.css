@@ -1,41 +1,41 @@
-#navbar-pills {
+#navbar-pills { /* Styles for the navbar pills */
     width: 230px;
     height: 40px;
     margin-left: 10px;
     font-size: large;
 }
 
-#left-column {
+#left-column { /* Background color for the left column */
     background-color: #11161c;
 }
 
-.nav-link {
+.nav-link { /* Default link color */
     color: #c0e2df;
 }
 
-.nav-link:hover {
+.nav-link:hover { /* Hover effect for links */
     color: #c0e2df;
 } 
 
 .nav-link:active,
-.nav-link.custom-active {
+.nav-link.custom-active { /* Active link styles */
     color: #04c1af !important;
     outline: none;
     background-color: #28292b !important;
 }
 
-#logo {
+#logo { /* Styles for the logo */
     height: 80px;
     width: 150px;
     margin-top: 219px;
     margin-left: 50px;
 }
 
-#imagelink {
+#imagelink { /* Display setting for image link */
     display: inline-block;
 }
 
-#profilecircle {
+#profilecircle { /* Styles for profile picture circle */
     height: 90px;
     width: 90px;
     border-radius: 50%;
@@ -49,13 +49,13 @@
     background-color: white;
 }
 
-#profilepic {
+#profilepic { /* Styles for profile picture */
     height: 100px;
     width: 100px;
     border-radius: 50%;
 }
 
-#profileusername {
+#profileusername { /* Styles for profile username */
     color: white;
     margin-left: 0px;
     margin-top: 10px;
@@ -64,15 +64,15 @@
     justify-content: center;
 }
 
-a {
+a { /* Default link styling */
     text-decoration: none;
 }
 
-#maincard {
+#maincard { /* Background color for the main card */
     background-color: #11161c;
 }
 
-.card {
+.card { /* Styles for individual cards */
     background-color: #1b2329;
     border: none;
     border-radius: 0.3rem;
@@ -80,30 +80,30 @@ a {
     margin: 1rem 0;
 }
 
-#firstsummary, #secondsummary {
+#firstsummary, #secondsummary { /* Background colors for summary sections */
     background-color: #0a0a0b;
 }
 
-#firstsummary {
+#firstsummary { /* Styles for the first summary section */
     margin: 0;
     padding: 1rem;
     width: 100%;
 }
 
-#secondsummary {
+#secondsummary { /* Styles for the second summary section */
     margin-top: 1px;
     padding: 1rem;
     width: 100%;
 }
 
-#cardheader {
+#cardheader { /* Styles for the card header */
     color: white;
     font-weight: bold;
     margin: 0;
     font-size: 9;
 }
 
-hr {
+hr { /* Styles for horizontal rule */
     background-color: white;
     margin: 0;
     border: none;
@@ -111,7 +111,7 @@ hr {
     width: 100%;
 }
 
-.expense-pie-chart {
+.expense-pie-chart { /* Styles for the expense pie chart */
     width: 68%;
     max-width: 300px;
     height: auto;
@@ -119,7 +119,7 @@ hr {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.expense-frequency-polygon {
+.expense-frequency-polygon { /* Styles for the expense frequency polygon */
     width: 72%;
     max-width: 300px;
     height: auto;
@@ -127,7 +127,7 @@ hr {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.income-pie-chart {
+.income-pie-chart { /* Styles for the income pie chart */
     width: 68%;
     max-width: 300px;
     height: auto;
@@ -135,7 +135,7 @@ hr {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.income-frequency-polygon {
+.income-frequency-polygon { /* Styles for the income frequency polygon */
     width: 72%;
     max-width: 300px;
     height: auto;
@@ -143,22 +143,22 @@ hr {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.img-center {
+.img-center { /* Centering image styles */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-img.img-fluid {
+img.img-fluid { /* Responsive image styles */
     max-width: 100%;
     height: auto;
 }
 
-.row, .container-fluid {
+.row, .container-fluid { /* Margin and padding reset for row and container */
     margin: 0;
     padding: 0;
 }
 
-.col-md-10 {
+.col-md-10 { /* Background color for the column */
     background-color: #11161c;
 }

@@ -1,30 +1,30 @@
-#navbar-pills {
+#navbar-pills { /* Styles for the navbar pills */
     width: 230px;
     height: 40px;
     margin-left: 10px;
     font-size: large;
 }
 
-#left-column {
+#left-column { /* Background color for the left column */
     background-color: #11161c;
 }
 
-.nav-link {
+.nav-link { /* Default link color */
     color: #c0e2df;
 }
 
-.nav-link:hover {
+.nav-link:hover { /* Hover effect for links */
     color: #c0e2df;
 } 
 
 .nav-link:active,
-.nav-link.custom-active {
+.nav-link.custom-active { /* Active link styles */
     color: #04c1af !important;
     outline: none;
     background-color: #28292b !important;
 }
 
-#maincard {
+#maincard { /* Styles for the main content card */
     width: 1200px;
     height: 700px;
     margin-left: 30px;
@@ -32,22 +32,22 @@
     background-color: #0a0a0b;
 }
 
-.col-md-10 {
+.col-md-10 { /* Background color for a column */
     background-color: #11161c;
 }
 
-#logo {
+#logo { /* Styles for the logo */
     height: 80px;
     width: 150px;
     margin-top: 650px;
     margin-left: -190px;
 }
 
-#imagelink {
+#imagelink { /* Display setting for image link */
     display: inline-block;
 }
 
-hr {
+hr { /* Styles for horizontal rule */
     width: 1125px;
     height: 2px;
     background-color: #28292b;
@@ -59,49 +59,49 @@ hr {
     padding-bottom: 0px;
 }
 
-.custom-table-container {
+.custom-table-container { /* Container for custom table with scroll */
     max-height: 1125px;
     overflow-y: auto;
     margin-left: 21px;
 }
 
-.custom-table-container::-webkit-scrollbar {
+.custom-table-container::-webkit-scrollbar { /* Hide scrollbar */
     width: 0;  
     height: 0;
 }
 
-table {
+table { /* General table styles */
     margin-bottom: 20px;
     width: 100%;
     border-collapse: collapse;
 }
 
-.custom-table {
+.custom-table { /* Custom table width */
     width: 1125px;
     margin-left: 13px;
 }
 
-.custom-thead {
+.custom-thead { /* Table header styles */
     text-transform: uppercase; 
     text-align: left;
 }
 
-.custom-thead th {
+.custom-thead th { /* Table header cell styles */
     padding: 0%;
     margin: 0%;
     padding-bottom: 16px;
     color: #919090;
 }
 
-.custom-body {
+.custom-body { /* Body border styles */
     border: 1px solid black;
 }
 
-.custom-body tr {
+.custom-body tr { /* Row border styles */
     border: 1px solid black;
 }
 
-.custom-body td {
+.custom-body td { /* Cell styles */
     padding-top: 20px;
     padding-bottom: 20px;
     color: #bebebe;
@@ -109,7 +109,7 @@ table {
     font-weight: bold;
 }
 
-h1 {
+h1 { /* Styles for main headers */
     margin-top: 15px;
     margin-left: 35px;
     opacity: 1;
@@ -117,7 +117,7 @@ h1 {
     color: #f4f5f5;
 }
 
-#filterbutton {
+#filterbutton { /* Styles for filter button */
     background-color: #1a1a1b;
     border-color: black;
     color: #00dbc7;
@@ -131,12 +131,12 @@ h1 {
     margin-top: 16px;
 }
 
-#filterbutton:hover {
+#filterbutton:hover { /* Hover effect for filter button */
     background-color: #1b2329; 
     border-color: #545b62;
 }
 
-#buttons {
+#buttons { /* Styles for buttons */
     padding: 0px;
     margin: 0px;
     margin-top: 15px;
@@ -145,7 +145,7 @@ h1 {
     align-items: center;
 }
 
-#incomebutton {
+#incomebutton { /* Styles for income button */
     margin-left: 10px;
     border-color: black;
     background-color: #00dbc7;
@@ -160,7 +160,7 @@ h1 {
     margin-right: -5px;
 }
 
-#expensebutton {
+#expensebutton { /* Styles for expense button */
     margin-left: -9px;
     border-color: black;
     background-color: #00dbc7;
@@ -175,7 +175,7 @@ h1 {
     margin-right: -5px;
 }
 
-#profilecircle {
+#profilecircle { /* Styles for profile picture circle */
     height: 90px;
     width: 90px;
     border-radius: 50%;
@@ -189,13 +189,13 @@ h1 {
     background-color: white;
 }
 
-#profilepic {
+#profilepic { /* Styles for profile picture */
     height: 100px;
     width: 100px;
     border-radius: 50%;
 }
 
-#profileusername {
+#profileusername { /* Styles for profile username */
     color: white;
     margin-left: 0px;
     margin-top: 10px;
@@ -204,6 +204,6 @@ h1 {
     justify-content: center;
 }
 
-a {
+a { /* Default link styling */
     text-decoration: none;
 }
