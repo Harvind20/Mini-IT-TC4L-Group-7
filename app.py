@@ -7,7 +7,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 import database
 
 # Initialize the database
@@ -50,6 +50,44 @@ def fetch_recent_expenses_from_db(username, limit=4):
     expenses = conn.execute(query, (username, limit)).fetchall()
     conn.close()
     return expenses
+
+def fetch_current_month_expenses(username):
+    # Get the current year and month
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+
+    # SQL query to fetch only expenses for the current month and year
+    query = """
+        SELECT * FROM expenses 
+        WHERE username = ? AND strftime('%Y', date) = ? AND strftime('%m', date) = ?
+    """
+    year_str = str(current_year)
+    month_str = f'{current_month:02d}'  # Ensure it's two digits (e.g., '09' for September)
+
+    # Execute the query and return the result
+    conn = get_db_connection()  # Use get_db_connection() to get the database connection
+    expenses = conn.execute(query, (username, year_str, month_str)).fetchall()
+    conn.close()  # Remember to close the connection
+    return expenses
+
+def fetch_current_month_incomes(username):
+    # Get the current year and month
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+
+    # SQL query to fetch only incomes for the current month and year
+    query = """
+        SELECT * FROM income 
+        WHERE username = ? AND strftime('%Y', date) = ? AND strftime('%m', date) = ?
+    """
+    year_str = str(current_year)
+    month_str = f'{current_month:02d}'  # Ensure it's two digits (e.g., '09' for September)
+
+    # Execute the query and return the result
+    conn = get_db_connection()  # Use get_db_connection() to get the database connection
+    incomes = conn.execute(query, (username, year_str, month_str)).fetchall()
+    conn.close()  # Remember to close the connection
+    return incomes
 
 def fetch_entries(username):
     # Establish a database connection
@@ -685,9 +723,9 @@ def summary():
     
     username = session['username']
     
-    # Fetch expenses and incomes from the database.
-    expenses = fetch_expenses_from_db(username)
-    incomes = fetch_incomes_from_db(username)
+    # Fetch expenses and incomes for the current month from the database.
+    expenses = fetch_current_month_expenses(username)
+    incomes = fetch_current_month_incomes(username)
 
     # Format expenses and incomes for chart generation.
     formatted_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in expenses]
@@ -771,6 +809,9 @@ def home():
     
     username = session['username']  # Get the current logged-in username
 
+    piechart_expenses = fetch_current_month_expenses(username)
+    piechart_incomes = fetch_current_month_incomes(username)
+
     # Fetch recent income and expense records, limiting to the latest 4 each
     recent_incomes = fetch_recent_incomes_from_db(username, limit=4)
     recent_expenses = fetch_recent_expenses_from_db(username, limit=4)
@@ -781,7 +822,7 @@ def home():
 
     # Generate pie charts for the recent incomes and expenses
     income_pie_chart = generate_pie_chart(
-        recent_incomes, 
+        piechart_incomes, 
         'Monthly Incomes by Category', 
         [inc['category'] for inc in recent_incomes], 
         income_pie_chart_filename, 
@@ -789,7 +830,7 @@ def home():
     )
     
     expense_pie_chart = generate_pie_chart(
-        recent_expenses, 
+        piechart_expenses, 
         'Monthly Expenses by Category', 
         [exp['category'] for exp in recent_expenses], 
         expense_pie_chart_filename, 
