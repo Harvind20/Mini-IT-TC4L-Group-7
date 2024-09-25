@@ -57,11 +57,13 @@
                         </li>
                         
                         <!-- Log out button -->
-                        <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
-                            <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
-                        </a>
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
+                                <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
+                            </a>
+                        </li>
                         
-                        <!-- Company or website logo at the bottom of the sidebar -->
+                        <!-- BudgetBadger logo at the bottom of the sidebar -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
                                 <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
