@@ -16,6 +16,7 @@ def init_db():
     )
     ''')
 
+# Create the 'expenses' table if it doesn't exist already.
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,6 +35,7 @@ def init_db():
     )
     ''')
 
+# Create the 'income' table if it doesn't exist already.
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS income (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

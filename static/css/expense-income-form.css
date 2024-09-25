@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+/* Set the font to Roboto, remove default margins and paddings, center content vertically and horizontally, fill the viewport height, and set a dark background color */
 body {
     font-family: "Roboto", sans-serif;
     margin: 0;
@@ -11,6 +12,7 @@ body {
     background-color: #11161c;
 }
 
+/* Style the popup with Roboto font, set font size, background color, padding, rounded corners, shadow, and max width */
 .log-popup {
     font-family: "Roboto", sans-serif;
     font-size: 15px;
@@ -22,6 +24,7 @@ body {
     width: 100%;
 }
 
+/* Style the heading with Roboto font, set font size, center text, and add bottom margin */
 h2 {
     font-family: "Roboto", sans-serif;
     font-size: 32px;
@@ -29,24 +32,28 @@ h2 {
     margin-bottom: 30px;
 }
 
+/* Add margin below the input boxes for spacing */
 .inputboxes {
     margin-bottom: 30px;
 }
 
+/* Display labels as block elements and add margin below for spacing */
 .inputboxes label {
     display: block;
     margin-bottom: 5px;
 }
 
+/* Style input and select elements with width, padding, rounded corners, dark background, light text color, and border */
 .inputboxes input, .inputboxes select {
     width: 90%;
     padding: 10px;
     border-radius: 15px;
     background-color: #11161c;
-    color:#c0e2df;
+    color: #c0e2df;
     border: 1px solid #c0e2df;
 }
 
+/* Style the submit button with a block display, set width, padding, background color, text color, border styles, rounded corners, cursor pointer, font settings, and center alignment */
 .submitbutton {
     display: block;
     width: 40%;
@@ -62,10 +69,12 @@ h2 {
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
 }
 
+/* Change the background color of the submit button on hover for a visual effect */
 .submitbutton:hover {
     background-color: #218838;
 }
 
+/* Style the cancel button with inline-block display, padding, text color, background color, text decoration, rounded corners, and font weight */
 .cancelbutton {
     display: inline-block;
     padding: 5px 10px;
@@ -77,6 +86,8 @@ h2 {
     font-weight: bold;
     margin-left: 570px;
 }
+
+/* Change the background color of the cancel button on hover for a visual effect */
 .cancelbutton:hover {
     background-color: #c82333; 
 }

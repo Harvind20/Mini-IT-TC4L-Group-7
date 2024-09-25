@@ -2,31 +2,32 @@
 <html>
 <head>
     <title>Log New Expense</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense-income-form.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Responsive design -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense-income-form.css') }}"> <!-- Link to CSS -->
 </head>
 <body>
-<div class="log-popup">
-    <a href="{{ url_for('transaction') }}" class="cancelbutton">X</a>
-    <h2>Log New Expense</h2>
-    <form id="ExpenseForm" method="POST">
-        <div class="inputboxes">
+<div class="log-popup"> <!-- Popup container for the expense logging form -->
+    <a href="{{ url_for('transaction') }}" class="cancelbutton">X</a> <!-- Cancel button to close the popup -->
+    <h2>Log New Expense</h2> <!-- Heading for the form -->
+    <form id="ExpenseForm" method="POST"> <!-- Form to log a new expense -->
+        <div class="inputboxes"> <!-- Container for the date input -->
             <label for="date">Date</label>
-            <input type="date" id="date" name="date" required>
+            <input type="date" id="date" name="date" required> <!-- Date input field -->
         </div>
-        <div class="inputboxes">
+        <div class="inputboxes"> <!-- Container for the amount input -->
             <label for="amount">Amount</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
+            <input type="number" id="amount" name="amount" step="0.01" required> <!-- Amount input field -->
         </div>
-        <div class="inputboxes">
+        <div class="inputboxes"> <!-- Container for the category selection -->
             <label for="category">Category</label>
-            <select id="category" name="category" required>
-                <option value="" disable selected>Select a category</option>
+            <select id="category" name="category" required> <!-- Dropdown for category selection -->
+                <option value="" disable selected>Select a category</option> <!-- Default prompt -->
+                <!-- List of category options -->
                 <option value="Food & Drinks">Food & Drinks</option>
                 <option value="Shopping">Shopping</option>
                 <option value="Transport">Transport</option>
                 <option value="Home">Home</option>
-                <option value="Bills & Fees">Bills & Fees</option>
+                <option value="Bills & Fees">Bills & Fees</option> 
                 <option value="Entertainment">Entertainment</option>
                 <option value="Car">Car</option>
                 <option value="Travel">Travel</option>
@@ -41,11 +42,11 @@
                 <option value="Other Expenses">Other Expenses</option>
             </select>
         </div>
-        <div class="inputboxes">
+        <div class="inputboxes"> <!-- Container for the description input -->
             <label for="description">Description</label>
-            <input type="text" id="description" name="description" required>
+            <input type="text" id="description" name="description" required> <!-- Description input field -->
         </div>
-        <button type="submit" class="submitbutton">Submit</button>
+        <button type="submit" class="submitbutton">Submit</button> <!-- Submit button for the form -->
     </form>
 </div>
 </body>
