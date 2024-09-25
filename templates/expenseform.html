@@ -2,14 +2,13 @@
 <html>
 <head>
     <title>Log New Expense</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Responsive design -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense-income-form.css') }}"> <!-- Link to CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense-income-form.css') }}"> 
 </head>
 <body>
 <div class="log-popup"> <!-- Popup container for the expense logging form -->
     <a href="{{ url_for('transaction') }}" class="cancelbutton">X</a> <!-- Cancel button to close the popup -->
-    <h2>Log New Expense</h2> <!-- Heading for the form -->
-    <form id="ExpenseForm" method="POST"> <!-- Form to log a new expense -->
+    <h2>Log New Expense</h2> 
+    <form id="ExpenseForm" method="POST"> 
         <div class="inputboxes"> <!-- Container for the date input -->
             <label for="date">Date</label>
             <input type="date" id="date" name="date" required> <!-- Date input field -->

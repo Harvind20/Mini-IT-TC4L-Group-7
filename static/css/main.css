@@ -1,30 +1,30 @@
-#navbar-pills {
+#navbar-pills { /* Styles for the navbar pills */
     width: 230px;
     height: 40px;
     margin-left: 10px;
     font-size: large;
 }
 
-#left-column {
+#left-column { /* Background color for the left column */
     background-color: #11161c;
 }
 
-.nav-link {
+.nav-link { /* Default link color */
     color: #c0e2df;
 }
 
-.nav-link:hover {
+.nav-link:hover { /* Hover effect for links */
     color: #c0e2df;
 } 
 
 .nav-link:active,
-.nav-link.custom-active {
+.nav-link.custom-active { /* Active link styles */
     color: #04c1af !important;
     outline: none;
     background-color: #28292b !important;
 }
 
-#maincard {
+#maincard { /* Main card dimensions and background color */
     width: 1200px;
     height: 700px;
     margin-left: 30px;
@@ -32,11 +32,11 @@
     background-color: #0a0a0b;
 }
 
-.col-md-10 {
+.col-md-10 { /* Background color for column */
     background-color: #11161c;
 }
 
-#recentincome {
+#recentincome { /* Styles for recent income card */
     width: 570px;
     height: 180px;
     margin-top: 20px;
@@ -46,7 +46,7 @@
     border-radius: 0.7rem;
 }
 
-#recentexpenses {
+#recentexpenses { /* Styles for recent expenses card */
     width: 570px;
     height: 180px;
     margin-top: 20px;
@@ -56,7 +56,7 @@
     border-radius: 0.7rem;
 }
 
-#quickaccess {
+#quickaccess { /* Styles for quickaccess card */
     width: 1160px;
     height: 150px;
     margin-top: 20px;
@@ -65,7 +65,7 @@
     border-radius: 0.7rem;
 }
 
-#graphs {
+#graphs { /* Styles for recent graphs card */
     width: 1160px;
     height: 290px;
     margin-top: 20px;
@@ -74,7 +74,7 @@
     border-radius: 0.7rem;
 }
 
-#cardheader {
+#cardheader { /* Styles for the card header */
     color: white;
     font-weight: bold;
     margin-top: 7px;
@@ -84,7 +84,7 @@
     font-size: small;
 }
 
-hr {
+hr { /* Styles for horizontal rule */
     background-color: #28292b;
     margin-top: 4px;
     border: none;
@@ -93,7 +93,7 @@ hr {
     opacity: 1;
 } 
 
-#incomeshortcut {
+#incomeshortcut { /* Income shortcut box styles */
     padding: 0%;
     margin: 0%;
     margin-left: 100px;
@@ -102,7 +102,7 @@ hr {
     background-color: #1b2329;
 }
 
-#expenseshortcut {
+#expenseshortcut { /* Expense shortcut box styles */
     padding: 0%;
     margin: 0%;
     margin-left: 200px;
@@ -111,7 +111,7 @@ hr {
     background-color: #1b2329;
 }
 
-#leaderboardshortcut {
+#leaderboardshortcut { /* Leaderboard shortcut box styles */
     padding: 0%;
     margin: 0%;
     margin-left: 300px;
@@ -120,18 +120,18 @@ hr {
     background-color: #1b2329;
 }
 
-.card {
+.card { /* Card styles */
     background-color: #1b2329;
     border: none;
     padding: 0px;
 }
 
-#quickaccess {
+#quickaccess { /* Quick access background color and padding */
     background-color: #11161c;
     padding: 0px;
 }
 
-.quickaccess-item {
+.quickaccess-item { /* Individual quick access item styles */
     height: 90px;
     width: 250px;
     background-color: #22272d;
@@ -140,12 +140,12 @@ hr {
     border-radius: 8px;
 }
 
-ul {
+ul { /* List styles */
     list-style-type: none;
     padding: 0;
 }
 
-a {
+a { /* Link styles */
     text-decoration: none;
     color: white;
     display: flex;
@@ -153,7 +153,7 @@ a {
     justify-content: center;
 }
 
-.shortcuttext {
+.shortcuttext { /* Styles for shortcut text */
     color: white;
     font-weight: bold;
     font-family: 'Inter', sans-serif;
@@ -163,7 +163,7 @@ a {
     margin-top: 20px;
 }
 
-.dot {
+.dot { /* Styles for the dot  */
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -176,45 +176,45 @@ a {
     background-color: #1a1a1b;
 }
 
-#quickaccess1 {
+#quickaccess1 { /* Styles for quick access item 1 */
     margin-left: 70px;
 }
 
-#quickaccess2 {
+#quickaccess2 { /* Styles for quick access item 2 */
     margin-left: 150px;
 }
 
-#quickaccess3 {
+#quickaccess3 { /* Styles for quick access item 3 */
     margin-left: 150px;
 }
 
 #quickaccess1:hover #dot1,
-#quickaccess1:hover #sct1 {
+#quickaccess1:hover #sct1 { /* Hover effect for quick access item 1 */
     color: #00FF00;
 }
 
 #quickaccess2:hover #dot2,
-#quickaccess2:hover #sct2 {
+#quickaccess2:hover #sct2 { /* Hover effect for quick access item 2 */
     color: #FF0000;
 }
 
 #quickaccess3:hover #dot3,
-#quickaccess3:hover #sct3 {
+#quickaccess3:hover #sct3 { /* Hover effect for quick access item 3 */
     color: #1e90ff;
 }
 
-#logo {
+#logo { /* Styles for logo */
     height: 80px;
     width: 150px;
     margin-top: 650px;
     margin-left: -190px;
 }
 
-#imagelink {
+#imagelink { /* Display setting for image link */
     display: inline-block;
 }
 
-#profilecircle {
+#profilecircle { /* Styles for profile picture circle */
     height: 90px;
     width: 90px;
     border-radius: 50%;
@@ -228,13 +228,13 @@ a {
     background-color: white;
 }
 
-#profilepic {
+#profilepic { /* Styles for profile picture */
     height: 100px;
     width: 100px;
     border-radius: 50%;
 }
 
-#profileusername {
+#profileusername { /* Styles for profile username */
     color: white;
     margin-left: 0px;
     margin-top: 10px;
@@ -243,21 +243,21 @@ a {
     justify-content: center;
 }
 
-#incometable {
+#incometable { /* Income table styles */
     color: white;
     font-size: 0.9rem;
     margin-top: -5px;
     margin-left: 5px;
 }
 
-#expensetable {
+#expensetable { /* Expense table styles */
     color: white;
     font-size: 0.9rem;
     margin-top: -5px;
     margin-left: 5px;
 }
 
-#searchinput {
+#searchinput { /* Styles for the search input */
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -271,7 +271,7 @@ a {
     margin-left: 55px;
 }
 
-#searchbutton {
+#searchbutton { /* Styles for the search button */
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -285,28 +285,28 @@ a {
     margin-top: 2px;
 }
 
-form {
+form { /* Form display settings */
     display: flex;
     flex-direction: column; 
     align-items: flex-start;
     width: 100%; 
 }
 
-.income-pie-chart {
+.income-pie-chart { /* Styles for income pie chart */
     width: 300px;
     height: auto;
     object-fit: contain;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.expense-pie-chart {
+.expense-pie-chart { /* Styles for expense pie chart */
     width: 300px;
     height: auto;
     object-fit: contain;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.img-center {
+.img-center { /* Centering image styles */
     display: flex;
     align-items: center;
     justify-content: center;

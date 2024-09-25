@@ -494,27 +494,34 @@ def update_leaderboard_for_user(username):
 
 @app.route('/global_leaderboard')
 def global_leaderboard():
+    # Check if the user is logged in
     if 'username' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # Redirect to login if not authenticated
     
-    update_leaderboard()
+    update_leaderboard()  # Update the leaderboard data
     
+    # Fetch the data for the global leaderboard
     global_leaderboard_data = fetch_global_leaderboard()
     
+    # Render the global leaderboard template with the fetched data
     return render_template('GlobalLeaderboard.html', leaderboard=global_leaderboard_data)
 
 @app.route('/followed_leaderboard')
 def followed_leaderboard():
+    # Check if the user is logged in
     if 'username' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # Redirect to login if not authenticated
     
-    current_user = session['username']
-        
-    update_leaderboard()
+    current_user = session['username']  # Get the current logged-in user
     
+    update_leaderboard()  # Update the leaderboard data
+    
+    # Fetch the data for the followed leaderboard based on the current user
     followed_leaderboard_data = fetch_followed_leaderboard(current_user)
     
+    # Render the followed leaderboard template with the fetched data
     return render_template('FollowedLeaderboard.html', leaderboard=followed_leaderboard_data)
+
 
 @app.route('/search', methods=['GET'])
 def search_user():
@@ -758,21 +765,44 @@ def login():
 
 @app.route('/home')
 def home():
+    # Check if the user is logged in
     if 'username' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # Redirect to login if not authenticated
     
-    username = session['username']
+    username = session['username']  # Get the current logged-in username
 
+    # Fetch recent income and expense records, limiting to the latest 4 each
     recent_incomes = fetch_recent_incomes_from_db(username, limit=4)
     recent_expenses = fetch_recent_expenses_from_db(username, limit=4)
 
+    # Define filenames for the pie chart images
     income_pie_chart_filename = f'income_pie_chart'
     expense_pie_chart_filename = f'expense_pie_chart'
 
-    income_pie_chart = generate_pie_chart(recent_incomes, 'Monthly Incomes by Category', [inc['category'] for inc in recent_incomes], income_pie_chart_filename, username)
-    expense_pie_chart = generate_pie_chart(recent_expenses, 'Monthly Expenses by Category', [exp['category'] for exp in recent_expenses], expense_pie_chart_filename, username)
+    # Generate pie charts for the recent incomes and expenses
+    income_pie_chart = generate_pie_chart(
+        recent_incomes, 
+        'Monthly Incomes by Category', 
+        [inc['category'] for inc in recent_incomes], 
+        income_pie_chart_filename, 
+        username
+    )
+    
+    expense_pie_chart = generate_pie_chart(
+        recent_expenses, 
+        'Monthly Expenses by Category', 
+        [exp['category'] for exp in recent_expenses], 
+        expense_pie_chart_filename, 
+        username
+    )
 
-    return render_template('Home.html', incomes=recent_incomes, expenses=recent_expenses, username=username)
+    # Render the home template with recent incomes, expenses, and username
+    return render_template(
+        'Home.html', 
+        incomes=recent_incomes, 
+        expenses=recent_expenses, 
+        username=username
+    )
 
 #  Route for the expense form.
 @app.route('/expense_form', methods=['GET', 'POST'])

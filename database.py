@@ -74,6 +74,7 @@ def init_db():
     )
     ''')
 
+# Create leaderboard table if it doesn't exist
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS leaderboard (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

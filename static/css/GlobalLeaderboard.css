@@ -1,30 +1,30 @@
-#navbar-pills {
+#navbar-pills { /* Navbar pills styles */
     width: 230px;
     height: 40px;
     margin-left: 10px;
     font-size: large;
 }
 
-#left-column {
+#left-column { /* Navbar background */
     background-color: #11161c;
 }
 
-.nav-link {
+.nav-link { /* Navigation link styles */
     color: #c0e2df;
 }
 
-.nav-link:hover {
+.nav-link:hover { /* Hover effect for nav links */
     color: #c0e2df;
 } 
 
-.nav-link:active,
+.nav-link:active, /* Active and custom active link styles */
 .nav-link.custom-active {
     color: #04c1af !important;
     outline: none;
     background-color: #28292b !important;
 }
 
-#maincard {
+#maincard { /* Main card styles */
     width: 1200px;
     height: 700px;
     margin-left: 30px;
@@ -32,22 +32,22 @@
     background-color: #0a0a0b;
 }
 
-.col-md-10 {
+.col-md-10 { /* Column styles */
     background-color: #11161c;
 }
 
-#logo {
+#logo { /* Logo styling */
     height: 80px;
     width: 150px;
     margin-top: 650px;
     margin-left: -190px;
 }
 
-#imagelink {
+#imagelink { /* Image link display */
     display: inline-block;
 }
 
-hr {
+hr { /* Horizontal rule styles */
     width: 1125px;
     height: 2px;
     background-color: #28292b;
@@ -59,7 +59,7 @@ hr {
     padding-bottom: 0px;
 }
 
-h1 {
+h1 { /* Heading styles */
     margin-top: 15px;
     margin-left: 35px;
     opacity: 1;
@@ -67,7 +67,7 @@ h1 {
     color: #f4f5f5;
 }
 
-#global {
+#global { /* Global button styles */
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -83,7 +83,7 @@ h1 {
     border-radius: 0.2rem;
 }
 
-#followed {
+#followed { /* Followed button styles */
     margin: 0%;
     padding: 0%;    
     border-color: black;
@@ -99,43 +99,43 @@ h1 {
     border-radius: 0.2rem;
 }
 
-table {
+table { /* Table margin */
     margin-bottom: 20px;
 }
 
-.custom-table {
+.custom-table { /* Custom table styles */
     width: 1125px;
     margin-left: 35px;
 }
 
-.custom-thead {
+.custom-thead { /* Table header styles */
     text-transform: uppercase; 
     text-align: left;
 }
 
-.custom-thead th {
+.custom-thead th { /* Table header cell styles */
     padding: 0%;
     margin: 0%;
     padding-bottom: 16px;
     color: #919090;
 }
 
-.custom-body {
+.custom-body { /* Table body styles */
     border: 1px solid black;
 }
 
-.custom-body tr {
+.custom-body tr { /* Table row styles */
     border: 1px solid black;
 }
 
-.custom-body td {
+.custom-body td { /* Table data cell styles */
     padding-top: 15px;
     padding-bottom: 15px;
     color: #bebebe;
     background-color: #28292b;
 }
 
-#profilecircle {
+#profilecircle { /* Profile circle styles */
     height: 90px;
     width: 90px;
     border-radius: 50%;
@@ -149,13 +149,13 @@ table {
     background-color: white;
 }
 
-#profilepic {
+#profilepic { /* Profile picture styles */
     height: 100px;
     width: 100px;
     border-radius: 50%;
 }
 
-#profileusername {
+#profileusername { /* Profile username styles */
     color: white;
     margin-left: 0px;
     margin-top: 10px;
@@ -164,6 +164,6 @@ table {
     justify-content: center;
 }
 
-a {
+a { /* Link styles */
     text-decoration: none;
 }
