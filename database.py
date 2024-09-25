@@ -4,6 +4,7 @@ def init_db():
     conn = sqlite3.connect('budgetbadger.db')
     cursor = conn.cursor()
 
+# Create the 'users' table if it doesn't exist already.
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,6 +49,7 @@ def init_db():
     )
     ''')
 
+# Create the 'follow_relationships' table to manage user followings.
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS follow_relationships (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,6 +61,7 @@ def init_db():
     )
     ''')
 
+# Create the 'user_badges' table to store badges associated with each user.
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS user_badges (
         username TEXT PRIMARY KEY,

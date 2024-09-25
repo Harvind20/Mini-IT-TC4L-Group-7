@@ -2,25 +2,39 @@
 <html>
     <head>
         <title>Home</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS for styling and layout -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <!-- Font Awesome for icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Google Fonts for custom fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+        <!-- Custom CSS file for additional styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/userprofile.css') }}">
     </head>
+    
     <body>
+        <!-- Full-height container, covering the entire viewport -->
         <div class="container-fluid vh-100">
             <div class="row d-flex">
+                
+                <!-- Left column for navigation, occupying 2 columns on medium+ screens, full height (vh-100) -->
                 <div class="col-md-2 d-flex vh-100" id="left-column">
+                    <!-- Navigation menu (vertical pills) -->
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
+                        
+                        <!-- Profile picture at the top of the sidebar -->
                         <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
                                 <img id="profilepic" src="{{ url_for('static', filename='default1.png') }}">
                             </span>
                         </a>
+                        
+                        <!-- Display the username as a link to the profile page -->
                         <a href="{{ url_for('my_profile') }}">
                             <p id="profileusername">{{ session['username'] }}</p>
                         </a>
+                        
+                        <!-- Navigation links to different sections of the site -->
                         <li class="nav-item mt-4">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;">
                                 <i class="fas fa-house"></i>&nbsp;&nbsp;&nbsp;Home
@@ -41,10 +55,15 @@
                                 <i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary
                             </a>
                         </li>
-                        <li class="nav-item mt-2"></li>
-                        <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
-                            <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
-                        </a>
+                        
+                        <!-- Log out button -->
+                        <li class="nav-item mt-2">
+                            <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
+                                <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
+                            </a>
+                        </li>
+                        
+                        <!-- BudgetBadger logo at the bottom of the sidebar -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
                                 <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
@@ -52,15 +71,23 @@
                         </li>
                     </ul>
                 </div>
+                
+                <!-- Right column for main content, occupying 10 columns on medium+ screens -->
                 <div class="col-md-10 d-flex vh-100">
+                    <!-- Main content card -->
                     <div id="maincard" class="card">
+                        
+                        <!-- Profile card displaying user information and follow button -->
                         <div class="row">
                             <div id="profilecard" class="card">
-                                <div class="row d-flex justify-content-between align-items-center"> 
+                                <div class="row d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
+                                        <!-- Profile picture in the profile card -->
                                         <span class="box">
                                             <img src="{{ url_for('static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
                                         </span>
+                                        
+                                        <!-- Username, following and followers count -->
                                         <div id="username" class="text-center">
                                             <p>{{ user['username'] }}</p>
                                         </div>
@@ -74,6 +101,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <!-- Follow/unfollow button -->
                                 <div>
                                     <form action="/follow" method="post">
                                         <input type="hidden" name="user_id" value="{{ user['username'] }}">
@@ -88,9 +117,12 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Badges section showing user achievements -->
                         <div id="badges" class="card">
                             <p id="cardheader">Badges</p>
                             <hr>
+                            <!-- Table for displaying badges -->
                             <table class="custom-table">
                                 <thead class="custom-thead">
                                     <tr>
@@ -101,6 +133,7 @@
                                 </thead>
                                 <tbody class="custom-body">
                                     <tr>
+                                        <!-- Display badge images using dynamic file paths based on badge IDs -->
                                         <td>
                                             <img id="badge" src="{{ url_for('static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
                                         </td>
