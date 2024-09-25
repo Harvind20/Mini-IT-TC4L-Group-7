@@ -484,7 +484,7 @@ def search_user():
 @app.route('/user/', defaults={'username': None})
 @app.route('/user/<username>')
 def user_profile(username):
-    # Check if the user is logged in; if not, redirect to the login page
+    # Check if the user is logged in. If not, redirect to the login page
     if 'username' not in session:
         return redirect(url_for('login'))
 
