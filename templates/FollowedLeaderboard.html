@@ -15,7 +15,9 @@
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
                         <!-- Profile picture and username -->
                         <a href="{{ url_for('my_profile') }}">
-                            <span id="profilecircle" class="dot"><img id="profilepic" src="../static/default1.png" alt="Profile Picture"></span>
+                            <span id="profilecircle" class="dot">
+                                <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
+                            </span>
                         </a>
                         <a href="{{ url_for('my_profile') }}">
                             <p id="profileusername">{{ session['username'] }}</p>
@@ -28,10 +30,7 @@
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('transaction') }}" style="border-radius: 0.3rem;"><i class="fas fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Transactions</a>
                         </li>
                         <li class="nav-item mt-2">
-                            <a id="navbar-pills" class="nav-link" href="{{ url_for('global_leaderboard') }}" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
-                        </li>
-                        <li class="nav-item mt-2">
-                            <a id="navbar-pills" class="nav-link active custom-active" href="{{ url_for('followed_leaderboard') }}" style="border-radius: 0.3rem;"><i class="fas fa-users"></i>&nbsp;&nbsp;&nbsp;Friends</a>
+                            <a id="navbar-pills" class="nav-link active custom-active" href="{{ url_for('global_leaderboard') }}" style="border-radius: 0.3rem;"><i class="fas fa-chalkboard-user"></i>&nbsp;&nbsp;&nbsp;Leaderboard</a>
                         </li>
                         <li class="nav-item mt-2">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('summary') }}" style="border-radius: 0.3rem;"><i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary</a>
@@ -43,7 +42,7 @@
                         <!-- Budgetbadger logo link -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
-                                <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                                <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
                     </ul>

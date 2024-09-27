@@ -16,7 +16,7 @@
                         <!-- Profile link with profile picture -->
                         <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
-                                <img id="profilepic" src="../static/default1.png">
+                                <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
                             </span>
                         </a>
                         <!-- Displaying the username -->
@@ -53,7 +53,7 @@
                         <!-- Budgetbadger logo link -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
-                                <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                                <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
                     </ul>
@@ -85,7 +85,7 @@
                                             </tr>
                                         {% endfor %}
                                     </tbody>
-                                </table> 
+                                </table>
                             </div>
                             <!-- Recent Expenses section -->
                             <div id="recentexpenses" class="card">
