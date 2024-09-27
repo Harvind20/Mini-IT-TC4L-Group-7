@@ -16,7 +16,7 @@
                             <div class="mb-xl-5 mt-xl-4 pb-5">
                                 <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
                                 <p class="text-black-75 mb-5">Please enter your username, email and password!</p>
-                                <form method="post" action="#"> <!-- Form for user input -->
+                                <form method="post" action="{{ url_for('signup') }}"> <!-- Form for user input -->
                                     <div class="mb-4">
                                         <input type="text" name="username" class="form-control form-control-lg" required />
                                         <label class="form-label">Username</label> <!-- Username input -->
@@ -30,7 +30,7 @@
                                         <label class="form-label">Password</label> <!-- Password input -->
                                     </div>
                                     <button id="button-1" class="btn btn-lg px-4" type="submit">Sign Up</button> <!-- Submit button -->
-                                </form>     
+                                </form>
                             </div>
                             <div>
                                 <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}" class="text-black fw-bold">Login</a></p> <!-- Link to login page -->

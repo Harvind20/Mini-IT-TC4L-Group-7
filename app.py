@@ -1,13 +1,12 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 import sqlite3
 import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import database
 
 # Initialize the database
@@ -16,6 +15,11 @@ database.init_db()
 # Create a Flask application
 app = Flask(__name__)
 app.secret_key = '200220051805200528102005'  # Set the secret key for session management
+
+@app.route('/mini-it-static/<path:filename>')
+def serve_mini_it_static(filename):
+    return send_from_directory('/home/budgetbadgersite/Mini-IT-TC4L-Group-7/static', filename)
+
 
 def get_db_connection():
     # Establish a connection to the SQLite database
@@ -58,7 +62,7 @@ def fetch_current_month_expenses(username):
 
     # SQL query to fetch only expenses for the current month and year
     query = """
-        SELECT * FROM expenses 
+        SELECT * FROM expenses
         WHERE username = ? AND strftime('%Y', date) = ? AND strftime('%m', date) = ?
     """
     year_str = str(current_year)
@@ -77,7 +81,7 @@ def fetch_current_month_incomes(username):
 
     # SQL query to fetch only incomes for the current month and year
     query = """
-        SELECT * FROM income 
+        SELECT * FROM income
         WHERE username = ? AND strftime('%Y', date) = ? AND strftime('%m', date) = ?
     """
     year_str = str(current_year)
@@ -95,7 +99,7 @@ def fetch_current_year_expenses(username):
 
     # SQL query to fetch only expenses for the current year
     query = """
-        SELECT * FROM expenses 
+        SELECT * FROM expenses
         WHERE username = ? AND strftime('%Y', date) = ?
     """
     year_str = str(current_year)
@@ -126,7 +130,7 @@ def fetch_current_year_incomes(username):
 def fetch_entries(username):
     # Establish a database connection
     conn = get_db_connection()
-    
+
     # SQL query to fetch all dates from income and expenses for the user
     query = '''
         SELECT date FROM income WHERE username = ?
@@ -135,7 +139,7 @@ def fetch_entries(username):
     '''
     # Execute the query and fetch all results
     entries = conn.execute(query, (username, username)).fetchall()
-    
+
     conn.close()  # Close the database connection
     # Return a list of dates from the entries
     return [entry['date'] for entry in entries]
@@ -143,7 +147,7 @@ def fetch_entries(username):
 def fetch_monthly_entries(username):
     # Establish a database connection
     conn = get_db_connection()
-    
+
     # SQL query to count income entries grouped by month
     income_entries_query = '''
         SELECT strftime('%Y-%m', date) AS month, COUNT(*) AS count
@@ -152,7 +156,7 @@ def fetch_monthly_entries(username):
         GROUP BY month
     '''
     income_entries = conn.execute(income_entries_query, (username,)).fetchall()
-    
+
     # SQL query to count expense entries grouped by month
     expense_entries_query = '''
         SELECT strftime('%Y-%m', date) AS month, COUNT(*) AS count
@@ -161,7 +165,7 @@ def fetch_monthly_entries(username):
         GROUP BY month
     '''
     expense_entries = conn.execute(expense_entries_query, (username,)).fetchall()
-    
+
     conn.close()  # Close the database connection
 
     # Create dictionaries for monthly income and expense counts
@@ -178,7 +182,7 @@ def calculate_income_points(username):
     # Fetch incomes for the specified user
     incomes = fetch_incomes_from_db(username)
     income_points = 0
-    
+
     # Calculate points based on income categories
     for income in incomes:
         amount = income['amount']
@@ -239,7 +243,7 @@ def calculate_balanced_activity_bonus(username):
     total_expense = sum(expense['amount'] for expense in expenses)
 
     balance_bonus = 0
-    
+
     # Return 0 if there are no expenses
     if total_expense == 0:
         return balance_bonus
@@ -264,7 +268,7 @@ def has_seven_day_streak(dates):
     date_format = "%Y-%m-%d"
     dates = [datetime.strptime(date, date_format) for date in dates]  # Convert date strings to datetime objects
     dates = sorted(set(dates))  # Remove duplicates and sort the dates
-    
+
     # Check if there are at least 7 unique dates
     if len(dates) < 7:
         return False
@@ -274,7 +278,7 @@ def has_seven_day_streak(dates):
         streak_dates = dates[i:i+7]
         if streak_dates[-1] - streak_dates[0] == timedelta(days=6):
             return True  # Return True if a streak is found
-    
+
     return False  # Return False if no streak is found
 
 def calculate_daily_streak(username):
@@ -288,22 +292,9 @@ def calculate_daily_streak(username):
 
     return daily_streak_points  # Return daily streak points
 
-def update_all_users_points():
-    # Establish a database connection
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    # Fetch all usernames from the users table
-    users = cursor.execute('SELECT username FROM users').fetchall()
-    conn.close()
-    
-    # Update points for each user
-    for user in users:
-        username = user['username']
-        update_totals(username)  # Call the function to update totals for each user
-
 def generate_pie_chart(data, title, labels, filename, username):
     # Create a directory for the user if it doesn't exist
-    user_folder = f'static/images/{username}/'
+    user_folder = f'/home/budgetbadgersite/Mini-IT-TC4L-Group-7/static/images/{username}'
     os.makedirs(user_folder, exist_ok=True)
 
     # Prepare data for pie chart
@@ -313,24 +304,36 @@ def generate_pie_chart(data, title, labels, filename, username):
     # Create a pie chart
     plt.figure(figsize=(8, 6))
     label_font = {'fontsize': 17, 'fontfamily': 'serif', 'fontweight': 'bold', 'color': '#c0e2df'}
-    autopct_font = {'fontsize': 15, 'fontfamily': 'serif', 'fontweight': 'normal', 'color': '#c0e2df'}
-    plt.pie(amounts, labels=categories, autopct=lambda p: f'{p:.1f}%', startangle=140,
-            textprops=label_font)
+
+    plt.pie(
+        amounts,
+        labels=categories,
+        autopct=lambda p: f'{p:.1f}%',
+        startangle=140,
+        textprops=label_font,
+        pctdistance=0.85  # Adjusts the position of the percentage text
+    )
+
+    # Set font properties for percentage labels
+    for text in plt.gca().texts:
+        text.set_fontsize(15)  # Set the font size for all percentage labels
+        text.set_fontfamily('serif')
+        text.set_fontweight('normal')
+        text.set_color('#c0e2df')
+
     plt.title(title, fontsize=25, fontfamily='serif', fontweight='bold', color='#c0e2df')
 
     # Save the pie chart as an image
-    file_path = f'{user_folder}/{filename}.png'
+    file_path = os.path.join(user_folder, f'{filename}.png')
     plt.savefig(file_path, dpi=300, transparent=True)
     plt.close()
 
-    return file_path
-
 def generate_frequency_polygon(data, title, filename, username):
     # Create a directory for the user if it doesn't exist
-    user_folder = f'static/images/{username}/'
+    user_folder = f'/home/budgetbadgersite/Mini-IT-TC4L-Group-7/static/images/{username}'
     os.makedirs(user_folder, exist_ok=True)
 
-    # Convert data into a DataFrame for processing
+ # Convert data into a DataFrame for processing
     df = pd.DataFrame(data, columns=['date', 'amount'])
 
     # Validate DataFrame structure
@@ -339,7 +342,7 @@ def generate_frequency_polygon(data, title, filename, username):
 
     # Convert date strings to datetime objects
     df['date'] = pd.to_datetime(df['date'])
-    
+
     # Set date as index and resample to monthly totals
     df.set_index('date', inplace=True)
     monthly_totals = df.resample('M').sum().reset_index()
@@ -359,15 +362,15 @@ def generate_frequency_polygon(data, title, filename, username):
     plt.figure(figsize=(21, 14))
     plt.plot(merged_df['month'], merged_df['amount'], marker='o', linestyle='-', color='#39FF14')
     plt.title(title, fontsize=50, fontfamily='serif', fontweight='bold', color='#c0e2df')
-    plt.xlabel('Month', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df') 
+    plt.xlabel('Month', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df')
     plt.ylabel('Amount', fontsize=40, fontfamily='serif', fontweight='bold', color='#c0e2df')
-    
+
     plt.xticks(ticks=range(12), labels=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], rotation=45)
-    
+
     # Customize ticks and spine colors
     plt.tick_params(axis='x', labelsize=30, colors='#c0e2df')
     plt.tick_params(axis='y', labelsize=30, colors='#c0e2df')
-    
+
     ax = plt.gca()
     ax.spines['bottom'].set_color('#c0e2df')
     ax.spines['top'].set_color('#c0e2df')
@@ -387,49 +390,49 @@ def generate_frequency_polygon(data, title, filename, username):
 
 def determine_ap_badge_id(ap):
     # Determine badge ID based on achievement points
-    if ap is None or ap <= 0: 
+    if ap is None or ap <= 0:
         return 1
-    if ap >= 50000: 
+    if ap >= 50000:
         return 7
-    if ap >= 25000: 
+    if ap >= 25000:
         return 6
-    if ap >= 10000: 
+    if ap >= 10000:
         return 5
-    if ap >= 5000: 
+    if ap >= 5000:
         return 4
-    if ap >= 2500: 
+    if ap >= 2500:
         return 3
     return 2
 
 def determine_income_badge_id(income):
     # Determine badge ID based on total income
-    if income is None or income <= 0: 
+    if income is None or income <= 0:
         return 1
-    if income >= 20000: 
+    if income >= 20000:
         return 7
-    if income >= 10000: 
+    if income >= 10000:
         return 6
-    if income >= 5000: 
+    if income >= 5000:
         return 5
-    if income >= 2000: 
+    if income >= 2000:
         return 4
-    if income >= 100: 
+    if income >= 100:
         return 3
     return 2
 
 def determine_expense_badge_id(expense):
     # Determine badge ID based on total expenses
-    if expense is None or expense <= 0: 
+    if expense is None or expense <= 0:
         return 1
-    if expense >= 20000: 
+    if expense >= 20000:
         return 7
-    if expense >= 10000: 
+    if expense >= 10000:
         return 6
-    if expense >= 5000: 
+    if expense >= 5000:
         return 5
-    if expense >= 2000: 
+    if expense >= 2000:
         return 4
-    if expense >= 1000: 
+    if expense >= 1000:
         return 3
     return 2
 
@@ -452,10 +455,10 @@ def assign_badges(username):
     expense_badge_id = determine_expense_badge_id(total_expense)
 
     # Insert or update user badge information in the database
-    cursor.execute('''INSERT INTO user_badges (username, apbadgeid, incomebadgeid, expensebadgeid) 
+    cursor.execute('''INSERT INTO user_badges (username, apbadgeid, incomebadgeid, expensebadgeid)
                       VALUES (?, ?, ?, ?)
-                      ON CONFLICT(username) 
-                      DO UPDATE SET 
+                      ON CONFLICT(username)
+                      DO UPDATE SET
                           apbadgeid = excluded.apbadgeid,
                           incomebadgeid = excluded.incomebadgeid,
                           expensebadgeid = excluded.expensebadgeid
@@ -469,7 +472,7 @@ def update_follower_following_counts(username):
     # Establishes a database connection and updates the follower and following counts for the given username.
     conn = get_db_connection()
     cur = conn.cursor()
-    
+
     # Counts the number of users following the specified username and updates the follower count in the users table.
     cur.execute('SELECT COUNT(*) FROM follow_relationships WHERE following = ?', (username,))
     follower_count = cur.fetchone()[0]
@@ -569,20 +572,20 @@ def update_leaderboard_for_user(username):
     conn.close()
 
 @app.route('/')  # Set '/' to point to signup
-def home():
-    return signup() 
+def root():
+    return signup()
 
 @app.route('/global_leaderboard')
 def global_leaderboard():
     # Check if the user is logged in
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not authenticated
-    
+
     update_leaderboard()  # Update the leaderboard data
-    
+
     # Fetch the data for the global leaderboard
     global_leaderboard_data = fetch_global_leaderboard()
-    
+
     # Render the global leaderboard template with the fetched data
     return render_template('GlobalLeaderboard.html', leaderboard=global_leaderboard_data)
 
@@ -591,14 +594,14 @@ def followed_leaderboard():
     # Check if the user is logged in
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not authenticated
-    
+
     current_user = session['username']  # Get the current logged-in user
-    
+
     update_leaderboard()  # Update the leaderboard data
-    
+
     # Fetch the data for the followed leaderboard based on the current user
     followed_leaderboard_data = fetch_followed_leaderboard(current_user)
-    
+
     # Render the followed leaderboard template with the fetched data
     return render_template('FollowedLeaderboard.html', leaderboard=followed_leaderboard_data)
 
@@ -607,11 +610,11 @@ def followed_leaderboard():
 def search_user():
     # Gets the search query from the request arguments.
     query = request.args.get('search_query')
-    
+
     # If no query is provided, redirects to the global leaderboard.
     if not query:
         return redirect(url_for('global_leaderboard'))
-    
+
     # Strips whitespace from the search query.
     username = query.strip()
 
@@ -637,7 +640,7 @@ def user_profile(username):
     # Connect to the database
     conn = get_db_connection()
     cur = conn.cursor()
-    
+
     # Retrieve user details from the database
     cur.execute('SELECT * FROM users WHERE username = ?', (username,))
     user = cur.fetchone()
@@ -665,8 +668,8 @@ def user_profile(username):
     is_following = cur.fetchone()[0] > 0
 
     # Retrieve the badge IDs for the user
-    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
-                   FROM user_badges 
+    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid
+                   FROM user_badges
                    WHERE username = ?''', (username,))
     badge_ids = cur.fetchone() or (1, 1, 1)  # Default badge IDs if none found
 
@@ -702,7 +705,7 @@ def follow():
 
     conn.commit()
     conn.close()
-    
+
     # Redirect back to the profile of the user being followed/unfollowed.
     return redirect(url_for('user_profile', username=user_to_follow))
 
@@ -742,8 +745,8 @@ def my_profile():
     is_following = cur.fetchone()[0] > 0
 
     # Fetch the badge IDs for the user.
-    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid 
-                   FROM user_badges 
+    cur.execute('''SELECT apbadgeid, incomebadgeid, expensebadgeid
+                   FROM user_badges
                    WHERE username = ?''', (username,))
     badge_ids = cur.fetchone() or (1, 1, 1)  # Default badge IDs if none found.
 
@@ -752,8 +755,8 @@ def my_profile():
     conn.close()
 
     # Render the profile page with user details and follow stats.
-    return render_template('my_profile.html', user=user, follower_count=follower_count, 
-                           following_count=following_count, is_following=is_following, 
+    return render_template('my_profile.html', user=user, follower_count=follower_count,
+                           following_count=following_count, is_following=is_following,
                            badge_ids=badge_ids)
 
 # Route for the summary page.
@@ -762,9 +765,9 @@ def summary():
     # Check if the user is logged in; if not, redirect to the login page.
     if 'username' not in session:
         return redirect(url_for('login'))
-    
+
     username = session['username']
-    
+
     # Fetch monthly expenses and incomes for the pie charts
     monthly_expenses = fetch_current_month_expenses(username)
     monthly_incomes = fetch_current_month_incomes(username)
@@ -773,27 +776,23 @@ def summary():
     yearly_expenses = fetch_current_year_expenses(username)
     yearly_incomes = fetch_current_year_incomes(username)
 
-    # Format monthly expenses and incomes for chart generation
-    formatted_monthly_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in monthly_expenses]
-    formatted_monthly_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in monthly_incomes]
-
     # Format yearly expenses and incomes for frequency polygon generation
     formatted_yearly_expenses = [{'date': exp['date'], 'amount': exp['amount']} for exp in yearly_expenses]
     formatted_yearly_incomes = [{'date': inc['date'], 'amount': inc['amount']} for inc in yearly_incomes]
 
     # Generate pie charts for the current month
-    expense_pie_chart_filename = f'expense_pie_chart'
-    income_pie_chart_filename = f'income_pie_chart'
-    
-    expense_pie_chart = generate_pie_chart(
+    expense_pie_chart_filename = 'expense_pie_chart'
+    income_pie_chart_filename = 'income_pie_chart'
+
+    generate_pie_chart(
         monthly_expenses,
         'Monthly Expenses by Category',
         [exp['category'] for exp in monthly_expenses],
         expense_pie_chart_filename,
         username
     )
-    
-    income_pie_chart = generate_pie_chart(
+
+    generate_pie_chart(
         monthly_incomes,
         'Monthly Incomes by Category',
         [inc['category'] for inc in monthly_incomes],
@@ -802,17 +801,17 @@ def summary():
     )
 
     # Generate frequency polygons for the entire year
-    expense_frequency_polygon_filename = f'expense_frequency_polygon'
-    income_frequency_polygon_filename = f'income_frequency_polygon'
-    
-    expense_frequency_polygon = generate_frequency_polygon(
+    expense_frequency_polygon_filename = 'expense_frequency_polygon'
+    income_frequency_polygon_filename = 'income_frequency_polygon'
+
+    generate_frequency_polygon(
         formatted_yearly_expenses,
         'Yearly Expense Frequency',
         expense_frequency_polygon_filename,
         username
     )
-    
-    income_frequency_polygon = generate_frequency_polygon(
+
+    generate_frequency_polygon(
         formatted_yearly_incomes,
         'Yearly Income Frequency',
         income_frequency_polygon_filename,
@@ -821,11 +820,11 @@ def summary():
 
     # Render the summary page with the generated charts.
     return render_template(
-        'summary.html', 
-        expense_pie_chart=expense_pie_chart,
-        income_pie_chart=income_pie_chart,
-        expense_frequency_polygon=expense_frequency_polygon,
-        income_frequency_polygon=income_frequency_polygon,
+        'Summary.html',
+        expense_pie_chart=url_for('static', filename=f'/home/budgetbadgersite/images/{username}/expense_pie_chart.png'),
+        income_pie_chart=url_for('static', filename=f'/home/budgetbadgersite/images/{username}/income_pie_chart.png'),
+        expense_frequency_polygon=url_for('static', filename=f'/home/budgetbadgersite/images/{username}/expense_frequency_polygon.png'),
+        income_frequency_polygon=url_for('static', filename=f'/home/budgetbadgersite/images/{username}/income_frequency_polygon.png'),
         username=username
     )
 
@@ -840,7 +839,7 @@ def signup():
         hashed_password = generate_password_hash(password)  # Hash the password for security.
 
         conn = get_db_connection()
-        conn.execute('''INSERT INTO users (username, email, password) VALUES (?, ?, ?)''', 
+        conn.execute('''INSERT INTO users (username, email, password) VALUES (?, ?, ?)''',
                      (username, email, hashed_password))
         conn.commit()
         conn.close()
@@ -873,7 +872,7 @@ def login():
                 flash('Invalid username or password. Please try again.')
         else:
             flash('Invalid username or password. Please try again.')
-            
+
         return redirect(url_for('login'))
 
     # Render the login page.
@@ -884,7 +883,7 @@ def home():
     # Check if the user is logged in
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not authenticated
-    
+
     username = session['username']  # Get the current logged-in username
 
     piechart_expenses = fetch_current_month_expenses(username)
@@ -895,32 +894,38 @@ def home():
     recent_expenses = fetch_recent_expenses_from_db(username, limit=4)
 
     # Define filenames for the pie chart images
-    income_pie_chart_filename = f'income_pie_chart'
-    expense_pie_chart_filename = f'expense_pie_chart'
+    income_pie_chart_filename = 'income_pie_chart'
+    expense_pie_chart_filename = 'expense_pie_chart'
 
     # Generate pie charts for the recent incomes and expenses
-    income_pie_chart = generate_pie_chart(
-        piechart_incomes, 
-        'Monthly Incomes by Category', 
-        [inc['category'] for inc in recent_incomes], 
-        income_pie_chart_filename, 
+    generate_pie_chart(
+        piechart_incomes,
+        'Monthly Incomes by Category',
+        [inc['category'] for inc in recent_incomes],
+        income_pie_chart_filename,
         username
     )
-    
-    expense_pie_chart = generate_pie_chart(
-        piechart_expenses, 
-        'Monthly Expenses by Category', 
-        [exp['category'] for exp in recent_expenses], 
-        expense_pie_chart_filename, 
+
+    generate_pie_chart(
+        piechart_expenses,
+        'Monthly Expenses by Category',
+        [exp['category'] for exp in recent_expenses],
+        expense_pie_chart_filename,
         username
     )
+
+    # Create file paths for the pie charts using the serve_static route
+    income_pie_chart_path = url_for('static', filename=f'images/{username}/{income_pie_chart_filename}.png')
+    expense_pie_chart_path = url_for('static', filename=f'images/{username}/{expense_pie_chart_filename}.png')
 
     # Render the home template with recent incomes, expenses, and username
     return render_template(
-        'Home.html', 
-        incomes=recent_incomes, 
-        expenses=recent_expenses, 
-        username=username
+        'Home.html',
+        incomes=recent_incomes,
+        expenses=recent_expenses,
+        username=username,
+        income_pie_chart=income_pie_chart_path,
+        expense_pie_chart=expense_pie_chart_path
     )
 
 #  Route for the expense form.
@@ -945,11 +950,11 @@ def expense_form():
         # Validate that the amount is at least 0.01
         if amount < 0.01:
             return "Amount must be at least 0.01", 400
-        
+
         # Connect to the database and insert the expense record
         conn = get_db_connection()
         conn.execute('''INSERT INTO expenses (username, date, amount, category, description)
-                         VALUES (?, ?, ?, ?, ?)''', 
+                         VALUES (?, ?, ?, ?, ?)''',
                      (username, date, amount, category, description))
         conn.commit()  # Commit the transaction
         conn.close()  # Close the database connection
@@ -980,10 +985,10 @@ def income_form():
         # Validate that the amount is at least 0.01
         if amount < 0.01:
             return "Amount must be at least 0.01", 400
-        
+
         # Define valid income categories
         valid_categories = [
-            'Salary', 'Business', 'Investments', 'Gifts', 
+            'Salary', 'Business', 'Investments', 'Gifts',
             'Extra Income', 'Loan', 'Insurance Payout', 'Other Incomes'
         ]
         # Check if the selected category is valid
@@ -994,7 +999,7 @@ def income_form():
         conn = get_db_connection()
         try:
             conn.execute('''INSERT INTO income (username, date, amount, category, description)
-                             VALUES (?, ?, ?, ?, ?)''', 
+                             VALUES (?, ?, ?, ?, ?)''',
                          (username, date, amount, category, description))
             conn.commit()  # Commit the transaction
         except sqlite3.IntegrityError as e:
@@ -1016,7 +1021,7 @@ def transaction():
     # Check if the user is logged in by verifying the session
     if 'username' not in session:
         return redirect(url_for('login'))
-    
+
     filter_option = request.args.get('filter', 'all')  # Get filter option from query parameters
     username = session['username']
 
@@ -1030,7 +1035,7 @@ def transaction():
     elif filter_option == 'expenses':
         incomes = []  # Clear incomes if filtering by expenses
 
-    return render_template('transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
+    return render_template('Transaction.html', incomes=incomes, expenses=expenses, filter=filter_option)
 
 # Route to logout
 @app.route('/logout')

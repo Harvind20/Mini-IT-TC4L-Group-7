@@ -15,7 +15,9 @@
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
                         <!-- Profile picture and username -->
                         <a href="{{ url_for('my_profile') }}">
-                            <span id="profilecircle" class="dot"><img id="profilepic" src="../static/default1.png"></span>
+                            <span id="profilecircle" class="dot">
+                                <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
+                            </span>
                         </a>
                         <a href="{{ url_for('my_profile') }}">
                             <p id="profileusername">{{ session['username'] }}</p>
@@ -40,7 +42,7 @@
                         <!-- Budgetbadger logo link -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
-                                <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                                <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
                     </ul>

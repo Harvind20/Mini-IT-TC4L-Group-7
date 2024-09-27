@@ -16,7 +16,7 @@
                     <!-- Profile link with profile picture -->
                     <a href="{{ url_for('my_profile') }}">
                         <span id="profilecircle" class="dot">
-                            <img id="profilepic" src="../static/default1.png">
+                            <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
                         </span>
                     </a>
                     <!-- Displaying the username -->
@@ -53,7 +53,7 @@
                     <!--  BudgetBadger logo link -->
                     <li class="nav-item">
                         <a id="imagelink" href="{{ url_for('home') }}">
-                            <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="img-fluid mb-5" alt="Logo">
+                            <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                         </a>
                     </li>
                 </ul>
@@ -67,10 +67,10 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6 img-center">
-                                <img src="{{ url_for('static', filename='images/' + username + '/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid expense-pie-chart">
+                                <img src="{{ url_for('static', filename='/images/' + username + '/expense_pie_chart.png') }}" alt="Expense Pie Chart" class="img-fluid expense-pie-chart">
                             </div>
                             <div class="col-md-6 img-center">
-                                <img src="{{ url_for('static', filename='images/' + username + '/expense_frequency_polygon_' + username + '.png') }}" alt="Expense Frequency Polygon" class="img-fluid expense-frequency-polygon">
+                                <img src="{{ url_for('static', filename='/images/' + username + '/expense_frequency_polygon_' + username + '.png') }}" alt="Expense Frequency Polygon" class="img-fluid expense-frequency-polygon">
                             </div>
                         </div>
                     </div>
@@ -80,15 +80,15 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6 img-center">
-                                <img src="{{ url_for('static', filename='images/' + username + '/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid income-pie-chart">
+                                <img src="{{ url_for('static', filename='/images/' + username + '/income_pie_chart.png') }}" alt="Income Pie Chart" class="img-fluid income-pie-chart">
                             </div>
                             <div class="col-md-6 img-center">
-                                <img src="{{ url_for('static', filename='images/' + username + '/income_frequency_polygon_' + username + '.png') }}" alt="Income Frequency Polygon" class="img-fluid income-frequency-polygon">
+                                <img src="{{ url_for('static', filename='/images/' + username + '/income_frequency_polygon_' + username + '.png') }}" alt="Income Frequency Polygon" class="img-fluid income-frequency-polygon">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>                                    
+            </div>
         </div>
     </div>
 </body>

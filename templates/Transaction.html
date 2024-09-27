@@ -16,7 +16,7 @@
                     <!-- Profile link with picture -->
                     <a href="{{ url_for('my_profile') }}">
                         <span id="profilecircle" class="dot">
-                            <img id="profilepic" src="../static/default1.png" alt="Profile Picture">
+                            <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
                         </span>
                     </a>
                     <a href="{{ url_for('my_profile') }}">
@@ -51,7 +51,7 @@
                     <!-- BudgetBadger logo -->
                     <li class="nav-item">
                         <a id="imagelink" href="{{ url_for('home') }}">
-                            <img id="logo" src="../static/budgetbadgernobg.png" class="image-fluid mb-5" alt="Logo">
+                            <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                         </a>
                     </li>
                 </ul>
@@ -61,7 +61,7 @@
                 <div id="maincard" class="card d-flex">
                     <div class="row">
                         <div class="col-6">
-                            <h1>Transactions</h1> 
+                            <h1>Transactions</h1>
                         </div>
                         <div id="buttons" class="col-6 d-flex justify-content-end align-items-center">
                             <!-- Buttons to enter log income and log expense form -->
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="col-12 d-flex">
-                        <hr> 
+                        <hr>
                     </div>
                     <div class="custom-table-container">
                         <!-- Table for displaying transactions -->
@@ -117,7 +117,7 @@
                                     </tr>
                                 {% endfor %}
                             </tbody>
-                        </table> 
+                        </table>
                     </div>
                 </div>
             </div>

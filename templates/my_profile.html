@@ -16,7 +16,7 @@
                     <!-- Profile picture and username -->
                     <a href="{{ url_for('my_profile') }}">
                         <span id="profilecircle" class="dot">
-                            <img id="profilepic" src="{{ url_for('static', filename='default1.png') }}">
+                            <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
                         </span>
                     </a>
                     <a href="{{ url_for('my_profile') }}">
@@ -50,7 +50,7 @@
                     <li class="nav-item">
                         <!-- BudgetBadger Logo link -->
                         <a id="imagelink" href="{{ url_for('home') }}">
-                            <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
+                            <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                         </a>
                     </li>
                 </ul>
@@ -60,10 +60,10 @@
                 <div id="maincard" class="card">
                     <div class="row">
                         <div id="profilecard" class="card">
-                            <div class="row d-flex justify-content-between align-items-center"> 
+                            <div class="row d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <span class="box">
-                                        <img src="{{ url_for('static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
+                                        <img src="{{ url_for('serve_mini_it_static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
                                     </span>
                                     <div id="username" class="text-center">
                                         <p>{{ session['username'] }}</p>
@@ -97,14 +97,14 @@
                                 <tr>
                                     <!-- Display badge images using dynamic file paths based on badge IDs assigned -->
                                     <td>
-                                        <img id="badge" src="{{ url_for('static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
+                                        <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
                                     </td>
                                     <td>
-                                        <img id="badge" src="{{ url_for('static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
+                                        <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
                                     </td>
                                     <td>
-                                        <img id="badge" src="{{ url_for('static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
-                                    </td>                                                                               
+                                        <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

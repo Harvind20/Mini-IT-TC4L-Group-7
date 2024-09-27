@@ -11,24 +11,24 @@
         <!-- Full-height container, covering the entire viewport -->
         <div class="container-fluid vh-100">
             <div class="row d-flex">
-                
+
                 <!-- Left column for navigation -->
                 <div class="col-md-2 d-flex vh-100" id="left-column">
                     <!-- Navigation menu (vertical pills) -->
                     <ul id="buttoncolor" class="nav nav-pills flex-column ms-0">
-                        
+
                         <!-- Profile picture at the top of the sidebar -->
                         <a href="{{ url_for('my_profile') }}">
                             <span id="profilecircle" class="dot">
-                                <img id="profilepic" src="{{ url_for('static', filename='default1.png') }}">
+                                <img id="profilepic" src="{{ url_for('serve_mini_it_static', filename='default1.png') }}">
                             </span>
                         </a>
-                        
+
                         <!-- Display the username as a link to the profile page -->
                         <a href="{{ url_for('my_profile') }}">
                             <p id="profileusername">{{ session['username'] }}</p>
                         </a>
-                        
+
                         <!-- Navigation links to different sections of the site -->
                         <li class="nav-item mt-4">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('home') }}" style="border-radius: 0.3rem;">
@@ -50,28 +50,28 @@
                                 <i class="fas fa-chart-column"></i>&nbsp;&nbsp;&nbsp;Summary
                             </a>
                         </li>
-                        
+
                         <!-- Log out button -->
                         <li class="nav-item mt-2">
                             <a id="navbar-pills" class="nav-link" href="{{ url_for('logout') }}" style="border-radius: 0.3rem;">
                                 <i class="fas fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;Log Out
                             </a>
                         </li>
-                        
+
                         <!-- BudgetBadger logo at the bottom of the sidebar -->
                         <li class="nav-item">
                             <a id="imagelink" href="{{ url_for('home') }}">
-                                <img id="logo" src="{{ url_for('static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
+                                <img id="logo" src="{{ url_for('serve_mini_it_static', filename='budgetbadgernobg.png') }}" class="image-fluid mb-5" alt="Logo">
                             </a>
                         </li>
                     </ul>
                 </div>
-                
+
                 <!-- Right column for main content -->
                 <div class="col-md-10 d-flex vh-100">
                     <!-- Main content card -->
                     <div id="maincard" class="card">
-                        
+
                         <!-- Profile card displaying user information and follow button -->
                         <div class="row">
                             <div id="profilecard" class="card">
@@ -79,9 +79,9 @@
                                     <div class="d-flex align-items-center">
                                         <!-- Profile picture in the profile card -->
                                         <span class="box">
-                                            <img src="{{ url_for('static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
+                                            <img src="{{ url_for('serve_mini_it_static', filename='default1.png') }}" id="profilepicture" class="img-fluid" alt="Profile Picture">
                                         </span>
-                                        
+
                                         <!-- Username, following and followers count -->
                                         <div id="username" class="text-center">
                                             <p>{{ user['username'] }}</p>
@@ -96,7 +96,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Follow/unfollow button -->
                                 <div>
                                     <form action="/follow" method="post">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Badges section showing user achievements -->
                         <div id="badges" class="card">
                             <p id="cardheader">Badges</p>
@@ -130,13 +130,13 @@
                                     <tr>
                                         <!-- Display badge images using dynamic file paths based on badge IDs -->
                                         <td>
-                                            <img id="badge" src="{{ url_for('static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
+                                            <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/AP' + badge_ids[0] + '.png') }}" alt="AP Badge">
                                         </td>
                                         <td>
-                                            <img id="badge" src="{{ url_for('static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
+                                            <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/Income' + badge_ids[1] + '.png') }}" alt="Income Badge">
                                         </td>
                                         <td>
-                                            <img id="badge" src="{{ url_for('static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
+                                            <img id="badge" src="{{ url_for('serve_mini_it_static', filename='badges/Expense' + badge_ids[2] + '.png') }}" alt="Expense Badge">
                                         </td>
                                     </tr>
                                 </tbody>
